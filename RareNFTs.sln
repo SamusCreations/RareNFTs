@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.Web", "RareNFTs.Web\RareNFTs.Web.csproj", "{8373C901-6C55-4524-8495-6696739BF179}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RareNFTs.Web", "RareNFTs.Web\RareNFTs.Web.csproj", "{8373C901-6C55-4524-8495-6696739BF179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.Application", "RareNFTs.Application\RareNFTs.Application.csproj", "{395198F2-00FC-4679-AD78-E491717C2D5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RareNFTs.Application", "RareNFTs.Application\RareNFTs.Application.csproj", "{395198F2-00FC-4679-AD78-E491717C2D5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.Infraestructure", "RareNFTs.Arquitecture\RareNFTs.Infraestructure.csproj", "{7186646C-E195-4036-A71E-2A91FE5C32A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.Infraestructure", "RareNFTs.Infraestructure\RareNFTs.Infraestructure.csproj", "{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{395198F2-00FC-4679-AD78-E491717C2D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{395198F2-00FC-4679-AD78-E491717C2D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{395198F2-00FC-4679-AD78-E491717C2D5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7186646C-E195-4036-A71E-2A91FE5C32A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7186646C-E195-4036-A71E-2A91FE5C32A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7186646C-E195-4036-A71E-2A91FE5C32A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7186646C-E195-4036-A71E-2A91FE5C32A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
