@@ -5,7 +5,7 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class User
 {
-    public string IdUser { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     public string? Email { get; set; }
 

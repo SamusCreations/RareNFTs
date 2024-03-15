@@ -7,7 +7,7 @@ public partial class Card
 {
     public string Id { get; set; } = null!;
 
-    public string? Description1 { get; set; }
+    public string? Description { get; set; }
 
     public virtual ICollection<InvoiceHeader> InvoiceHeader { get; set; } = new List<InvoiceHeader>();
 }
