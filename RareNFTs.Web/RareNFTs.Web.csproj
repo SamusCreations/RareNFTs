@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RareNFTs.Application\RareNFTs.Application.csproj" />
-    <ProjectReference Include="..\RareNFTs.Arquitecture\RareNFTs.Infraestructure.csproj" />
+    <ProjectReference Include="..\RareNFTs.Infraestructure\RareNFTs.Infraestructure.csproj" />
   </ItemGroup>
 
 </Project>
