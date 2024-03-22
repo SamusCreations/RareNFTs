@@ -4,7 +4,7 @@ using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 
-namespace Electronics.Application.Services.Implementations;
+namespace RareNFTs.Application.Services.Implementations;
 
 public class ServiceCard : IServiceCard
 {
@@ -17,7 +17,7 @@ public class ServiceCard : IServiceCard
         _mapper = mapper;
     }
 
-    public async Task<string> AddAsync(CardDTO dto)
+    public async Task<Guid> AddAsync(CardDTO dto)
     {
         // Map CardDTO to Card
         var objectMapped = _mapper.Map<Card>(dto);
@@ -26,7 +26,7 @@ public class ServiceCard : IServiceCard
         return await _repository.AddAsync(objectMapped);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
     }
@@ -39,7 +39,7 @@ public class ServiceCard : IServiceCard
 
     }
 
-    public async Task<CardDTO> FindByIdAsync(string id)
+    public async Task<CardDTO> FindByIdAsync(Guid id)
     {
         var @object = await _repository.FindByIdAsync(id);
         var objectMapped = _mapper.Map<CardDTO>(@object);
@@ -56,7 +56,7 @@ public class ServiceCard : IServiceCard
         return collection;
     }
 
-    public async Task UpdateAsync(string id, CardDTO dto)
+    public async Task UpdateAsync(Guid id, CardDTO dto)
     {
         var @object = await _repository.FindByIdAsync(id);
         //       source, destination

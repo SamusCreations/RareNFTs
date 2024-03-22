@@ -14,14 +14,14 @@ public class RepositoryCard : IRepositoryCard
         _context = context;
     }
 
-    public async Task<string> AddAsync(Card entity)
+    public async Task<Guid> AddAsync(Card entity)
     {
         await _context.Set<Card>().AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity.Id;
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         // Raw Query
         //https://www.learnentityframeworkcore.com/raw-sql/execute-sql
@@ -42,7 +42,7 @@ public class RepositoryCard : IRepositoryCard
         return collection;
     }
 
-    public async Task<Card> FindByIdAsync(string id)
+    public async Task<Card> FindByIdAsync(Guid id)
     {
         var @object = await _context.Set<Card>().FindAsync(id);
 

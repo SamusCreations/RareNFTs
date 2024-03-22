@@ -51,14 +51,14 @@ public class CardController : Controller
 
 
     // GET: CardController/Details/5
-    public async Task<IActionResult> Details(string id)
+    public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceCard.FindByIdAsync(id);
         return View(@object);
     }
 
     // GET: CardController/Edit/5
-    public async Task<IActionResult> Edit(string id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         var @object = await _serviceCard.FindByIdAsync(id);
         return View(@object);
@@ -67,14 +67,14 @@ public class CardController : Controller
     // POST: CardController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, CardDTO dto)
+    public async Task<IActionResult> Edit(Guid id, CardDTO dto)
     {
         await _serviceCard.UpdateAsync(id, dto);
         return RedirectToAction("Index");
     }
 
     // GET: CardController/Delete/5
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var @object = await _serviceCard.FindByIdAsync(id);
         return View(@object);
@@ -83,7 +83,7 @@ public class CardController : Controller
     // POST: CardController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(string id, IFormCollection collection)
+    public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceCard.DeleteAsync(id);
         return RedirectToAction("Index");

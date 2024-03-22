@@ -11,9 +11,9 @@ public interface IRepositoryCard
 {
     Task<ICollection<Card>> FindByDescriptionAsync(string description);
     Task<ICollection<Card>> ListAsync();
-    Task<Card> FindByIdAsync(string id);
-    Task<string> AddAsync(Card entity);
-    Task DeleteAsync(string id);
+    Task<Card> FindByIdAsync(Guid id);
+    Task<Guid> AddAsync(Card entity);
+    Task DeleteAsync(Guid id);
     Task UpdateAsync();
 
 }

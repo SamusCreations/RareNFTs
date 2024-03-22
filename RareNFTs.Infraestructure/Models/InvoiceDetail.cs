@@ -5,9 +5,9 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class InvoiceDetail
 {
-    public string IdInvoice { get; set; } = null!;
+    public Guid IdInvoice { get; set; }
 
-    public string IdNft { get; set; } = null!;
+    public Guid IdNft { get; set; }
 
     public decimal? Price { get; set; }
 

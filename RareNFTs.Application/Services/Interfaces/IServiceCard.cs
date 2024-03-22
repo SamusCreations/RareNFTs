@@ -11,9 +11,9 @@ namespace RareNFTs.Application.Services.Interfaces
     {
         Task<ICollection<CardDTO>> FindByDescriptionAsync(string description);
         Task<ICollection<CardDTO>> ListAsync();
-        Task<CardDTO> FindByIdAsync(string id);
-        Task<string> AddAsync(CardDTO dto);
-        Task DeleteAsync(string id);
-        Task UpdateAsync(string id, CardDTO dto);
+        Task<CardDTO> FindByIdAsync(Guid id);
+        Task<Guid> AddAsync(CardDTO dto);
+        Task DeleteAsync(Guid id);
+        Task UpdateAsync(Guid id, CardDTO dto);
     }
 }
