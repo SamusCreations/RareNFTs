@@ -1,7 +1,14 @@
+using RareNFTs.Infraestructure.Repository.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddTransient<IRepositoryClient, IRepositoryClient>();
+
+
 
 var app = builder.Build();
 
