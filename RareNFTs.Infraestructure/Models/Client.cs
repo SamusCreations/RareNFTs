@@ -5,7 +5,7 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class Client
 {
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; }
 
     public string? Name { get; set; }
 
@@ -15,9 +15,9 @@ public partial class Client
 
     public string? IdCountry { get; set; }
 
-    public string? IdWallet { get; set; }
+    public Guid IdWallet { get; set; }
 
-    public string? IdUser { get; set; }
+    public Guid IdUser { get; set; }
 
     public virtual ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
 
@@ -25,7 +25,7 @@ public partial class Client
 
     public virtual User IdNavigation { get; set; } = null!;
 
-    public virtual Wallet? IdWalletNavigation { get; set; }
+    public virtual Wallet IdWalletNavigation { get; set; } = null!;
 
     public virtual ICollection<InvoiceHeader> InvoiceHeader { get; set; } = new List<InvoiceHeader>();
 }

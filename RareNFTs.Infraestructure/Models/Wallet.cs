@@ -5,7 +5,7 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class Wallet
 {
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; }
 
     public decimal? Purse { get; set; }
 
