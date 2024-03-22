@@ -9,9 +9,8 @@ namespace RareNFTs.Application.DTOs;
 
 public record CardDTO
 {
-    [Required(ErrorMessage = "{0} is required")]
     [Display(Name = "Code")]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     [Display(Name = "Card Description")]
     [Required(ErrorMessage = "{0} is required")]

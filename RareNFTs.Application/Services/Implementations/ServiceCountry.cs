@@ -4,7 +4,7 @@ using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 
-namespace Electronics.Application.Services.Implementations;
+namespace RareNFTs.Application.Services.Implementations;
 
 public class ServiceCountry : IServiceCountry
 {
