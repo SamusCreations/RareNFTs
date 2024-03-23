@@ -32,8 +32,6 @@ public partial class RareNFTsContext : DbContext
 
     public virtual DbSet<User> User { get; set; }
 
-    public virtual DbSet<Wallet> Wallet { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Card>(entity =>
@@ -47,6 +45,9 @@ public partial class RareNFTsContext : DbContext
         modelBuilder.Entity<Client>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Genre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -63,11 +64,6 @@ public partial class RareNFTsContext : DbContext
             entity.HasOne(d => d.IdCountryNavigation).WithMany(p => p.Client)
                 .HasForeignKey(d => d.IdCountry)
                 .HasConstraintName("FK_Client_Country");
-
-            entity.HasOne(d => d.IdWalletNavigation).WithMany(p => p.Client)
-                .HasForeignKey(d => d.IdWallet)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Client_Wallet");
         });
 
         modelBuilder.Entity<ClientNft>(entity =>
@@ -186,12 +182,6 @@ public partial class RareNFTsContext : DbContext
                 .HasForeignKey(d => d.IdRole)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Role");
-        });
-
-        modelBuilder.Entity<Wallet>(entity =>
-        {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Purse).HasColumnType("money");
         });
 
         OnModelCreatingPartial(modelBuilder);

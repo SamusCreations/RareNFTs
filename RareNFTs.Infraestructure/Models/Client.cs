@@ -15,13 +15,11 @@ public partial class Client
 
     public string? IdCountry { get; set; }
 
-    public Guid IdWallet { get; set; }
+    public string? Email { get; set; }
 
     public virtual ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
 
     public virtual Country? IdCountryNavigation { get; set; }
-
-    public virtual Wallet IdWalletNavigation { get; set; } = null!;
 
     public virtual ICollection<InvoiceHeader> InvoiceHeader { get; set; } = new List<InvoiceHeader>();
 }

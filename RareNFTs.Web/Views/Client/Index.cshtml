@@ -27,12 +27,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.IdCountry)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdWallet)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUser)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -53,12 +47,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdCountry)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdWallet)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdUser)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
