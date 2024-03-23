@@ -11,8 +11,8 @@ public interface IServiceClient
 {
     Task<ICollection<ClientDTO>> FindByDescriptionAsync(string description);
     Task<ICollection<ClientDTO>> ListAsync();
-    Task<ClientDTO> FindByIdAsync(string id);
-    Task<string> AddAsync(ClientDTO dto);
-    Task DeleteAsync(string id);
-    Task UpdateAsync(string id, ClientDTO dto);
+    Task<ClientDTO> FindByIdAsync(Guid id);
+    Task<Guid> AddAsync(ClientDTO dto);
+    Task DeleteAsync(Guid id);
+    Task UpdateAsync(Guid id, ClientDTO dto);
 }

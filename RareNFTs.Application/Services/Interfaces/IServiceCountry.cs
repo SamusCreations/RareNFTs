@@ -5,15 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RareNFTs.Application.Services.Interfaces
+namespace RareNFTs.Application.Services.Interfaces;
+
+public interface IServiceCountry
 {
-    public interface IServiceCountry
-    {
-        Task<ICollection<CountryDTO>> FindByDescriptionAsync(string description);
-        Task<ICollection<CountryDTO>> ListAsync();
-        Task<CountryDTO> FindByIdAsync(string id);
-        Task<string> AddAsync(CountryDTO dto);
-        Task DeleteAsync(string id);
-        Task UpdateAsync(string id, CountryDTO dto);
-    }
+    Task<ICollection<CountryDTO>> FindByDescriptionAsync(string description);
+    Task<ICollection<CountryDTO>> ListAsync();
+    Task<CountryDTO> FindByIdAsync(string id);
+    Task<string> AddAsync(CountryDTO dto);
+    Task DeleteAsync(string id);
+    Task UpdateAsync(string id, CountryDTO dto);
 }

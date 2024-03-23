@@ -22,7 +22,7 @@ public class ServiceClient: IServiceClient
         _mapper = mapper;
     }
 
-    public async Task<string> AddAsync(ClientDTO dto)
+    public async Task<Guid> AddAsync(ClientDTO dto)
     {
         // Map ClientDTO to Client
         var objectMapped = _mapper.Map<Client>(dto);
@@ -31,7 +31,7 @@ public class ServiceClient: IServiceClient
         return await _repository.AddAsync(objectMapped);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
     }
@@ -44,7 +44,7 @@ public class ServiceClient: IServiceClient
 
     }
 
-    public async Task<ClientDTO> FindByIdAsync(string id)
+    public async Task<ClientDTO> FindByIdAsync(Guid id)
     {
         var @object = await _repository.FindByIdAsync(id);
         var objectMapped = _mapper.Map<ClientDTO>(@object);
@@ -61,7 +61,7 @@ public class ServiceClient: IServiceClient
         return collection;
     }
 
-    public async Task UpdateAsync(string id, ClientDTO dto)
+    public async Task UpdateAsync(Guid id, ClientDTO dto)
     {
         var @object = await _repository.FindByIdAsync(id);
         //       source, destination
