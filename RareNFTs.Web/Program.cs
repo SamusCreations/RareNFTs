@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 using RareNFTs.Infraestructure.Repository.Implementation;
-using RareNFTs.Application.Services.Interfaces;
-using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Profiles;
 using RareNFTs.Infraestructure.Data;
 using Serilog;
 using Serilog.Events;
 using System.Text;
+using RareNFTs.Application.Services.Implementations;
+using RareNFTs.Application.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +16,19 @@ builder.Services.AddControllersWithViews();
 
 // Configure D.I.
 builder.Services.AddTransient<IRepositoryCard, RepositoryCard>();
-builder.Services.AddTransient<IServiceCard, ServiceCard>();
+builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
+
 builder.Services.AddTransient<IServiceCountry, ServiceCountry>();
+builder.Services.AddTransient<IServiceClient, ServiceClient>();
+builder.Services.AddTransient<IServiceCard, ServiceCard>();
 
 // config Automapper
 builder.Services.AddAutoMapper(config =>
 {
     config.AddProfile<CardProfile>();
     config.AddProfile<CountryProfile>();
+    config.AddProfile<ClientProfile>();
 });
 
 // Config Connection to SQLServer DataBase
