@@ -17,13 +17,9 @@ public partial class Client
 
     public Guid IdWallet { get; set; }
 
-    public Guid IdUser { get; set; }
-
     public virtual ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
 
     public virtual Country? IdCountryNavigation { get; set; }
-
-    public virtual User IdNavigation { get; set; } = null!;
 
     public virtual Wallet IdWalletNavigation { get; set; } = null!;
 
