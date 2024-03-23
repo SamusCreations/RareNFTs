@@ -31,6 +31,10 @@ public record ClientDTO
     [Display(Name = "Country")]
     public string IdCountry { get; set; }
 
+    [Required(ErrorMessage = "{0} is required")]
+    [Display(Name = "Email")]
+    public string Email { get; set; }
+
     [Required(ErrorMessage = "Client NFTs are required")]
     [Display(Name = "Client NFTs")]
     public  ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
