@@ -8,10 +8,12 @@ namespace RareNFTs.Web.Controllers
     public class ClientController : Controller
     {
         private readonly IServiceClient _serviceClient;
+        private readonly IServiceCountry _serviceCountry;
 
-        public ClientController(IServiceClient serviceClient)
+        public ClientController(IServiceClient serviceClient, IServiceCountry serviceCountry)
         {
             _serviceClient = serviceClient;
+            _serviceCountry = serviceCountry;
         }
 
         [HttpGet]
@@ -22,8 +24,9 @@ namespace RareNFTs.Web.Controllers
         }
 
         // GET: ClientController/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.ListCountry = await _serviceCountry.ListAsync();
             return View();
         }
 
@@ -33,7 +36,7 @@ namespace RareNFTs.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClientDTO dto)
         {
-
+            ModelState.Remove("Id");
             if (!ModelState.IsValid)
             {
                 // Lee del ModelState todos los errores que
@@ -60,6 +63,7 @@ namespace RareNFTs.Web.Controllers
         // GET: ClientController/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
+            ViewBag.ListCountry = await _serviceCountry.ListAsync();
             var @object = await _serviceClient.FindByIdAsync(id);
             return View(@object);
         }
