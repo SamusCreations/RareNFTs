@@ -1,0 +1,109 @@
+﻿@model RareNFTs.Application.DTOs.NftDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>NftDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-begin="onBegin"
+              data-ajax-failure="onFailure"
+              data-ajax-success="onSuccess"
+              data-ajax-complete="onComplete"
+              asp-antiforgery="true">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" class="form-control" id="ImageFile" name="ImageFile" required />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div id="loader" class="xxxx"></div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts {
+
+    <script>
+        function onBegin() {
+            console.log("onBegin")
+            document.getElementById("loader").className = "loading";
+        }
+
+        function onFailure(response) {
+            console.log("onFailure")
+            console.log(response)
+           Swal.fire({
+                title: "Error!",
+                icon: "error",
+                text: response.responseText,
+                timer: 2000,
+                timerProgressBar: true
+            })
+        }
+
+        function onSuccess(response) {
+            console.log("onSuccess")
+        }
+
+        function onComplete() {
+            console.log("onComplete")
+            document.getElementById("loader").className = "xxxxx";
+
+            // // Clear field
+            // document.getElementById("IdProducto").value = "";
+            // document.getElementById("DescripcionProducto").value = "";
+            // document.getElementById("CostoDolar").value = "";
+            // document.getElementById("Precio").value = "";
+            // document.getElementById("Cantidad").value = "";
+            // document.getElementById("ImageFile").value = "";
+
+
+
+        }
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
