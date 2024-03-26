@@ -12,7 +12,7 @@ namespace RareNFTs.Application.DTOs;
 
 public record ClientDTO
 {
-    [BindNever]
+    [Display(Name = "Id")]
     public string Id { get; set; }
 
     [Required(ErrorMessage = "{0} is required")]
@@ -30,6 +30,10 @@ public record ClientDTO
     [Required(ErrorMessage = "{0} is required")]
     [Display(Name = "Country")]
     public string IdCountry { get; set; }
+
+    [Required(ErrorMessage = "{0} is required")]
+    [Display(Name = "Email")]
+    public string Email { get; set; }
 
     [Required(ErrorMessage = "Client NFTs are required")]
     [Display(Name = "Client NFTs")]

@@ -18,10 +18,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRepositoryCard, RepositoryCard>();
 builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
+builder.Services.AddTransient<IRepositoryNft, RepositoryNft>();
+
 
 builder.Services.AddTransient<IServiceCountry, ServiceCountry>();
 builder.Services.AddTransient<IServiceClient, ServiceClient>();
 builder.Services.AddTransient<IServiceCard, ServiceCard>();
+builder.Services.AddTransient<IServiceNft, ServiceNft>();
 
 // config Automapper
 builder.Services.AddAutoMapper(config =>
@@ -29,6 +32,8 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<CardProfile>();
     config.AddProfile<CountryProfile>();
     config.AddProfile<ClientProfile>();
+    config.AddProfile<NftProfile>();
+
 });
 
 // Config Connection to SQLServer DataBase
