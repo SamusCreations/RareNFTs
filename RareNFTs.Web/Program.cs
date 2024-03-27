@@ -8,6 +8,8 @@ using Serilog.Events;
 using System.Text;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
+using RareNFTs.Application.Config;
+using Electronics.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +22,13 @@ builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
 builder.Services.AddTransient<IRepositoryNft, RepositoryNft>();
 
-
+//Services
 builder.Services.AddTransient<IServiceCountry, ServiceCountry>();
 builder.Services.AddTransient<IServiceClient, ServiceClient>();
 builder.Services.AddTransient<IServiceCard, ServiceCard>();
 builder.Services.AddTransient<IServiceNft, ServiceNft>();
+
+builder.Services.Configure<AppConfig>(builder.Configuration);
 
 // config Automapper
 builder.Services.AddAutoMapper(config =>
@@ -68,6 +72,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    // Error control Middleware
+    app.UseMiddleware<ErrorHandlingMiddleware>();
+}
+
+// Error access control 
+app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+//Add support to logging request with SERILOG
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -75,6 +90,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Activate Antiforgery DEBE COLOCARSE ACA!
+app.UseAntiforgery();
 
 app.MapControllerRoute(
     name: "default",
