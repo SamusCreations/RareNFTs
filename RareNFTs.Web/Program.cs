@@ -21,12 +21,15 @@ builder.Services.AddTransient<IRepositoryCard, RepositoryCard>();
 builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
 builder.Services.AddTransient<IRepositoryNft, RepositoryNft>();
+builder.Services.AddTransient<IRepositoryInvoice, RepositoryInvoice>();
+
 
 //Services
 builder.Services.AddTransient<IServiceCountry, ServiceCountry>();
 builder.Services.AddTransient<IServiceClient, ServiceClient>();
 builder.Services.AddTransient<IServiceCard, ServiceCard>();
 builder.Services.AddTransient<IServiceNft, ServiceNft>();
+builder.Services.AddTransient<IServiceInvoice, ServiceInvoice>();
 
 builder.Services.Configure<AppConfig>(builder.Configuration);
 
@@ -37,6 +40,7 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<CountryProfile>();
     config.AddProfile<ClientProfile>();
     config.AddProfile<NftProfile>();
+    config.AddProfile<InvoiceProfile>();
 
 });
 
