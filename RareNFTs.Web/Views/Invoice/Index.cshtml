@@ -25,7 +25,7 @@
              <button style="position: absolute; top: 0; right: 0" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
             -->
             <div class="col-md-5">
-                <button class="btn btn-secondary" style="margin-left: 1em" onclick="onClearForm()">Nuevo</button>
+                <button class="btn btn-secondary" style="margin-left: 1em" onclick="onClearForm()">New</button>
                 <input type="submit" style=" " value="Salvar Factura" class="btn btn-primary" />
             </div>
         </div>
@@ -37,26 +37,26 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="Id" class="control-label fw-normal"></label>
-                            <input asp-for="Id" class="form-control form-control-sm" value="@ViewBag.CurrentReceipt" readonly />
+                            <input asp-for="Id" class="form-control form-control-sm" value="@ViewBag.InvoiceId" readonly />
                             <span asp-validation-for="Id" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="IdCard" class="control-label"></label>
                             @Html.DropDownListFor(m => m.IdCard,
-                                     new SelectList(ViewBag.ListTarjeta, "Id", "Description"), new { @class = "form-select form-select-sm " })
+                                     new SelectList(ViewBag.ListCard, "Id", "Description"), new { @class = "form-select form-select-sm " })
 
                             <span asp-validation-for="IdCard" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="TarjetaNumero" class="control-label"></label>
-                            <input asp-for="TarjetaNumero" class="form-control form-control-sm" />
-                            <span asp-validation-for="TarjetaNumero" class="text-danger"></span>
+                            <label asp-for="NumCard" class="control-label"></label>
+                            <input asp-for="NumCard" class="form-control form-control-sm" />
+                            <span asp-validation-for="NumCard" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="IdCliente" class="control-label"></label>
-                            <input asp-for="IdCliente" class="form-control form-control-sm" />
-                            <span asp-validation-for="IdCliente" class="text-danger"></span>
-                            <label id="NombreCliente" class="control-label fw-bold">-</label>
+                            <label asp-for="IdClient" class="control-label"></label>
+                            <input asp-for="IdClient" class="form-control form-control-sm" />
+                            <span asp-validation-for="IdClient" class="text-danger"></span>
+                            <label id="ClientName" class="control-label fw-bold">-</label>
                         </div>
 
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
@@ -65,9 +65,9 @@
 
                     <div class="col-md-10">
                         <!-- Solamente se muestra la primera vez como efecto visual-->
-                        @await Html.PartialAsync("_DetailFactura")
+                        @await Html.PartialAsync("_InvoiceDetail")
                         <!-- Detail View -->
-                        <div id="detalleFacturaView"></div>
+                        <div id="invoiceDetailView"></div>
                     </div>
 
                 </div>
@@ -84,7 +84,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Productos</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">NFTs</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -103,30 +103,30 @@
 
     <script>
         ///////////////////////////////////////////////////////////////////
-        // Autocomplete Modal ProductoId search by Product Name
+        // Autocomplete Modal NftId search by Product Name
         ///////////////////////////////////////////////////////////////////
-        $("#IdProductoModal").autocomplete({
+        $("#IdNft").autocomplete({
             source: function (request, response) {
-                var id = $("#IdProductoModal").val();
+                var id = $("#IdNft").val();
                 //debugger;
 
                 // default IMAGE NO-IMAGE
-                $("#ImgProducto").attr("src", "/Images/nophoto.jpg");
+                $("#ImgNft").attr("src", "/Images/nophoto.jpg");
                 // Clear Product Name
-                $("#ProductoNombreModal").html("")
-                $("#PrecioModal").val("");
-                $("#Cantidad").val("");
-                $("#CantidadEnInventarioModal").val("");
+                $("#NftModal").html("")
+                $("#PriceModal").val("");
+                $("#Quantity").val("");
+                $("#InventoryModal").val("");
                 $.ajax({
                     type: "GET",
-                    url: "/Producto/GetProductoByName",
+                    url: "/Nft/GetNftByName",
                     dataType: "json",
                     data: { filtro: id },
                     success: function (data) {
                         response($.map(data, function (item) {
 
                             //debugger;
-                            return { label: item.descripcionProducto, value: item.idProducto, data: item };
+                            return { label: item.description, value: item.id, data: item };
                         }));
                     },
                     error: function (xhr, status, error) {
@@ -140,13 +140,13 @@
             select: function (event, ui) {
 
                 // Show data
-                $("#IdProductoModal").val(ui.item.value)
-                $("#ProductoNombreModal").html(ui.item.label + " - Inventario:" + ui.item.data.cantidad)
-                $("#PrecioModal").val(ui.item.data.precio)
-                $("#IdProductoModal").focus();
+                $("#IdNft").val(ui.item.value)
+                $("#NftModal").html(ui.item.label + " - Quantity:" + ui.item.data.quantity)
+                $("#PriceModal").val(ui.item.data.price)
+                $("#IdNft").focus();
                 // Show the image, it isn't necesary to convert to Base64 since it comes from Json
-                $("#ImgProducto").attr("src", "data:image/jpeg;charset=utf-8;base64," + ui.item.data.imagen);
-                $("#CantidadEnInventarioModal").val(ui.item.data.cantidad);
+                $("#ImgNft").attr("src", "data:image/jpeg;charset=utf-8;base64," + ui.item.data.image);
+                $("#InventoryModal").val(ui.item.data.quantity);
 
                 return false;
             }
@@ -161,21 +161,21 @@
         // Busca el cliente por nombre+apellido1+apellido2 //
         /////////////////////////////////////////////////////
 
-        $("#IdCliente").autocomplete({
+        $("#IdClient").autocomplete({
             source: function (request, response) {
-                var idCliente = $("#IdCliente").val();
+                var IdClient = $("#IdClient").val();
                 //debugger;
-                console.log(idCliente);
+                console.log(IdClient);
                 $.ajax({
                     type: "GET",
-                    url: "/Cliente/GetClienteByName",
+                    url: "/Client/GetClientByName",
                     dataType: "json",
-                    data: { filtro: idCliente },
+                    data: { filtro: IdClient },
                     success: function (data) {
                         response($.map(data, function (item) {
                             console.log(item);
                             //debugger;
-                            return { label: item.nombre + " " + item.apellido1 + " " + item.apellido2, value: item.idCliente };
+                            return { label: item.name + " " + item.surname, value: item.IdClient };
                         }));
                     },
                     error: function (xhr, status, error) {
@@ -188,8 +188,8 @@
             },
             select: function (event, ui) {
 
-                $("#IdCliente").val(ui.item.value);
-                $("#NombreCliente").html(ui.item.label)
+                $("#IdClient").val(ui.item.value);
+                $("#ClientName").html(ui.item.label)
 
                 return false;
             }
@@ -199,12 +199,12 @@
 
     <script>
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        // Clear IdCliente and NombreCliente when they got the focus                                 //
+        // Clear IdClient and ClientName when they got the focus                                 //
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        $("#IdCliente").focus(function () {
+        $("#IdClient").focus(function () {
             // Limpia la caja de texto
-            $("#IdCliente").val("");
-            $("#NombreCliente").html("*")
+            $("#IdClient").val("");
+            $("#ClientName").html("*")
         });
     </script>
 
@@ -215,33 +215,33 @@
         // Add cardshoping Product
         ///////////////////////////////////////////////////////////////////////////////////////////////
         function addProduct() {
-            let idProductModal = document.getElementById("IdProductoModal").value;
-            let cantidadModal = document.getElementById("CantidadModal").value;
-            let precioModal = document.getElementById("PrecioModal").value;
-            let detallefacturaBorrar = document.getElementById("detalleFactura");
-            let divFactura = document.getElementById("detalleFacturaView");
+            let idNft = document.getElementById("IdNft").value;
+            let quantityModal = document.getElementById("QuantityModal").value;
+            let priceModal = document.getElementById("PriceModal").value;
+            let deleteInvoiceDetail = document.getElementById("invoiceDetail");
+            let divInvoice = document.getElementById("invoiceDetailView");
 
-            let cantidadEnInventarioModal = document.getElementById("CantidadEnInventarioModal").value;
+            let inventoryModal = document.getElementById("InventoryModal").value;
 
 
             // Clear dummy detail Card
             document.getElementById("myCard").innerHTML = "";
 
             // Validation
-            if ($.isNumeric(idProductModal) == false) {
+            if ($.isNumeric(idNft) == false) {
                 Swal.fire({
                     title: "Error!",
-                    text: "Ingrese el código del Producto!",
+                    text: "NFT code required!",
                     icon: "error"
                 });
 
                 return;
             }
             // Validation
-            if ($.isNumeric(cantidadModal) == false) {
+            if ($.isNumeric(quantityModal) == false) {
                 Swal.fire({
                     title: "Error!",
-                    text: "Ingrese la cantidad del Producto!",
+                    text: "NFT quantity required!",
                     icon: "error"
                 });
 
@@ -250,27 +250,27 @@
 
 
             // Validation
-            if (parseInt(cantidadModal) <= 0) {
+            if (parseInt(quantityModal) <= 0) {
                 Swal.fire({
                     title: "Error!",
-                    text: "La cantidad debe ser mayor a CERO!",
+                    text: "Quantity must be greater than 0!",
                     icon: "error"
                 });
                 return;
             }
 
             // Validate stock?
-            if (parseInt(cantidadModal) > parseInt(cantidadEnInventarioModal)) {
+            if (parseInt(quantityModal) > parseInt(inventoryModal)) {
 
                 Swal.fire({
                     title: "Error!",
-                    text: "La cantidad de inventario insuficiente! ",
+                    text: "NFT stock not available! ",
                     icon: "error"
                 });
                 return;
             }
 
-            const myRequest = "/Factura/AddProduct?id=" + idProductModal + "&cantidad=" + cantidadModal
+            const myRequest = "/Invoice/AddProduct?id=" + idNft + "&quantity=" + quantityModal
 
             const options = {
                 method: 'GET'
@@ -289,7 +289,7 @@
                 })
                 .then((text) => {
                     //console.log(results)
-                    divFactura.innerHTML = text
+                    divInvoice.innerHTML = text
                 }).catch(error => {
                     // show error
                     Swal.fire({
@@ -301,26 +301,26 @@
                 })
 
 
-            //detallefacturaBorrar.remove()
+            //deleteInvoiceDetail.remove()
             // Clear fields
-            $("#IdProductoModal").val("");
-            $("#PrecioModal").val("");
-            $("#ProductoNombreModal").html("");
-            $("#CantidadModal").val("");
-            $("#CantidadEnInventarioModal").val("");
+            $("#IdNft").val("");
+            $("#PriceModal").val("");
+            $("#NftModal").html("");
+            $("#QuantityModal").val("");
+            $("#InventoryModal").val("");
 
             // Clear image... NoPhoto
-            $("#ImgProducto").attr("src", "/Images/nophoto.jpg");
+            $("#ImgNft").attr("src", "/Images/nophoto.jpg");
 
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         // Delete item from Cardshop
         ///////////////////////////////////////////////////////////////////////////////////////////////
-        function deleteProduct(secuence) {
-            console.log("Borrar " + secuence)
-            const divFactura = document.getElementById("detalleFacturaView");
-            const myRequest = "/Factura/DeleteProduct?id=" + secuence
+        function deleteProduct(sequence) {
+            console.log("Delete " + sequence)
+            const divInvoice = document.getElementById("invoiceDetailView");
+            const myRequest = "/Invoice/DeleteProduct?id=" + sequence
             const options = {
                 method: 'GET'
             }
@@ -336,7 +336,7 @@
                     return response.text();
                 })
                 .then((text) => {
-                    divFactura.innerHTML = text
+                    divInvoice.innerHTML = text
 
                 }).catch(error => {
 
@@ -375,13 +375,13 @@
             // Reset form (clear all fields)
             document.getElementById("myForm").reset();
             // Clear
-            document.getElementById("NombreCliente").innerHTML = ""
+            document.getElementById("ClientName").innerHTML = ""
             // Delete table
-            document.getElementById("detalleFacturaView").innerHTML = ""
+            document.getElementById("invoiceDetailView").innerHTML = ""
 
             Swal.fire({
                 icon: "success",
-                title: "Factura salvada ...",
+                title: "Invoice Saved ...",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -405,9 +405,9 @@
             // Reset form (clear all fields)
             document.getElementById("myForm").reset();
             // Clear
-            document.getElementById("NombreCliente").innerHTML = ""
+            document.getElementById("ClientName").innerHTML = ""
             // Delete table
-            document.getElementById("detalleFacturaView").innerHTML = ""
+            document.getElementById("invoiceDetailView").innerHTML = ""
 
         }
     </script>

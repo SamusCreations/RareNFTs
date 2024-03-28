@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Interfaces;
+using System.Text.Json;
 
 namespace RareNFTs.Web.Controllers;
 
@@ -23,12 +25,12 @@ public class InvoiceController : Controller
     public async Task<IActionResult> Index()
     {
 
-        var nextReceiptNumber = await _serviceInvoice.GetNextReceiptNumber();
-        ViewBag.CurrentReceipt = nextReceiptNumber;
-        var collection = await _serviceTarjeta.ListAsync();
-        ViewBag.ListTarjeta = collection;
+        var newId = _serviceInvoice.GetNewId();
+        ViewBag.InvoiceId = newId;
+        var collection = await _serviceCard.ListAsync();
+        ViewBag.ListCard = collection;
 
-        // Clear CarShopping
+        // Clear CartShopping
         TempData["CartShopping"] = null;
         TempData.Keep();
 
@@ -36,96 +38,93 @@ public class InvoiceController : Controller
     }
 
 
-    public async Task<IActionResult> AddProduct(int id, int cantidad)
+    public async Task<IActionResult> AddProduct(Guid id, int quantity)
     {
-        FacturaDetalleDTO facturaDetalleDTO = new FacturaDetalleDTO();
-        List<FacturaDetalleDTO> lista = new List<FacturaDetalleDTO>();
+        InvoiceDetailDTO invoiceDetailDTO = new InvoiceDetailDTO();
+        List<InvoiceDetailDTO> list = new List<InvoiceDetailDTO>();
         string json = "";
-        decimal impuesto = 0;
-        var producto = await _serviceProducto.FindByIdAsync(id);
+        var nft = await _serviceNft.FindByIdAsync(id);
 
         // Stock ??
 
-        if (cantidad > producto.Cantidad)
+        if (quantity > nft.Quantity)
         {
-            return BadRequest("No hay inventario suficiente!");
+            return BadRequest("No stock available!");
         }
 
-        impuesto = await _serviceImpuesto.GetImpuesto();
-        facturaDetalleDTO.DescripcionProducto = producto.DescripcionProducto;
-        facturaDetalleDTO.Cantidad = cantidad;
-        facturaDetalleDTO.Precio = producto.Precio;
-        facturaDetalleDTO.IdProducto = id;
-        facturaDetalleDTO.TotalLinea = (facturaDetalleDTO.Precio * facturaDetalleDTO.Cantidad) + impuesto;
-        facturaDetalleDTO.Impuesto = (cantidad * producto.Precio) * (impuesto / 100);
+        invoiceDetailDTO.NftDescription = nft.Description!;
+        invoiceDetailDTO.Quantity = quantity;
+        invoiceDetailDTO.Price = nft.Price;
+        invoiceDetailDTO.IdNft = id;
+        invoiceDetailDTO.TotalLine = (invoiceDetailDTO.Price * invoiceDetailDTO.Quantity);
 
         if (TempData["CartShopping"] == null)
         {
-            lista.Add(facturaDetalleDTO);
+            list.Add(invoiceDetailDTO);
             // Reenumerate 
             int idx = 1;
-            lista.ForEach(p => p.Secuencia = idx++);
-            json = JsonSerializer.Serialize(lista);
+            list.ForEach(p => p.Sequence = idx++);
+            json = JsonSerializer.Serialize(list);
             TempData["CartShopping"] = json;
         }
         else
         {
             json = (string)TempData["CartShopping"]!;
-            lista = JsonSerializer.Deserialize<List<FacturaDetalleDTO>>(json!)!;
-            lista.Add(facturaDetalleDTO);
+            list = JsonSerializer.Deserialize<List<InvoiceDetailDTO>>(json!)!;
+            list.Add(invoiceDetailDTO);
             // Reenumerate 
             int idx = 1;
-            lista.ForEach(p => p.Secuencia = idx++);
-            json = JsonSerializer.Serialize(lista);
+            list.ForEach(p => p.Sequence = idx++);
+            json = JsonSerializer.Serialize(list);
             TempData["CartShopping"] = json;
         }
 
         TempData.Keep();
-        return PartialView("_DetailFactura", lista);
+        return PartialView("_InvoiceDetail", list);
     }
 
-    public IActionResult GetDetailFactura()
+    public IActionResult GetInvoiceDetail()
     {
-        List<FacturaDetalleDTO> lista = new List<FacturaDetalleDTO>();
+        List<InvoiceDetailDTO> list = new List<InvoiceDetailDTO>();
         string json = "";
         json = (string)TempData["CartShopping"]!;
-        lista = JsonSerializer.Deserialize<List<FacturaDetalleDTO>>(json!)!;
+        list = JsonSerializer.Deserialize<List<InvoiceDetailDTO>>(json!)!;
         // Reenumerate 
         int idx = 1;
-        lista.ForEach(p => p.Secuencia = idx++);
-        json = JsonSerializer.Serialize(lista);
+        list.ForEach(p => p.Sequence = idx++);
+        json = JsonSerializer.Serialize(list);
         TempData["CartShopping"] = json;
         TempData.Keep();
 
-        return PartialView("_DetailFactura", lista);
+        return PartialView("_InvoiceDetail", list);
     }
 
     public IActionResult DeleteProduct(int id)
     {
-        FacturaDetalleDTO facturaDetalleDTO = new FacturaDetalleDTO();
-        List<FacturaDetalleDTO> lista = new List<FacturaDetalleDTO>();
+        InvoiceDetailDTO invoiceDetailDTO = new InvoiceDetailDTO();
+        List<InvoiceDetailDTO> list = new List<InvoiceDetailDTO>();
         string json = "";
 
         if (TempData["CartShopping"] != null)
         {
             json = (string)TempData["CartShopping"]!;
-            lista = JsonSerializer.Deserialize<List<FacturaDetalleDTO>>(json!)!;
+            list = JsonSerializer.Deserialize<List<InvoiceDetailDTO>>(json!)!;
             // Remove from list by Index
-            int idx = lista.FindIndex(p => p.Secuencia == id);
-            lista.RemoveAt(idx);
-            json = JsonSerializer.Serialize(lista);
+            int idx = list.FindIndex(p => p.Sequence == id);
+            list.RemoveAt(idx);
+            json = JsonSerializer.Serialize(list);
             TempData["CartShopping"] = json;
         }
 
         TempData.Keep();
 
         // return Content("Ok");
-        return PartialView("_DetailFactura", lista);
+        return PartialView("_DetailFactura", list);
 
     }
 
 
-    public async Task<IActionResult> Create(FacturaEncabezadoDTO facturaEncabezadoDTO)
+    public async Task<IActionResult> Create(InvoiceHeaderDTO InvoiceHeaderDTO)
     {
         string json;
         try
@@ -143,13 +142,13 @@ public class InvoiceController : Controller
                 return BadRequest("No hay datos por facturar");
             }
 
-            var lista = JsonSerializer.Deserialize<List<FacturaDetalleDTO>>(json!)!;
+            var list = JsonSerializer.Deserialize<List<InvoiceDetailDTO>>(json!)!;
 
             //Mismo numero de factura para el detalle FK
-            lista.ForEach(p => p.IdFactura = facturaEncabezadoDTO.IdFactura);
-            facturaEncabezadoDTO.ListFacturaDetalle = lista;
+            list.ForEach(p => p.IdInvoice = InvoiceHeaderDTO.Id);
+            InvoiceHeaderDTO.ListInvoiceDetail = list;
 
-            await _serviceFactura.AddAsync(facturaEncabezadoDTO);
+            await _serviceInvoice.AddAsync(InvoiceHeaderDTO);
 
 
             return RedirectToAction("Index");

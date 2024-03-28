@@ -24,8 +24,6 @@ public partial class RareNFTsContext : DbContext
 
     public virtual DbSet<InvoiceHeader> InvoiceHeader { get; set; }
 
-    public virtual DbSet<InvoiceStatus> InvoiceStatus { get; set; }
-
     public virtual DbSet<Nft> Nft { get; set; }
 
     public virtual DbSet<Role> Role { get; set; }
@@ -98,11 +96,10 @@ public partial class RareNFTsContext : DbContext
 
         modelBuilder.Entity<InvoiceDetail>(entity =>
         {
-            entity.HasKey(e => new { e.IdInvoice, e.IdNft });
+            entity.HasKey(e => new { e.IdInvoice, e.Sequence });
 
             entity.Property(e => e.IdNft).HasColumnName("IdNFT");
             entity.Property(e => e.Price).HasColumnType("money");
-            entity.Property(e => e.Tax).HasColumnType("money");
 
             entity.HasOne(d => d.IdInvoiceNavigation).WithMany(p => p.InvoiceDetail)
                 .HasForeignKey(d => d.IdInvoice)
@@ -117,8 +114,9 @@ public partial class RareNFTsContext : DbContext
 
         modelBuilder.Entity<InvoiceHeader>(entity =>
         {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.Total).HasColumnType("money");
 
             entity.HasOne(d => d.IdCardNavigation).WithMany(p => p.InvoiceHeader)
@@ -130,19 +128,6 @@ public partial class RareNFTsContext : DbContext
                 .HasForeignKey(d => d.IdClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InvoiceHeader_Client");
-
-            entity.HasOne(d => d.IdStatusNavigation).WithMany(p => p.InvoiceHeader)
-                .HasForeignKey(d => d.IdStatus)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_InvoiceHeader_InvoiceStatus");
-        });
-
-        modelBuilder.Entity<InvoiceStatus>(entity =>
-        {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Nft>(entity =>
