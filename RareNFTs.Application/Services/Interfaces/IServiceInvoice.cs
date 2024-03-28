@@ -10,4 +10,5 @@ namespace RareNFTs.Application.Services.Interfaces;
 public interface IServiceInvoice
 {
     Task<Guid> AddAsync(InvoiceHeaderDTO dto);
+    Guid GetNewId();
 }

@@ -12,32 +12,31 @@ public record InvoiceHeaderDTO
 {
 
 
-    [Display(Name = "Number Invoice")]
+    [Display(Name = "Code Invoice")]
     [ValidateNever]
     public Guid Id { get; set; }
 
     [Display(Name = "Card")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required(ErrorMessage = "{0} is required")]
     public Guid IdCard { get; set; }
 
     [Display(Name = "Client")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required(ErrorMessage = "{0} is required")]
     public Guid IdClient { get; set; }
 
     [Display(Name = "Date")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required(ErrorMessage = "{0} is required")]
     public DateTime? Date { get; set; }
 
     [Display(Name = "Status")]
-    [Required(ErrorMessage = "{0} es requerido")]
-    public Guid IdStatus { get; set; }
+    public int Status { get; set; }
 
-    [Display(Name = "NumCard")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Display(Name = "Card Number")]
+    [Required(ErrorMessage = "{0} is required")]
     public int? NumCard { get; set; }
 
     [Display(Name = "Total")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required(ErrorMessage = "{0} is required")]
     public decimal? Total { get; set; }
 
 

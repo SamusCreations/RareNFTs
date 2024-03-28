@@ -11,7 +11,9 @@ public partial class InvoiceDetail
 
     public decimal? Price { get; set; }
 
-    public decimal? Tax { get; set; }
+    public int? Quantity { get; set; }
+
+    public int Sequence { get; set; }
 
     public virtual InvoiceHeader IdInvoiceNavigation { get; set; } = null!;
 

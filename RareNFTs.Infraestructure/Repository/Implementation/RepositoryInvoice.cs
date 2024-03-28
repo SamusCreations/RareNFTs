@@ -38,9 +38,7 @@ public class RepositoryInvoice : IRepositoryInvoice
                 // find the product
                 var ProductNft = await _context.Set<Nft>().FindAsync(item.IdNft);
                 // update stock
-                //ProductNft!.Quantity = ProductNft.Quantity - item.Quantity;
-
-                // en esta parte no tenemos cantidad de nf que se factura del mismo 
+                ProductNft!.Quantity = ProductNft.Quantity - item.Quantity;
 
                 // update entity product
                 _context.Set<Nft>().Update(ProductNft);

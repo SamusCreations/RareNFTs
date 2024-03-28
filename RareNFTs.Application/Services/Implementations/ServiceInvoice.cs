@@ -11,60 +11,63 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using RareNFTs.Infraestructure.Models;
+using RareNFTs.Application.DTOs;
+using RareNFTs.Infraestructure.Repository.Interfaces;
 
 namespace RareNFTs.Application.Services.Implementations;
 
 public class ServiceInvoice : IServiceInvoice
 {
-    private readonly IRepositoryFactura _repositoryFactura;
-    private readonly IRepositoryCliente _repositoryCliente;
-    private readonly IRepositoryProducto _repositoryProducto;
+    private readonly IRepositoryInvoice _repositoryInvoice;
+    private readonly IRepositoryClient _repositoryClient;
+    private readonly IRepositoryNft _repositoryNft;
     private readonly IMapper _mapper;
     private readonly IOptions<AppConfig> _options;
-    private readonly ILogger<ServiceFactura> _logger;
-    public ServiceFactura(IRepositoryFactura repositoryFactura,
-                          IRepositoryCliente repositoryCliente,
-                          IRepositoryProducto repositoryProducto,
+    private readonly ILogger<ServiceInvoice> _logger;
+    public ServiceInvoice(IRepositoryInvoice repositoryFactura,
+                          IRepositoryClient repositoryclient,
+                          IRepositoryNft repositoryNft,
                           IMapper mapper,
                           IOptions<AppConfig> options,
-                          ILogger<ServiceFactura> logger)
+                          ILogger<ServiceInvoice> logger)
     {
-        _repositoryFactura = repositoryFactura;
-        _repositoryCliente = repositoryCliente;
-        _repositoryProducto = repositoryProducto;
+        _repositoryInvoice = repositoryFactura;
+        _repositoryClient = repositoryclient;
+        _repositoryNft = repositoryNft;
         _mapper = mapper;
         _options = options;
         _logger = logger;
     }
 
-    public async Task<int> AddAsync(FacturaEncabezadoDTO dto)
+    public async Task<Guid> AddAsync(InvoiceHeaderDTO dto)
     {
         // Validate Stock availability
-        foreach (var item in dto.ListFacturaDetalle)
+        foreach (var item in dto.ListInvoiceDetail)
         {
-            var producto = await _repositoryProducto.FindByIdAsync(item.IdProducto);
+            var Nft = await _repositoryNft.FindByIdAsync(item.IdNft);
 
-            if (producto.Cantidad - item.Cantidad < 0)
+            if (Nft.Quantity - item.Quantity < 0)
             {
-                throw new BadHttpRequestException($"No hay stock para el producto {producto.DescripcionProducto}, cantidad en stock {producto.Cantidad} ");
+                throw new Exception($"There isn't stock available for {Nft.Description}, stock available: {Nft.Quantity}");
             }
         }
 
-        var @object = _mapper.Map<FacturaEncabezado>(dto);
-        var cliente = await _repositoryCliente.FindByIdAsync(dto.IdCliente);
+        var @object = _mapper.Map<InvoiceHeader>(dto);
+        var client = await _repositoryClient.FindByIdAsync(dto.IdClient);
         // Send email
-        await SendEmail(cliente!.Email!);
-        return await _repositoryFactura.AddAsync(@object);
+        await SendEmail(client!.Email!);
+        return await _repositoryInvoice.AddAsync(@object);
     }
 
-    public async Task<int> GetNextReceiptNumber()
+    public Guid GetNewId()
     {
-        int nextReceipt = await _repositoryFactura.GetNextReceiptNumber();
-        return nextReceipt + 1;
+        Guid newId = Guid.NewGuid();
+        return newId;
     }
 
     /// <summary>
-    /// Send email 
+    /// Sends an email 
     /// </summary>
     /// <param name="email"></param>
     private async Task<bool> SendEmail(string email)
@@ -84,8 +87,8 @@ public class ServiceInvoice : IServiceInvoice
                 new MailAddress(_options.Value.SmtpConfiguration.UserName, _options.Value.SmtpConfiguration.FromName),
                 new MailAddress(email))
         {
-            Subject = "Factura Electrónica para " + email,
-            Body = "Adjunto Factura Electronica de Electronics",
+            Subject = "Invoice for " + email,
+            Body = "Attached Invoice of RareNFTs",
             IsBodyHtml = true
         };
         //Attachment attachment = new Attachment(@"c:\\temp\\factura.pdf");
