@@ -90,7 +90,7 @@
             <div class="modal-body">
                 <!-- Etiqueta mostrar donde se inyecta el partialview-->
                 <div id="mostrar" class=""></div>
-                @await Html.PartialAsync("_AddProduct")
+                @await Html.PartialAsync("_AddNft")
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -175,7 +175,10 @@
                         response($.map(data, function (item) {
                             console.log(item);
                             //debugger;
-                            return { label: item.name + " " + item.surname, value: item.IdClient };
+                            console.log(item.id);
+                            return { label: item.name + " " + item.surname, value: item.id };
+                           
+
                         }));
                     },
                     error: function (xhr, status, error) {
@@ -216,27 +219,34 @@
         ///////////////////////////////////////////////////////////////////////////////////////////////
         function addProduct() {
             let idNft = document.getElementById("IdNft").value;
-            let quantityModal = document.getElementById("QuantityModal").value;
+            let quantityModal = document.getElementById("quantityModal").value;
             let priceModal = document.getElementById("PriceModal").value;
             let deleteInvoiceDetail = document.getElementById("invoiceDetail");
             let divInvoice = document.getElementById("invoiceDetailView");
+            console.log(idNft)
+            console.log(quantityModal)
+            console.log(priceModal)
 
             let inventoryModal = document.getElementById("InventoryModal").value;
+
+
+
+         
 
 
             // Clear dummy detail Card
             document.getElementById("myCard").innerHTML = "";
 
             // Validation
-            if ($.isNumeric(idNft) == false) {
-                Swal.fire({
-                    title: "Error!",
-                    text: "NFT code required!",
-                    icon: "error"
-                });
+            // if (idNft != null) {
+            //     Swal.fire({
+            //         title: "Error!",
+            //         text: "NFT code required!",
+            //         icon: "error"
+            //     });
 
-                return;
-            }
+            //     return;
+            // }
             // Validation
             if ($.isNumeric(quantityModal) == false) {
                 Swal.fire({
@@ -306,7 +316,7 @@
             $("#IdNft").val("");
             $("#PriceModal").val("");
             $("#NftModal").html("");
-            $("#QuantityModal").val("");
+            $("#Quantity").val("");
             $("#InventoryModal").val("");
 
             // Clear image... NoPhoto

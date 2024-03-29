@@ -21,7 +21,7 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
                         <ul class="navbar-nav m-auto">
                             <li class="nav-item">
-                                <a class="page-scroll  "
+                                <a class="page-scroll"
                                    data-bs-toggle="collapse"
                                    data-bs-target="#sub-nav1"
                                    aria-controls="sub-nav1"
@@ -42,10 +42,10 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="page-scroll  "
+                                <a class="page-scroll"
                                    data-bs-toggle="collapse"
-                                   data-bs-target="#sub-nav1"
-                                   aria-controls="sub-nav1"
+                                   data-bs-target="#sub-nav2"
+                                   aria-controls="sub-nav2"
                                    aria-expanded="false"
                                    aria-label="Toggle navigation"
                                    href="javascript:void(0)">
@@ -54,16 +54,16 @@
                                         <span><i class="lni lni-chevron-down"></i></span>
                                     </div>
                                 </a>
-                                <ul class="sub-menu collapse" id="sub-nav1">
+                                <ul class="sub-menu collapse" id="sub-nav2">
                                     <li><a href="@Url.Action("Index", "Invoice")">Invoice</a></li>
                                 </ul>
                             </li>
 
                             <li class="nav-item">
-                                <a class="page-scroll  "
+                                <a class="page-scroll"
                                    data-bs-toggle="collapse"
-                                   data-bs-target="#sub-nav1"
-                                   aria-controls="sub-nav1"
+                                   data-bs-target="#sub-nav3"
+                                   aria-controls="sub-nav3"
                                    aria-expanded="false"
                                    aria-label="Toggle navigation"
                                    href="javascript:void(0)">
@@ -72,7 +72,7 @@
                                         <span><i class="lni lni-chevron-down"></i></span>
                                     </div>
                                 </a>
-                                <ul class="sub-menu collapse" id="sub-nav1">
+                                <ul class="sub-menu collapse" id="sub-nav3">
                                     <li><a href="javascript:void(0)">NFTs</a></li>
                                 </ul>
                             </li>
@@ -80,8 +80,8 @@
                             <li class="nav-item">
                                 <a class="page-scroll"
                                    data-bs-toggle="collapse"
-                                   data-bs-target="#sub-nav1"
-                                   aria-controls="sub-nav1"
+                                   data-bs-target="#sub-nav4"
+                                   aria-controls="sub-nav4"
                                    aria-expanded="false"
                                    aria-label="Toggle navigation"
                                    href="javascript:void(0)">
@@ -90,7 +90,7 @@
                                         <span><i class="lni lni-chevron-down"></i></span>
                                     </div>
                                 </a>
-                                <ul class="sub-menu collapse" id="sub-nav1">
+                                <ul class="sub-menu collapse" id="sub-nav4">
                                     <li><a href="javascript:void(0)">Security</a></li>
                                 </ul>
                             </li>
@@ -98,8 +98,8 @@
                             <li class="nav-item">
                                 <a class="page-scroll"
                                    data-bs-toggle="collapse"
-                                   data-bs-target="#sub-nav1"
-                                   aria-controls="sub-nav1"
+                                   data-bs-target="#sub-nav5"
+                                   aria-controls="sub-nav5"
                                    aria-expanded="false"
                                    aria-label="Toggle navigation"
                                    href="javascript:void(0)">
@@ -108,7 +108,7 @@
                                         <span><i class="lni lni-chevron-down"></i></span>
                                     </div>
                                 </a>
-                                <ul class="sub-menu collapse" id="sub-nav1">
+                                <ul class="sub-menu collapse" id="sub-nav5">
                                     <li><a href="javascript:void(0)">Auto-calification</a></li>
                                 </ul>
                             </li>
@@ -131,13 +131,11 @@
 </section>
 <!--====== NAVBAR ONE PART ENDS ======-->
 <!--====== Bootstrap js ======-->
-<script src="https://cdn.ayroui.com/1.0/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
-    //===== close navbar-collapse when a  clicked
-    let navbarTogglerOne = document.querySelector(
-        ".navbar-one .navbar-toggler"
-    );
+    // Close navbar-collapse when a clicked
+    let navbarTogglerOne = document.querySelector(".navbar-one .navbar-toggler");
     navbarTogglerOne.addEventListener("click", function () {
         navbarTogglerOne.classList.toggle("active");
     });

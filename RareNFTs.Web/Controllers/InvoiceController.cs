@@ -119,7 +119,7 @@ public class InvoiceController : Controller
         TempData.Keep();
 
         // return Content("Ok");
-        return PartialView("_DetailFactura", list);
+        return PartialView("_InvoiceDetail", list);
 
     }
 
