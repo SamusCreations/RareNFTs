@@ -20,6 +20,7 @@ public record NftDTO
 
     [Required(ErrorMessage = "{0} es requerido")]
     [Range(0, 999999999, ErrorMessage = "The minimun price is {0}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:###,###.00}")]
     [Display(Name = "Price")]
     public decimal? Price { get; set; }
 
@@ -28,7 +29,7 @@ public record NftDTO
     public byte[] Image { get; set; } = null!;
 
     [Display(Name = "Date")]
-    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:yyyy-MM-dd}")]
     public DateTime Date { get; set; } = DateTime.Now;
 
     [Required(ErrorMessage = "{0} es requerido")]
