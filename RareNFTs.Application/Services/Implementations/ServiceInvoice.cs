@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Infraestructure.Repository.Interfaces;
+using System.Security.Principal;
 
 namespace RareNFTs.Application.Services.Implementations;
 
@@ -42,6 +43,7 @@ public class ServiceInvoice : IServiceInvoice
 
     public async Task<Guid> AddAsync(InvoiceHeaderDTO dto)
     {
+        decimal total = 0;
         // Validate Stock availability
         foreach (var item in dto.ListInvoiceDetail)
         {
@@ -51,7 +53,13 @@ public class ServiceInvoice : IServiceInvoice
             {
                 throw new Exception($"There isn't stock available for {Nft.Description}, stock available: {Nft.Quantity}");
             }
+
+            total += (item.Price ?? 0m) * (item.Quantity ?? 0);
         }
+
+        dto.Total = total;
+        dto.Date = DateTime.UtcNow;
+        dto.Status = 1;
 
         var @object = _mapper.Map<InvoiceHeader>(dto);
         var client = await _repositoryClient.FindByIdAsync(dto.IdClient);

@@ -65,7 +65,7 @@
             <div class="form-group">
                 <!-- Agregar evento onchange para actualizar la vista previa de la imagen -->
                 <label asp-for="Image" class="control-label">New Image</label>
-                <input type="file" id="imageFile" name="imageFile" class="form-control" onchange="previewImage()" />
+                <input asp-for="Image" type="file" id="imageFile" name="imageFile" class="form-control" onchange="previewImage()" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
