@@ -25,7 +25,7 @@ public record NftDTO
     public decimal? Price { get; set; }
 
     [Display(Name = "Image")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    //[Required(ErrorMessage = "{0} es requerido")]
     public byte[] Image { get; set; } = null!;
 
     [Display(Name = "Date")]
