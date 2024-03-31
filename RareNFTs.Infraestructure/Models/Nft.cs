@@ -11,7 +11,7 @@ public partial class Nft
 
     public decimal? Price { get; set; }
 
-    public byte[]? Image { get; set; }
+    public byte[] Image { get; set; } = default!;
 
     public DateTime? Date { get; set; }
 

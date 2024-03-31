@@ -1,17 +1,16 @@
-﻿using Electronics.Web.Models;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-
+using RareNFTs.Web.Models;
 using System.Drawing.Text;
 using System.Reflection.Metadata;
 using System.Text;
 
-namespace Electronics.Web;
+namespace RareNFTs.Web.Middleware;
 
 public class ErrorHandlingMiddleware
 {
@@ -57,10 +56,10 @@ public class ErrorHandlingMiddleware
                                                         messages
                                                        };
             }
-            
+
             str.AppendFormat("\n");
             str.AppendFormat("EventId    :{0}\n", eventId);
-            str.AppendFormat("ErrorList  :{0}\n", string.Join(",", result.ListMessages));            
+            str.AppendFormat("ErrorList  :{0}\n", string.Join(",", result.ListMessages));
             str.AppendFormat("StackTrace :{0}\n", ex.StackTrace);
 
             messagesJson = JsonConvert.SerializeObject(result);

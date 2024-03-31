@@ -32,9 +32,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" step="0.10" min="0" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+
 
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
@@ -51,7 +52,7 @@
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-        
+
 
 
             <!-- Agregar campo para mostrar la image actual -->
@@ -64,7 +65,7 @@
             <div class="form-group">
                 <!-- Agregar evento onchange para actualizar la vista previa de la imagen -->
                 <label asp-for="Image" class="control-label">New Image</label>
-                <input asp-for="Image" type="file" id="imageFile" name="imageFile" class="form-control" onchange="previewImage()" />
+                <input type="file" id="imageFile" name="imageFile" class="form-control" onchange="previewImage()" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
@@ -118,7 +119,7 @@
             // document.getElementById("Cantidad").value = "";
             // document.getElementById("ImageFile").value = "";
 
-            // window.location.href = '/NFT';
+            window.location.href = '/NFT';
 
         }
         function disableImageValidation() {
@@ -158,6 +159,7 @@
                 // No hacer nada, mantener la imagen actual
             }
         }
+
     </script>
 
     @{
