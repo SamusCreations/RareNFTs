@@ -82,34 +82,43 @@ public class NftController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, NftDTO dto, IFormFile imageFile)
     {
-        MemoryStream target = new MemoryStream();
-
-        // Cuando es Insert Image viene en null porque se pasa diferente
-        if (dto.Image == null)
+        if (imageFile != null && imageFile.Length > 0)
         {
-            if (imageFile != null)
+            using (var memoryStream = new MemoryStream())
             {
-                imageFile.OpenReadStream().CopyTo(target);
-
-                dto.Image = target.ToArray();
-                ModelState.Remove("Image");
+                await imageFile.CopyToAsync(memoryStream);
+                dto.Image = memoryStream.ToArray();
             }
         }
+        else
+        {
+            // Si decides mantener la imagen existente cuando no se sube una nueva,
+            // asegúrate de que el servicio que obtiene la imagen existente esté funcionando correctamente.
+            var originalNft = await _serviceNft.FindByIdAsync(id);
+            dto.Image = originalNft?.Image;
+        }
+
+        // Aquí se quita el campo Image del ModelState
+       
+            ModelState.Remove("imageFile");
+        ModelState.Remove("Image");
+
+
 
         if (!ModelState.IsValid)
         {
-            // Lee del ModelState todos los errores que
-            // vienen para el lado del server
             string errors = string.Join("; ", ModelState.Values
-                               .SelectMany(x => x.Errors)
-                               .Select(x => x.ErrorMessage));
-            // Response errores
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage));
             return BadRequest(errors);
         }
 
-        await _serviceNft.UpdateAsync(id,dto);
+        await _serviceNft.UpdateAsync(id, dto);
+
         return RedirectToAction("Index");
     }
+
+
 
     // GET: NftController/Delete/5
     public async Task<IActionResult> Delete(Guid id)

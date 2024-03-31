@@ -17,7 +17,8 @@
               data-ajax-failure="onFailure"
               data-ajax-success="onSuccess"
               data-ajax-complete="onComplete"
-              asp-antiforgery="true">
+              asp-antiforgery="true" onsubmit="disableImageValidation()">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
@@ -59,8 +60,6 @@
                 <img id="currentImage" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-thumbnail" />
             </div>
 
-
-      
 
             <div class="form-group">
                 <!-- Agregar evento onchange para actualizar la vista previa de la imagen -->
@@ -119,11 +118,31 @@
             // document.getElementById("Cantidad").value = "";
             // document.getElementById("ImageFile").value = "";
 
-
+            // window.location.href = '/NFT';
 
         }
+        function disableImageValidation() {
+            var imageInput = document.getElementById('imageFile');
+            // Eliminar atributos de validación de datos independientemente de si se ha seleccionado un archivo
+            imageInput.removeAttribute('data-val');
+            imageInput.removeAttribute('data-val-required');
+            console.log("imagen disabled 1")
+            // También podrías querer eliminar otros atributos relacionados con la validación, como data-val-filesize, etc., si existen.
+        }
 
-        // Función para mostrar la vista previa de la nueva image seleccionada
+
+        // Función para desactivar temporalmente la validación del lado del cliente para el campo de imagen
+        function disableImageValidation() {
+            var imageInput = document.getElementById('imageFile');
+            if (imageInput.files.length === 0) {
+                imageInput.removeAttribute('data-val');
+                imageInput.removeAttribute('data-val-required');
+                console.log("imagen disabled 2")
+
+            }
+        }
+
+        // Función para mostrar la vista previa de la nueva imagen seleccionada
         function previewImage() {
             var fileInput = document.getElementById('imageFile');
             var currentImage = document.getElementById('currentImage');
@@ -131,8 +150,12 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     currentImage.src = e.target.result;
-                }
+                };
                 reader.readAsDataURL(fileInput.files[0]);
+            }
+            // Si no se selecciona ningún archivo, mantener la imagen actual
+            else {
+                // No hacer nada, mantener la imagen actual
             }
         }
     </script>
