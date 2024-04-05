@@ -11,34 +11,34 @@ namespace RareNFTs.Application.DTOs;
 public record NftDTO
 {
     [Display(Name = "Id")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required]
     public Guid Id { get; set; }
 
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required]
     [Display(Name = "Description")]
     public string? Description { get; set; }
 
-    [Required(ErrorMessage = "{0} es requerido")]
-    [Range(0, 999999999, ErrorMessage = "The minimun price is {0}")]
-    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:###,###.00}")]
+    [Required]
+    [Range(0, 999999999, ErrorMessage = "The minimun price is {1} and the maximum {2}")]
+    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:######.00}")]
     [Display(Name = "Price")]
     public decimal? Price { get; set; }
 
     [Display(Name = "Image")]
-    //[Required(ErrorMessage = "{0} es requerido")]
+    [Required]
     public byte[] Image { get; set; } = null!;
 
     [Display(Name = "Date")]
     [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:yyyy-MM-dd}")]
     public DateTime Date { get; set; } = DateTime.Now;
 
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Required]
     [Display(Name = "Author")]
     public string? Author { get; set; }
 
     [Display(Name = "Quantity")]
-    [Range(0, 999999999, ErrorMessage = "The minimum value is {0}")]
-    [Required(ErrorMessage = "{0} es requerido")]
+    [Range(0, 1, ErrorMessage = "The minimum value is {1} and the maximum {2}")]
+    [Required]
     public int? Quantity { get; set; }
 
 

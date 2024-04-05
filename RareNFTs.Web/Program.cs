@@ -9,7 +9,7 @@ using System.Text;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Application.Config;
-using Electronics.Web;
+using RareNFTs.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +30,7 @@ builder.Services.AddTransient<IServiceClient, ServiceClient>();
 builder.Services.AddTransient<IServiceCard, ServiceCard>();
 builder.Services.AddTransient<IServiceNft, ServiceNft>();
 builder.Services.AddTransient<IServiceInvoice, ServiceInvoice>();
+builder.Services.AddTransient<IServiceReport, ServiceReport>();
 
 builder.Services.Configure<AppConfig>(builder.Configuration);
 
@@ -67,7 +68,17 @@ var logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog(logger);
 
+// Configura las culturas soportadas y la cultura predeterminada aquí
+var supportedCultures = new[] { "en-US", "es-ES", "fr-FR" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
 var app = builder.Build();
+
+// Configura el middleware para usar las opciones de localización configuradas
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Interfaces;
+using RareNFTs.Infraestructure.Models;
+using System.Globalization;
 
 namespace RareNFTs.Web.Controllers;
 
@@ -35,7 +37,7 @@ public class NftController : Controller
         MemoryStream target = new MemoryStream();
 
         // Cuando es Insert Image viene en null porque se pasa diferente
-        if (dto.Image  == null)
+        if (dto.Image == null)
         {
             if (imageFile != null)
             {
@@ -99,11 +101,8 @@ public class NftController : Controller
         }
 
         // Aquí se quita el campo Image del ModelState
-       
-            ModelState.Remove("imageFile");
+        ModelState.Remove("imageFile");
         ModelState.Remove("Image");
-
-
 
         if (!ModelState.IsValid)
         {
