@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using RareNFTs.Application.DTOs;
 using RareNFTs.Infraestructure.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
+namespace RareNFTs.Web.ViewModels;
 
-namespace RareNFTs.Application.DTOs;
-
-public record ClientDTO
+public class ClientNftViewModel
 {
     [Display(Name = "Id")]
     public Guid Id { get; set; }
@@ -37,9 +31,15 @@ public record ClientDTO
 
     [Required(ErrorMessage = "Client NFTs are required")]
     [Display(Name = "Client NFTs")]
-    public  ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
+    public ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
 
     [Required(ErrorMessage = "Invoice Headers are required")]
     [Display(Name = "Invoice Headers")]
     public ICollection<InvoiceHeader> InvoiceHeader { get; set; } = new List<InvoiceHeader>();
+    [Required]
+    [Display(Name = "Description")]
+    public string? Description { get; set; }
+    [Display(Name = "Image")]
+    [Required]
+    public byte[] Image { get; set; } = null!;
 }

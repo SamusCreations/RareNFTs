@@ -51,6 +51,23 @@ public class RepositoryClient: IRepositoryClient
         return @object!;
     }
 
+    public async Task<IEnumerable<ClientNft>> FindByNftNameAsync(string name)
+    {
+        var result = await (from clientNft in _context.ClientNft
+                            join client in _context.Client on clientNft.IdClient equals client.Id
+                            join nft in _context.Nft on clientNft.IdNft equals nft.Id
+                            where nft.Description.ToLower().Contains(name.ToLower())
+                            select new ClientNft
+                            {
+                                IdClient = clientNft.IdClient,
+                                IdNft = clientNft.IdNft
+                            })
+                         .Distinct()
+                         .ToListAsync();
+
+        return result;
+    }
+
     public async Task<ICollection<Client>> ListAsync()
     {
         var collection = await _context.Set<Client>().AsNoTracking().ToListAsync();

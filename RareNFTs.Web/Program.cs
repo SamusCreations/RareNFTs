@@ -42,7 +42,7 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<ClientProfile>();
     config.AddProfile<NftProfile>();
     config.AddProfile<InvoiceProfile>();
-
+    config.AddProfile<ClientNftProfile>();
 });
 
 // Config Connection to SQLServer DataBase
