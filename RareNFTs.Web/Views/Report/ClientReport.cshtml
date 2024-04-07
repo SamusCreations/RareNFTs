@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "ClientReport";
+}
+
+<h1>Client Report</h1>
+
+
+<form id="myForm"
+      asp-action="ClientReportPDF"
+      asp-controller="Report"
+      asp-antiforgery="true"
+      method="post"
+      asp-antiforgery="true">
+
+    <button type="submit" class="btn alert-success">Download Report</button>
+
+</form>

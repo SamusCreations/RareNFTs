@@ -9,4 +9,8 @@ namespace RareNFTs.Application.Services.Interfaces;
 public interface IServiceReport
 {
     Task<byte[]> ProductReport();
+
+    Task<byte[]> ClientReport();
+
+
 }

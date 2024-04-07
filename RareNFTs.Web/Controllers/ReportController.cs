@@ -22,12 +22,27 @@ public class ReportController : Controller
         return View();
     }
 
+    public IActionResult ClientReport()
+    {
+        return View();
+    }
+
     [HttpPost]
     [RequireAntiforgeryToken]
     public async Task<FileResult> ProductReportPDF()
     {
 
         byte[] bytes = await _serviceReport.ProductReport();
+        return File(bytes, "text/plain", "file.pdf");
+
+    }
+
+    [HttpPost]
+    [RequireAntiforgeryToken]
+    public async Task<FileResult> ClientReportPDF()
+    {
+
+        byte[] bytes = await _serviceReport.ClientReport();
         return File(bytes, "text/plain", "file.pdf");
 
     }
