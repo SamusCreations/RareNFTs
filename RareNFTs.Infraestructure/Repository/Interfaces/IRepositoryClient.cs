@@ -15,4 +15,7 @@ public interface IRepositoryClient
     Task<Guid> AddAsync(Client entity);
     Task DeleteAsync(Guid id);
     Task UpdateAsync();
+
+    Task<IEnumerable<ClientNft>> FindByNftNameAsync(string name);
+
 }

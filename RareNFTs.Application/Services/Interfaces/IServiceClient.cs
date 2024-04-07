@@ -15,4 +15,7 @@ public interface IServiceClient
     Task<Guid> AddAsync(ClientDTO dto);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Guid id, ClientDTO dto);
+
+    Task<IEnumerable<ClientNftDTO>> FindByNftNameAsync(string name);
+
 }

@@ -54,6 +54,8 @@ public  class ServiceNft: IServiceNft
         return objectMapped;
     }
 
+ 
+
     public async Task<ICollection<NftDTO>> ListAsync()
     {
         // Get data from Repository

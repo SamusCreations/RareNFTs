@@ -16,4 +16,6 @@ public interface IServiceNft
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Guid id, NftDTO dto);
 
+
+
 }
