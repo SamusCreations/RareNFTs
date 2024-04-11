@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
+using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
+using RareNFTs.Web.ViewModels;
 using System.Text.Json;
 
 namespace RareNFTs.Web.Controllers;
@@ -10,16 +12,19 @@ public class InvoiceController : Controller
     private readonly IServiceNft _serviceNft;
     private readonly IServiceCard _serviceCard;
     private readonly IServiceInvoice _serviceInvoice;
- 
+    private readonly IServiceClient _serviceClient;
+
 
     public InvoiceController(IServiceNft serviceNft,
                             IServiceCard serviceCard,
-                            IServiceInvoice serviceInvoice)
+                            IServiceInvoice serviceInvoice,
+                            IServiceClient serviceClient)
     {
         _serviceNft = serviceNft;
         _serviceCard = serviceCard;
-        _serviceInvoice= serviceInvoice;
-        
+        _serviceInvoice = serviceInvoice;
+        _serviceClient = serviceClient;
+
     }
 
     public async Task<IActionResult> Index()
@@ -159,5 +164,42 @@ public class InvoiceController : Controller
             TempData.Keep();
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpPost]
+    public ActionResult Cancel(Guid id)
+    {
+        _serviceInvoice.CancelInvoiceAsync(id);
+        return Content("Ok");
+    }
+
+    public async Task<IActionResult> ListActives()
+    {
+
+        var listActives = await _serviceInvoice.ListActivesAsync();
+        var listViewModel = new List<ViewModelInvoice>();
+
+
+
+        foreach (var item in listActives)
+        {
+            var client = await _serviceClient.FindByIdAsync(item.IdClient);
+            var card = await _serviceCard.FindByIdAsync(item.IdCard);
+            listViewModel.Add(new ViewModelInvoice
+            {
+                Id = item.Id,
+                IdCard = item.IdCard,
+                IdClient = item.IdClient,
+                Name = client.Name,
+                Surname = client.Surname,
+                Email = client.Email,
+                CardDescription = card.Description,
+                Date = item.Date,
+                Total = item.Total,
+                NumCard = item.NumCard,
+                Status = item.Status,
+            });
+        }
+        return View("ListActives", listViewModel);
     }
 }

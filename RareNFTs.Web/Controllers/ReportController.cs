@@ -37,13 +37,18 @@ public class ReportController : Controller
         return View();
     }
 
+    public IActionResult SalesReport()
+    {
+        return View();
+    }
+
     [HttpPost]
     [RequireAntiforgeryToken]
     public async Task<FileResult> ProductReportPDF()
     {
 
         byte[] bytes = await _serviceReport.ProductReport();
-        return File(bytes, "text/plain", "file.pdf");
+        return File(bytes, "text/plain", "ProductReport.pdf");
 
     }
 
@@ -53,10 +58,19 @@ public class ReportController : Controller
     {
 
         byte[] bytes = await _serviceReport.ClientReport();
-        return File(bytes, "text/plain", "file.pdf");
+        return File(bytes, "text/plain", "ClientReport.pdf");
 
     }
 
+    [HttpPost]
+    [RequireAntiforgeryToken]
+    public async Task<FileResult> SalesReportPDF(DateTime startDate, DateTime endDate)
+    {
+
+        byte[] bytes = await _serviceReport.SalesReport(startDate, endDate);
+        return File(bytes, "text/plain", "SalesReport.pdf");
+
+    }
 
     public async Task<IActionResult> GetOwnerByNft(string name)
     {
