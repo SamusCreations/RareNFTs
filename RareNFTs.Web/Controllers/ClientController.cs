@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
+using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -92,5 +93,14 @@ namespace RareNFTs.Web.Controllers
             await _serviceClient.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+
+        public IActionResult GetClientByName(string filtro)
+        {
+
+            var collections = _serviceClient.FindByDescriptionAsync(filtro).GetAwaiter().GetResult();
+
+            return Json(collections);
+        }
+
     }
 }

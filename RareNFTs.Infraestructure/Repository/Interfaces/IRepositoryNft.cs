@@ -15,4 +15,6 @@ public interface IRepositoryNft
     Task<Guid> AddAsync(Nft entity);
     Task DeleteAsync(Guid id);
     Task UpdateAsync();
+
+
 }

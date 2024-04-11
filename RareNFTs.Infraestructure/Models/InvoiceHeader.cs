@@ -13,17 +13,15 @@ public partial class InvoiceHeader
 
     public DateTime? Date { get; set; }
 
-    public Guid IdStatus { get; set; }
-
     public int? NumCard { get; set; }
 
     public decimal? Total { get; set; }
 
+    public bool? Status { get; set; }
+
     public virtual Card IdCardNavigation { get; set; } = null!;
 
     public virtual Client IdClientNavigation { get; set; } = null!;
-
-    public virtual InvoiceStatus IdStatusNavigation { get; set; } = null!;
 
     public virtual ICollection<InvoiceDetail> InvoiceDetail { get; set; } = new List<InvoiceDetail>();
 }

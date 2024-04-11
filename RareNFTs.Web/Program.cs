@@ -8,6 +8,8 @@ using Serilog.Events;
 using System.Text;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
+using RareNFTs.Application.Config;
+using RareNFTs.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +21,18 @@ builder.Services.AddTransient<IRepositoryCard, RepositoryCard>();
 builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
 builder.Services.AddTransient<IRepositoryNft, RepositoryNft>();
+builder.Services.AddTransient<IRepositoryInvoice, RepositoryInvoice>();
 
 
+//Services
 builder.Services.AddTransient<IServiceCountry, ServiceCountry>();
 builder.Services.AddTransient<IServiceClient, ServiceClient>();
 builder.Services.AddTransient<IServiceCard, ServiceCard>();
 builder.Services.AddTransient<IServiceNft, ServiceNft>();
+builder.Services.AddTransient<IServiceInvoice, ServiceInvoice>();
+builder.Services.AddTransient<IServiceReport, ServiceReport>();
+
+builder.Services.Configure<AppConfig>(builder.Configuration);
 
 // config Automapper
 builder.Services.AddAutoMapper(config =>
@@ -33,7 +41,8 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<CountryProfile>();
     config.AddProfile<ClientProfile>();
     config.AddProfile<NftProfile>();
-
+    config.AddProfile<InvoiceProfile>();
+    config.AddProfile<ClientNftProfile>();
 });
 
 // Config Connection to SQLServer DataBase
@@ -59,7 +68,17 @@ var logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog(logger);
 
+// Configura las culturas soportadas y la cultura predeterminada aquí
+var supportedCultures = new[] { "en-US", "es-ES", "fr-FR" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
 var app = builder.Build();
+
+// Configura el middleware para usar las opciones de localización configuradas
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -68,6 +87,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    // Error control Middleware
+    app.UseMiddleware<ErrorHandlingMiddleware>();
+}
+
+// Error access control 
+app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+//Add support to logging request with SERILOG
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -75,6 +105,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Activate Antiforgery DEBE COLOCARSE ACA!
+app.UseAntiforgery();
 
 app.MapControllerRoute(
     name: "default",

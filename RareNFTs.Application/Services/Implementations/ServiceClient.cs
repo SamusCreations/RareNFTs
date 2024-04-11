@@ -51,6 +51,16 @@ public class ServiceClient: IServiceClient
         return objectMapped;
     }
 
+    public async Task<IEnumerable<ClientNftDTO>> FindByNftNameAsync(string name)
+    {
+        // Get data from Repository
+        var list = await _repository.FindByNftNameAsync(name);
+        // Map List<Bodega> to ICollection<BodegaDTO>
+        var collection = _mapper.Map<ICollection<ClientNftDTO>>(list);
+        // Return Data
+        return collection;
+    }
+
     public async Task<ICollection<ClientDTO>> ListAsync()
     {
         // Get data from Repository
@@ -69,4 +79,6 @@ public class ServiceClient: IServiceClient
         await _repository.UpdateAsync();
 
     }
+
+   
 }

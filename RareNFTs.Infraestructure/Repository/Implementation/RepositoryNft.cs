@@ -5,6 +5,7 @@ using RareNFTs.Infraestructure.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,10 +52,13 @@ public class RepositoryNft : IRepositoryNft
         return @object!;
     }
 
-    public Task<Nft> FindByIdAsync(Guid id)
+    public async Task<Nft> FindByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var @object = await _context.Set<Nft>().FindAsync(id);
+        return @object!;
     }
+
+  
 
     public async Task<ICollection<Nft>> ListAsync()
     {

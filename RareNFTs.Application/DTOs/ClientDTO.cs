@@ -13,7 +13,7 @@ namespace RareNFTs.Application.DTOs;
 public record ClientDTO
 {
     [Display(Name = "Id")]
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     [Required(ErrorMessage = "{0} is required")]
     [Display(Name = "Name")]
