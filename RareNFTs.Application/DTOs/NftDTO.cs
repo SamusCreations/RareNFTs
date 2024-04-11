@@ -20,7 +20,7 @@ public record NftDTO
 
     [Required]
     [Range(0, 999999999, ErrorMessage = "The minimun price is {1} and the maximum {2}")]
-    [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:######.00}")]
+    [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:######.00}")]
     [Display(Name = "Price")]
     public decimal? Price { get; set; }
 

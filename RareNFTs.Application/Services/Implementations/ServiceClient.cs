@@ -71,6 +71,16 @@ public class ServiceClient: IServiceClient
         return collection;
     }
 
+    public async Task<ICollection<ClientDTO>> ListOwnersAsync()
+    {
+        // Get data from Repository
+        var list = await _repository.ListOwnersAsync();
+        // Map List<Client> to ICollection<ClientDTO>
+        var collection = _mapper.Map<ICollection<ClientDTO>>(list);
+        // Return Data
+        return collection;
+    }
+
     public async Task UpdateAsync(Guid id, ClientDTO dto)
     {
         var @object = await _repository.FindByIdAsync(id);

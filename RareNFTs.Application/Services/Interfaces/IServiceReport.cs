@@ -12,5 +12,5 @@ public interface IServiceReport
 
     Task<byte[]> ClientReport();
 
-
+    Task<byte[]> SalesReport(DateTime startDate, DateTime endDate);
 }

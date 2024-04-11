@@ -40,6 +40,7 @@ namespace RareNFTs.Console
                    .AddTransient<IRepositoryClient, RepositoryClient>()
                    .AddTransient<IRepositoryNft, RepositoryNft>()
                    .AddTransient<IRepositoryCountry, RepositoryCountry>()
+                   .AddTransient<IRepositoryInvoice, RepositoryInvoice>()
                    // Add SQLServer Connection
                    .AddDbContext<RareNFTsContext>(options =>
                    {
@@ -72,22 +73,26 @@ namespace RareNFTs.Console
         public class MyApplication
         {
             private readonly ILogger<MyApplication> _logger;
-            private readonly IRepositoryNft _repositoryProducto;
+            private readonly IRepositoryNft _repositoryNft;
             private readonly IRepositoryClient _repositoryClient;
             private readonly IRepositoryCountry _repositoryCountry;
-            public MyApplication(ILogger<MyApplication> logger, IRepositoryNft repositoryProducto, IRepositoryClient repositoryClient, IRepositoryCountry repositoryCountry)
+            private readonly IRepositoryCard _repositoryCard;
+            private readonly IRepositoryInvoice _repositoryInvoice;
+            public MyApplication(ILogger<MyApplication> logger, IRepositoryNft repositoryProducto, IRepositoryClient repositoryClient, IRepositoryCountry repositoryCountry, IRepositoryCard repositoryCard, IRepositoryInvoice repositoryInvoice)
             {
                 _logger = logger;
-                _repositoryProducto = repositoryProducto;
+                _repositoryNft = repositoryProducto;
                 _repositoryClient = repositoryClient;
                 _repositoryCountry = repositoryCountry;
+                _repositoryCard = repositoryCard;
+                _repositoryInvoice = repositoryInvoice;
             }
 
 
             public void ProductReport()
             {
                 // Not async calling. 
-                var collection = _repositoryProducto.ListAsync().GetAwaiter();
+                var collection = _repositoryNft.ListAsync().GetAwaiter();
 
                 // License config ******  IMPORTANT ******
                 QuestPDF.Settings.License = LicenseType.Community;
@@ -201,9 +206,6 @@ namespace RareNFTs.Console
                     });
                 }).ShowInPreviewer();
             }
-
-
-
 
             public void ClientReport()
             {
@@ -325,7 +327,128 @@ namespace RareNFTs.Console
                 }).ShowInPreviewer();
             }
 
+            public void SalesReport(DateTime startDate, DateTime endDate)
+            {
+                // Get Data
+                var collection = _repositoryInvoice.FindByDateRangeAsync(startDate, endDate).GetAwaiter();
 
+                // License config ******  IMPORTANT ******
+                QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
+                // return ByteArrays
+                Document.Create(document =>
+                {
+                    document.Page(page =>
+                    {
+
+                        page.Size(PageSizes.Letter);
+                        page.Margin(2, Unit.Centimetre);
+                        page.PageColor(Colors.White);
+                        page.Margin(30);
+
+                        page.Header().Row(row =>
+                        {
+                            row.RelativeItem().Column(col =>
+                            {
+                                col.Item().AlignLeft().Text("RareNFTs").Bold().FontSize(16).Bold();
+                                col.Item().AlignLeft().Text($"Date: {DateTime.Now} ").FontSize(12);
+                            });
+
+                        });
+
+
+                        page.Content().PaddingVertical(10).Column(col1 =>
+                        {
+                            col1.Item().AlignCenter().Text("RareNFTs Sales Report").FontSize(16).Bold();
+                            col1.Item().Text("");
+                            col1.Item().LineHorizontal(0.5f);
+
+                            col1.Item().Table(async tabla =>
+                            {
+                                tabla.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+                                    columns.RelativeColumn();
+
+                                });
+
+                                tabla.Header(header =>
+                                {
+                                    header.Cell().Background("#4666FF")
+                                    .Padding(2).AlignCenter().Text("ID").FontColor("#fff");
+
+                                    header.Cell().Background("#4666FF")
+                                    .Padding(2).AlignCenter().Text("Client").FontColor("#fff");
+
+                                    header.Cell().Background("#4666FF")
+                                   .Padding(2).AlignCenter().Text("Card Number").FontColor("#fff");
+
+                                    header.Cell().Background("#4666FF")
+                                   .Padding(2).AlignCenter().Text("Card").FontColor("#fff");
+
+                                    header.Cell().Background("#4666FF")
+                                   .Padding(2).AlignCenter().Text("Date").FontColor("#fff");
+
+                                    header.Cell().Background("#4666FF")
+                                   .Padding(2).AlignCenter().Text("Total").FontColor("#fff");
+                                });
+
+                                foreach (var item in collection.GetResult())
+                                {
+                                    // Get NFT data
+                                    var @oClient = _repositoryClient.FindByIdAsync(item.IdClient).GetAwaiter();
+                                    var @oCard = _repositoryCard.FindByIdAsync(item.IdCard).GetAwaiter();
+                                    if (oCard.GetResult() != null && oClient.GetResult() != null)
+                                    {
+                                        // Column 1
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(item.Id.ToString());
+                                        // Column 2
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(oClient.GetResult().Name!.ToString());
+                                        // Column 3
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(item.NumCard!.ToString());
+
+                                        // Column 4
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(oCard.GetResult().Description!.ToString());
+
+                                        // Column 5
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(item.Date!.ToString());
+
+                                        // Column 6
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                                        .Padding(2).Text(item.Total!.ToString());
+                                    }
+                                }
+
+                            });
+
+                            var sumTotal = collection.GetResult().Sum(p => p.Total);
+
+                            col1.Item().AlignRight().Text("Total Sales: " + sumTotal.ToString()).FontSize(12).Bold();
+
+                        });
+
+                        page.Footer()
+                        .AlignRight()
+                        .Text(txt =>
+                        {
+                            txt.Span("Page ").FontSize(10);
+                            txt.CurrentPageNumber().FontSize(10);
+                            txt.Span(" of ").FontSize(10);
+                            txt.TotalPages().FontSize(10);
+                        });
+                    });
+                }).ShowInPreviewer();
+
+            }
         }
     }
 }
