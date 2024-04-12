@@ -78,7 +78,7 @@ public class ReportController : Controller
         var clientNftList = await _serviceClient.FindByNftNameAsync(name);
 
         // Lista para almacenar la información completa del cliente y del NFT
-        var viewModelList = new List<ClientNftViewModel>();
+        var viewModelList = new List<ViewModelClientNft>();
 
         // Recorrer la lista de ClientNft
         foreach (var clientNft in clientNftList)
@@ -90,9 +90,9 @@ public class ReportController : Controller
             var nft = await _serviceNft.FindByIdAsync(clientNft.IdNft);
 
             // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
-            var viewModel = new ClientNftViewModel
+            var viewModel = new ViewModelClientNft
             {
-                Id = client.Id,
+                IdClient = client.Id,
                 Name = client.Name,
                 Surname = client.Surname,
                 Genre = client.Genre,

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<RareNFTs.Web.ViewModels.ClientNftViewModel>
+﻿@model IEnumerable<RareNFTs.Web.ViewModels.ViewModelClientNft>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.IdClient)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -34,7 +34,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.IdClient)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

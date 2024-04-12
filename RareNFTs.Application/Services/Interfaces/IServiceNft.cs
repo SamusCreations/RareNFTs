@@ -11,9 +11,10 @@ namespace RareNFTs.Application.Services.Interfaces;
 public interface IServiceNft
 {
     Task<ICollection<NftDTO>> FindByDescriptionAsync(string description);
-    Task<ICollection<NftDTO>> FindOwnedByDescriptionAsync(string description);
+    Task<ICollection<ClientNftDTO>> ListOwnedAsync();
     Task<ICollection<NftDTO>> ListAsync();
     Task<NftDTO> FindByIdAsync(Guid id);
+    Task<ClientNftDTO> FindClientNftByIdAsync(Guid id);
     Task<Guid> AddAsync(NftDTO dto);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Guid id, NftDTO dto);
