@@ -6,7 +6,7 @@ using RareNFTs.Infraestructure.Repository.Interfaces;
 
 namespace RareNFTs.Infraestructure.Repository.Implementation;
 
-public class RepositoryClient: IRepositoryClient
+public class RepositoryClient : IRepositoryClient
 {
 
     private readonly RareNFTsContext _context;
@@ -72,6 +72,23 @@ public class RepositoryClient: IRepositoryClient
     {
         var collection = await _context.Set<Client>().AsNoTracking().ToListAsync();
         return collection;
+    }
+
+    public async Task<ICollection<Client>> ListOwnersAsync()
+    {
+        try
+        {
+            // Query to get clients who are owners of one or more NFTs
+            var owners = await _context.Set<Client>()
+                .Where(c => _context.Set<ClientNft>().Any(cn => cn.IdClient == c.Id))
+                .ToListAsync();
+
+            return owners;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while retrieving the list of NFT owners.", ex);
+        }        
     }
 
     public async Task UpdateAsync()

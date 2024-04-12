@@ -10,6 +10,7 @@ using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Application.Config;
 using RareNFTs.Web.Middleware;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,12 +46,15 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<ClientNftProfile>();
 });
 
+
+
+
 // Config Connection to SQLServer DataBase
 builder.Services.AddDbContext<RareNFTsContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerDataBase"));
 
-    if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
         options.EnableSensitiveDataLogging();
 });
 

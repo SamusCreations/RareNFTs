@@ -4,16 +4,16 @@
 ===========================*/
 :root {
     --font-family: "Inter", sans-serif;
-    --primary: #ab49cc;
-    --primary-dark: #e79bf1;
-    --primary-light: #e2f1ff;
+    --primary: #975DEC;
+    --primary-dark: #690EEF;
+    --primary-light: #C3A1F3;
     --accent: #ff69b4;
     --accent-dark: #00bac1;
     --accent-light: #dff9f8;
     --success: #13d527;
     --success-dark: #00ae11;
     --success-light: #eafbe7;
-    --secondary: #636363;
+    --secondary: #151FAA;
     --secondary-dark: #6013c7;
     --secondary-light: #f4e5fa;
     --info: #15b2d5;
@@ -26,7 +26,7 @@
     --error-dark: #bf1257;
     --error-light: #fce4eb;
     --black: #1d1d1d;
-    --dark-1: #2d2d2d;
+    --dark-1: #18191b;
     --dark-2: #4d4d4d;
     --dark-3: #6d6d6d;
     --gray-1: #8d8d8d;
@@ -58,6 +58,7 @@ body {
     font-family: var(--font-family);
     color: var(--black);
     font-size: 16px;
+   /* background-color: var(--dark-1);*/
 }
 
 @media (max-width: 991px) {
@@ -1036,6 +1037,53 @@ p {
     }
 
 .deactive.primary-btn-link {
+    color: var(--dark-3);
+    pointer-events: none;
+}
+
+.error-btn {
+    background: var(--error);
+    color: var(--white);
+    box-shadow: var(--shadow-2);
+}
+
+    .active.error-btn, .error-btn:hover, .error-btn:focus {
+        background: var(--error-dark);
+        color: var(--white);
+        box-shadow: var(--shadow-4);
+    }
+
+.deactive.error-btn {
+    background: var(--error-light);
+    color: var(--dark-3);
+    pointer-events: none;
+}
+
+.error-btn-outline {
+    border-color: var(--error);
+    color: var(--error);
+}
+
+    .active.error-btn-outline, .error-btn-outline:hover, .error-btn-outline:focus {
+        background: var(--error-dark);
+        color: var(--white);
+    }
+
+.deactive.error-btn-outline {
+    color: var(--dark-3);
+    border-color: var(--error-light);
+    pointer-events: none;
+}
+
+.error-btn-link {
+    color: var(--error);
+}
+
+    .active.error-btn-link, .error-btn-link:hover, .error-btn-link:focus {
+        color: var(--error-dark);
+    }
+
+.deactive.error-btn-link {
     color: var(--dark-3);
     pointer-events: none;
 }

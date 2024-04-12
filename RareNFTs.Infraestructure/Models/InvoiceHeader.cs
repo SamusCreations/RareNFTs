@@ -17,7 +17,7 @@ public partial class InvoiceHeader
 
     public decimal? Total { get; set; }
 
-    public bool? Status { get; set; }
+    public bool Status { get; set; }
 
     public virtual Card IdCardNavigation { get; set; } = null!;
 

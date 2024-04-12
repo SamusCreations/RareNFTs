@@ -1,0 +1,110 @@
+﻿@model RareNFTs.Web.ViewModels.ViewModelClientNft
+
+@{
+    ViewData["Title"] = "ChangeOwner";
+}
+
+<h1>ChangeOwner</h1>
+
+<h4>ViewModelClientNft</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangeOwner">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdClient" class="control-label"></label>
+                <input asp-for="IdClient" class="form-control" />
+                <span asp-validation-for="IdClient" class="text-danger"></span>
+                <label id="ClientName" class="control-label fw-bold">-</label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" readOnly />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" readOnly />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdNft" class="control-label"></label>
+                <input asp-for="IdNft" class="form-control" readOnly />
+                <span asp-validation-for="IdNft" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" readOnly />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" readOnly />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control" readOnly/>
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Current Image</label>
+                <img id="currentImage" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-thumbnail" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+
+        ////////////////////////////////////////////////////
+        // Busca el cliente por nombre+apellido1+apellido2 //
+        /////////////////////////////////////////////////////
+
+        $("#IdClient").autocomplete({
+            source: function (request, response) {
+                var IdClient = $("#IdClient").val();
+                //debugger;
+                console.log(IdClient);
+                $.ajax({
+                    type: "GET",
+                    url: "/Client/GetClientByName",
+                    dataType: "json",
+                    data: { filtro: IdClient },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            //debugger;
+                            console.log(item.id);
+                            return { label: item.name + " " + item.surname, value: item.id };
+
+
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        // xhr.requestText
+                        // debugger;
+                        console.log(error)
+                        alert("Error: " + error + ", No Error: " + xhr.status);
+                    },
+                });
+            },
+            select: function (event, ui) {
+
+                $("#IdClient").val(ui.item.value);
+                $("#ClientName").html(ui.item.label)
+
+                return false;
+            }
+        });
+    </script>
+}

@@ -31,6 +31,11 @@ public  class ServiceNft: IServiceNft
         return await _repository.AddAsync(objectMapped);
     }
 
+    public async Task<bool> ChangeNFTOwnerAsync(Guid nftId, Guid clientId)
+    {
+        var @object = await _repository.ChangeNFTOwnerAsync(nftId, clientId);
+        return @object;
+    }
 
     public async Task DeleteAsync(Guid id)
     {
@@ -54,7 +59,12 @@ public  class ServiceNft: IServiceNft
         return objectMapped;
     }
 
- 
+    public async Task<ClientNftDTO> FindClientNftByIdAsync(Guid id)
+    {
+        var @object = await _repository.FindClientNftByIdAsync(id);
+        var objectMapped = _mapper.Map<ClientNftDTO>(@object);
+        return objectMapped;
+    }
 
     public async Task<ICollection<NftDTO>> ListAsync()
     {
@@ -63,6 +73,15 @@ public  class ServiceNft: IServiceNft
         // Map List<Bodega> to ICollection<BodegaDTO>
         var collection = _mapper.Map<ICollection<NftDTO>>(list);
         // Return Data
+        return collection;
+    }
+
+    public async Task<ICollection<ClientNftDTO>> ListOwnedAsync()
+    {
+        var list = await _repository.ListOwnedAsync();
+
+        var collection = _mapper.Map<ICollection<ClientNftDTO>>(list);
+
         return collection;
     }
 

@@ -73,6 +73,23 @@ public class ServiceInvoice : IServiceInvoice
         return await _repositoryInvoice.AddAsync(@object);
     }
 
+    public async Task<InvoiceHeaderDTO> FindByIdAsync(Guid id)
+    {
+        var @object = await _repositoryInvoice.FindByIdAsync(id);
+        var objectMapped = _mapper.Map<InvoiceHeaderDTO>(@object);
+        return objectMapped;
+    }
+
+    public async Task<ICollection<InvoiceDetailDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate)
+    {
+        // Get data from Repository
+        var list = await _repositoryInvoice.FindByDateRangeAsync(startDate, endDate);
+
+        var collection = _mapper.Map<ICollection<InvoiceDetailDTO>>(list);
+        // Return Data
+        return collection;
+    }
+
     public Guid GetNewId()
     {
         Guid newId = Guid.NewGuid();
@@ -252,5 +269,17 @@ public class ServiceInvoice : IServiceInvoice
         File.WriteAllBytes(@"C:\temp\Invoice.pdf", pdfByteArray);
         return pdfByteArray;
 
+    }
+
+    public async Task CancelInvoiceAsync(Guid invoiceId)
+    {
+        await _repositoryInvoice.CancelInvoiceAsync(invoiceId);
+    }
+
+    public async Task<ICollection<InvoiceHeaderDTO>> ListActivesAsync()
+    {
+        var list = await _repositoryInvoice.ListActivesAsync();
+        var collection = _mapper.Map<ICollection<InvoiceHeaderDTO>>(list);
+        return collection;
     }
 }

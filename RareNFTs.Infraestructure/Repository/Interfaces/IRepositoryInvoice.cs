@@ -11,4 +11,7 @@ public interface IRepositoryInvoice
 {
     Task<Guid> AddAsync(InvoiceHeader entity);
     Task<InvoiceHeader> FindByIdAsync(Guid id);
+    Task<List<InvoiceHeader>> FindByDateRangeAsync(DateTime startDate, DateTime endDate);
+    Task CancelInvoiceAsync(Guid invoiceId);
+    Task<ICollection<InvoiceHeader>> ListActivesAsync();
 }
