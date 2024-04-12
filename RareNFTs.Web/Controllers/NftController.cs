@@ -138,20 +138,66 @@ public class NftController : Controller
         return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> ChangeOwner()
+    public async Task<IActionResult> ListOwned()
     {
-        ViewBag.ListClients = await _serviceClient.ListAsync();
-        ViewBag.ListOwners = await _serviceClient.ListOwnersAsync();
-        ViewBag.ListNfts = await _serviceNft.ListAsync();
-        return View();
+        var ListOwned = await _serviceNft.ListOwnedAsync();
+        var ListViewModel = new List<ViewModelClientNft>();
+        foreach (var item in ListOwned)
+        {
+            var client = await _serviceClient.FindByIdAsync(item.IdClient);
+            var nft = await _serviceNft.FindByIdAsync(item.IdNft);
+
+            var clientNft = new ViewModelClientNft()
+            {
+                IdClient = client.Id,
+                Name = client.Name,
+                Surname = client.Surname,
+                Email = client.Email,
+                IdNft = nft.Id,
+                Description = nft.Description,
+                Image = nft.Image,
+                Price = nft.Price,
+                Author = nft.Author,
+                Date = item.Date,
+            };
+
+           ListViewModel.Add(clientNft);
+        }
+        return View("ListOwned", ListViewModel);
+    }
+
+    public async Task<IActionResult> ChangeOwner(Guid id)
+    {
+        var @object = await _serviceNft.FindClientNftByIdAsync(id);
+        // Obtener la información completa del cliente utilizando el ID de cliente
+        var client = await _serviceClient.FindByIdAsync(@object!.IdClient);
+
+        // Obtener la información completa del NFT utilizando el ID de NFT
+        var nft = await _serviceNft.FindByIdAsync(@object.IdNft);
+
+        // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
+        var clientNft = new ViewModelClientNft()
+        {
+            IdClient = client.Id,
+            Name = client.Name,
+            Surname = client.Surname,
+            Email = client.Email,
+            IdNft = nft.Id,
+            Description = nft.Description,
+            Image = nft.Image,
+            Price = nft.Price,
+            Author = nft.Author,
+            Date = @object.Date,
+        };
+        return View(clientNft);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeOwner(Guid nftId, Guid clientId)
+    public async Task<IActionResult> ChangeOwner(ViewModelClientNft dto)
     {
-        var @object = await _serviceNft.ChangeNFTOwnerAsync(nftId, clientId);
-        return RedirectToAction("Index");
+        var @object = await _serviceNft.ChangeNFTOwnerAsync(dto.IdNft, dto.IdClient);
+        return RedirectToAction("ListOwned");
     }
 
     public async Task<IActionResult> GetNftByName(string filtro)
@@ -179,9 +225,9 @@ public class NftController : Controller
         var nft = await _serviceNft.FindByIdAsync(clientNft.IdNft);
 
         // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
-        var viewModel = new ClientNftViewModel
+        var viewModel = new ViewModelClientNft
         {
-            Id = client.Id,
+            IdClient = client.Id,
             Name = client.Name,
             Surname = client.Surname,
             Genre = client.Genre,

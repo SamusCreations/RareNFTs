@@ -27,7 +27,7 @@ public class RepositoryNft : IRepositoryNft
         return entity.Id;
     }
 
- 
+
 
     public async Task DeleteAsync(Guid id)
     {
@@ -36,7 +36,7 @@ public class RepositoryNft : IRepositoryNft
         _context.SaveChanges();
     }
 
-  
+
     public async Task<ICollection<Nft>> FindByDescriptionAsync(string description)
     {
         var collection = await _context
@@ -58,7 +58,7 @@ public class RepositoryNft : IRepositoryNft
         return @object!;
     }
 
-  
+
 
     public async Task<ICollection<Nft>> ListAsync()
     {
@@ -89,14 +89,6 @@ public class RepositoryNft : IRepositoryNft
                 throw new Exception("An error occurred while changing the NFT owner. NFT not found.");
             }
 
-            var clientNft = await _context.Set<ClientNft>().FindAsync(clientId);
-
-            if(clientNft != null && clientNft?.IdClient != clientId)
-            {
-                // If the new owner is the same
-                throw new Exception("The new owner can not be the same.");
-            }
-
             // Find the previous owner's ClientNFT entries
             var previousOwnerEntries = await _context.Set<ClientNft>()
                 .Where(cn => cn.IdNft == nftId)
@@ -110,7 +102,7 @@ public class RepositoryNft : IRepositoryNft
             {
                 IdClient = clientId,
                 IdNft = nftId,
-                Date = DateTime.Now // Assuming you want to record the date of ownership change
+                Date = DateTime.Now // date of ownership
             });
 
             // Save changes
@@ -129,23 +121,40 @@ public class RepositoryNft : IRepositoryNft
         }
     }
 
-    public async Task<ICollection<Nft>> FindOwnedByDescriptionAsync(string description)
+    public async Task<ICollection<ClientNft>> ListOwnedAsync()
     {
         try
         {
-            // Query to get NFTs by description from ClientNFT table
-            var nfts = await _context.Set<Nft>()
-                .Where(nft => _context.Set<ClientNft>()
-                    .Where(cn => cn.IdNft == nft.Id)
-                    .Any(cn => nft.Description!.Contains(description)))
+            var clientNfts = await _context.Set<ClientNft>()
+                .Include(cn => cn.IdNftNavigation)
+                .Include(cn => cn.IdClientNavigation) 
                 .ToListAsync();
 
-            return nfts!;
+            return clientNfts;
         }
         catch (Exception ex)
         {
-            throw new Exception("An error occurred while retrieving NFTs by description from ClientNFT table.", ex);
+            throw new Exception("An error occurred while retrieving all ClientNfts from the database.", ex);
         }
     }
 
+    public async Task<ClientNft> FindClientNftByIdAsync(Guid id)
+    {
+        try
+        {
+            var clientNft = await _context.Set<ClientNft>()
+                .Include(cn => cn.IdNftNavigation) 
+                .Include(cn => cn.IdClientNavigation) 
+                .FirstOrDefaultAsync(cn => cn.IdClient == id || cn.IdNft == id);
+
+            if (clientNft == null)
+                throw new Exception("ClientNft not found.");
+
+            return clientNft;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while retrieving the ClientNft.", ex);
+        }
+    }
 }
