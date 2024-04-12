@@ -35,6 +35,7 @@ builder.Services.AddTransient<IServiceReport, ServiceReport>();
 
 builder.Services.Configure<AppConfig>(builder.Configuration);
 
+
 // config Automapper
 builder.Services.AddAutoMapper(config =>
 {
@@ -96,6 +97,7 @@ else
     // Error control Middleware
     app.UseMiddleware<ErrorHandlingMiddleware>();
 }
+
 
 // Error access control 
 app.UseStatusCodePagesWithReExecute("/error/{0}");

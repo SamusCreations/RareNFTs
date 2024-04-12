@@ -41,6 +41,7 @@ namespace RareNFTs.Console
                    .AddTransient<IRepositoryNft, RepositoryNft>()
                    .AddTransient<IRepositoryCountry, RepositoryCountry>()
                    .AddTransient<IRepositoryInvoice, RepositoryInvoice>()
+
                    // Add SQLServer Connection
                    .AddDbContext<RareNFTsContext>(options =>
                    {

@@ -72,42 +72,44 @@ public class ReportController : Controller
 
     }
 
-    public async Task<IActionResult> GetOwnerByNft(string name)
-    {
-        // Obtener la lista de ClientNft asociados al nombre del NFT
-        var clientNftList = await _serviceClient.FindByNftNameAsync(name);
+    //[RequireAntiforgeryToken]
 
-        // Lista para almacenar la información completa del cliente y del NFT
-        var viewModelList = new List<ClientNftViewModel>();
+    //public async Task<IActionResult> GetOwnerByNft(string name)
+    //{
+    //    // Obtener la lista de ClientNft asociados al nombre del NFT
+    //    var clientNftList = await _serviceClient.FindByNftNameAsync(name);
 
-        // Recorrer la lista de ClientNft
-        foreach (var clientNft in clientNftList)
-        {
-            // Obtener la información completa del cliente utilizando el ID de cliente
-            var client = await _serviceClient.FindByIdAsync(clientNft.IdClient);
+    //    // Lista para almacenar la información completa del cliente y del NFT
+    //    var viewModelList = new List<ClientNftViewModel>();
 
-            // Obtener la información completa del NFT utilizando el ID de NFT
-            var nft = await _serviceNft.FindByIdAsync(clientNft.IdNft);
+    //    // Recorrer la lista de ClientNft
+    //    foreach (var clientNft in clientNftList)
+    //    {
+    //        // Obtener la información completa del cliente utilizando el ID de cliente
+    //        var client = await _serviceClient.FindByIdAsync(clientNft.IdClient);
 
-            // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
-            var viewModel = new ClientNftViewModel
-            {
-                Id = client.Id,
-                Name = client.Name,
-                Surname = client.Surname,
-                Genre = client.Genre,
-                IdCountry = client.IdCountry,
-                Email = client.Email,
-                Description = nft.Description,
-                Image = nft.Image // Suponiendo que Image es el campo que contiene la imagen del NFT
-            };
+    //        // Obtener la información completa del NFT utilizando el ID de NFT
+    //        var nft = await _serviceNft.FindByIdAsync(clientNft.IdNft);
 
-            // Agregar el objeto ClientNftViewModel a la lista
-            viewModelList.Add(viewModel);
-        }
+    //        // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
+    //        var viewModel = new ClientNftViewModel
+    //        {
+    //            Id = client.Id,
+    //            Name = client.Name,
+    //            Surname = client.Surname,
+    //            Genre = client.Genre,
+    //            IdCountry = client.IdCountry,
+    //            Email = client.Email,
+    //            Description = nft.Description,
+    //            Image = nft.Image // Suponiendo que Image es el campo que contiene la imagen del NFT
+    //        };
 
-        return PartialView("_ClientByNftReport", viewModelList);
-    }
+    //        // Agregar el objeto ClientNftViewModel a la lista
+    //        viewModelList.Add(viewModel);
+    //    }
+
+    //    return PartialView("_ClientByNftReport", viewModelList);
+    //}
 
 
 }
