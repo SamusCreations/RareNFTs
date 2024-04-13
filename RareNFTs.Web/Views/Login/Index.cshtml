@@ -1,7 +1,12 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@model RareNFTs.Web.ViewModels.ViewModelLogin
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
 <head>
-    <title>@ViewData["Title"] - RareNFTs.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RareNFTs.Web.styles.css" asp-append-version="true" />
@@ -10,10 +15,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-    <!--====== Title ======-->
-    <title>Home</title>
-
+    <title>Login</title>
     <!--====== Lineicons CSS ======-->
     <link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet" />
     <!--====== Tiny Slider Css ======-->
@@ -26,17 +28,75 @@
     <link href="~/css/autocompleteBS.css" rel="stylesheet">
     <!--JQuery UI CSS-->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-</head>
-<body>
-    <header>
-        @await Html.PartialAsync("_Menu")
-    </header>
-    <div class="container">
-        <main role="main" class="py-4">
-            @RenderBody()
-        </main>
-    </div>
 
+</head>
+
+
+<body style="background-color:black">
+
+    <!--====== SIGNIN ONE PART START ======-->
+    <section class="signin-area signin-one">
+        <div id="formContainer" class="container">
+
+            <div class="row justify-content-center">
+                <div  class="form-content col-lg-5">
+                    <form asp-controller="Login" asp-action="LogIn" method="post" asp-antiforgery="true">
+                        <div class="signin-form form-style-two rounded-buttons">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div  class="form-input">
+                                        <label>Email Account</label>
+                                        <div  class="input-items default">
+                                            <input asp-for="User" class="form-control" type="text" autocomplete="true" placeholder="Email" />
+                                            <span asp-validation-for="User" class="text-danger"></span>
+                                            <i class="lni lni-envelope"></i>
+                                        </div>
+                                    </div>
+                                    <!-- form input -->
+                                </div>
+                               
+                                <div class="col-md-12">
+                                    <div class="form-input">
+                                        <label>Password</label>
+                                        <div class="input-items default">
+                                            <input asp-for="Password" class="form-control" type="password" autocomplete="false" placeholder="Password" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>                                            <i class="lni lni-key"></i>
+                                        </div>
+                                    </div>
+                                    <!-- form input -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-input rounded-buttons">
+                                        <button class="btn btn-primary" type="submit" onclick="spinnerEffect()">Sing In!</button>
+
+                                    </div>
+                                    <!-- form input -->
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <!-- signin form -->
+                        <!-- Div para spinner -->
+                        <div id="loader" class="loadingXXXX" style="width: 3rem; height: 3rem;" role="status">
+                        </div>
+
+
+                        @if (@ViewBag.Message != null)
+                        {
+                            <div class="form-group">
+                                <div id="message" class="alert alert-danger" role="alert">
+                                    @ViewBag.Message
+                                </div>
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </section>
+    <!--====== SIGNIN ONE PART ENDS ======-->
     <!--====== FOOTER ONE PART START ======-->
     <footer class="footer-area footer-one">
         <div class="footer-widget">
@@ -162,7 +222,14 @@
         <!-- footer copyright -->
     </footer>
     <!--====== FOOTER ONE PART ENDS ======-->
-    
+
+    <script type="text/javascript">
+        function spinnerEffect() {
+            console.log("spinnerEffect")
+            document.getElementById("loader").innerHTML=""
+            document.getElementById("loader").className = "loading";
+        }
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -177,6 +244,6 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="~/js/autocompleteBS.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

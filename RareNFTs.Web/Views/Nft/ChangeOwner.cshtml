@@ -1,52 +1,110 @@
-﻿<div class="card">
+﻿@model RareNFTs.Web.ViewModels.ViewModelClientNft
 
-    <div class="card-body">
-        <h5 class="card-title">Change NFT's owner</h5>
+@{
+    ViewData["Title"] = "ChangeOwner";
+}
 
-        <div class="mb-3 row">
-            <label class="col-form-label">Owner Name</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control" autocomplete="off" id="input" oninput="consult()" placeholder="Enter the NFT's name">
+<h1>ChangeOwner</h1>
+
+<h4>ViewModelClientNft</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangeOwner">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdClient" class="control-label"></label>
+                <input asp-for="IdClient" class="form-control" />
+                <span asp-validation-for="IdClient" class="text-danger"></span>
+                <label id="ClientName" class="control-label fw-bold">-</label>
             </div>
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-outline-primary" onclick="consult()">Consult</button>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" readOnly />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-        </div>
-
-        <!-- container donde se muestra la información del Partial View-->
-        <div id="container"></div>
-
-
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" readOnly />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdNft" class="control-label"></label>
+                <input asp-for="IdNft" class="form-control" readOnly />
+                <span asp-validation-for="IdNft" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" readOnly />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" readOnly />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="form-control" readOnly/>
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Current Image</label>
+                <img id="currentImage" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-thumbnail" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
-@section scripts {
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
     <script>
 
-        function consult() {
+        ////////////////////////////////////////////////////
+        // Busca el cliente por nombre+apellido1+apellido2 //
+        /////////////////////////////////////////////////////
 
-            let div = document.getElementById("container");
-            let value = document.getElementById("input").value;
-            console.log(value)
+        $("#IdClient").autocomplete({
+            source: function (request, response) {
+                var IdClient = $("#IdClient").val();
+                //debugger;
+                console.log(IdClient);
+                $.ajax({
+                    type: "GET",
+                    url: "/Client/GetClientByName",
+                    dataType: "json",
+                    data: { filtro: IdClient },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            console.log(item);
+                            //debugger;
+                            console.log(item.id);
+                            return { label: item.name + " " + item.surname, value: item.id };
 
-            if (value == "") {
-                div.innerHTML = "";
-                return;
-            }
 
-            const myRequest = "/Nft/GetNftOwnedByName?name=" + value
-            fetch(myRequest)
-                .then((response) => response.text())
-                .then((text) => {
-                    console.log(text)
-                    div.innerHTML = text;
+                        }));
+                    },
+                    error: function (xhr, status, error) {
+                        // xhr.requestText
+                        // debugger;
+                        console.log(error)
+                        alert("Error: " + error + ", No Error: " + xhr.status);
+                    },
                 });
-        }
+            },
+            select: function (event, ui) {
 
+                $("#IdClient").val(ui.item.value);
+                $("#ClientName").html(ui.item.label)
+
+                return false;
+            }
+        });
     </script>
-
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
 }
