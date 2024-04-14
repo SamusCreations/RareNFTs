@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RareNFTs.Application", "Rar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RareNFTs.Infraestructure", "RareNFTs.Infraestructure\RareNFTs.Infraestructure.csproj", "{3C05F7F9-F6EB-4ACE-8D73-74F2BBAEF98A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.Console", "RareNFTs.Console\RareNFTs.Console.csproj", "{398B8B63-D252-436B-AAF4-08168969226F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RareNFTs.Console", "RareNFTs.Console\RareNFTs.Console.csproj", "{398B8B63-D252-436B-AAF4-08168969226F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RareNFTs.API", "RareNFTs.API\RareNFTs.API.csproj", "{178E5E2D-0D5E-4D42-8B9A-3FA0C975695A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{398B8B63-D252-436B-AAF4-08168969226F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{398B8B63-D252-436B-AAF4-08168969226F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{398B8B63-D252-436B-AAF4-08168969226F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{178E5E2D-0D5E-4D42-8B9A-3FA0C975695A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178E5E2D-0D5E-4D42-8B9A-3FA0C975695A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178E5E2D-0D5E-4D42-8B9A-3FA0C975695A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178E5E2D-0D5E-4D42-8B9A-3FA0C975695A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

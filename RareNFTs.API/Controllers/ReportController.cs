@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using RareNFTs.API.ViewModels;
+using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
-using RareNFTs.Web.ViewModels;
 
-namespace RareNFTs.Web.Controllers;
+namespace RareNFTs.API.Controllers;
 
+
+[ApiController]
+[Route("api/[controller]")]
 public class ReportController : Controller
 {
+
     private readonly IServiceReport _serviceReport;
     private readonly IServiceClient _serviceClient;
     private readonly IServiceNft _serviceNft;
+
     public ReportController(IServiceReport serviceReport, IServiceClient serviceClient, IServiceNft serviceNft)
     {
         _serviceReport = serviceReport;
@@ -24,72 +29,21 @@ public class ReportController : Controller
         return View();
     }
 
-    public IActionResult ProductReport()
-    {
-        return View();
-    }
-
-    public IActionResult ClientReport()
-    {
-        return View();
-    }
-
     public IActionResult OwnerNftReport()
     {
         return View();
     }
 
-    public IActionResult SalesReport()
-    {
-        return View("SalesReport");
-    }
-
-    [HttpPost]
-    [RequireAntiforgeryToken]
-    public async Task<FileResult> ProductReportPDF()
-    {
-
-        byte[] bytes = await _serviceReport.ProductReport();
-        return File(bytes, "text/plain", "ProductReport.pdf");
-
-    }
-
-    [HttpPost]
-    [RequireAntiforgeryToken]
-    public async Task<FileResult> ClientReportPDF()
-    {
-
-        byte[] bytes = await _serviceReport.ClientReport();
-        return File(bytes, "text/plain", "ClientReport.pdf");
 
 
-    }
-
-
-    [HttpPost]
-
-    [RequireAntiforgeryToken]
-    public async Task<IActionResult> SalesReportPDF(DateTime startDate, DateTime endDate)
-    {
-        if (startDate == null && endDate == null)
-        {
-            ViewBag.Message = "Descripción requerida";
-            return View("SalesReport");
-        }
-
-        byte[] bytes = await _serviceReport.SalesReport(startDate, endDate);
-        return File(bytes, "text/plain", "SalesReport.pdf");
-    }
-
-    [RequireAntiforgeryToken]
-
-     public async Task<IActionResult> GetOwnerByNft(string name)
+    [HttpGet("report/name/{name}")]
+    public async Task<IActionResult> GetOwnerByNft(string name)
     {
         // Obtener la lista de ClientNft asociados al nombre del NFT
         var clientNftList = await _serviceClient.FindByNftNameAsync(name);
 
         // Lista para almacenar la información completa del cliente y del NFT
-        var viewModelList = new List<ViewModelClientNft>();
+        var viewModelList = new List<ClientNftViewModel>();
 
         // Recorrer la lista de ClientNft
         foreach (var clientNft in clientNftList)
@@ -101,9 +55,9 @@ public class ReportController : Controller
             var nft = await _serviceNft.FindByIdAsync(clientNft.IdNft);
 
             // Crear un nuevo objeto ClientNftViewModel con la información del cliente y del NFT
-            var viewModel = new ViewModelClientNft
+            var viewModel = new ClientNftViewModel
             {
-                IdClient = client.Id,
+                Id = client.Id,
                 Name = client.Name,
                 Surname = client.Surname,
                 Genre = client.Genre,
@@ -119,6 +73,4 @@ public class ReportController : Controller
 
         return PartialView("_ClientByNftReport", viewModelList);
     }
-
-
 }

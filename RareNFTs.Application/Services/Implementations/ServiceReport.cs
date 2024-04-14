@@ -286,14 +286,12 @@ public class ServiceReport : IServiceReport
         var collection = await _repositoryInvoice.FindByDateRangeAsync(startDate, endDate);
 
         // License config ******  IMPORTANT ******
-        QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
-
+        QuestPDF.Settings.License = LicenseType.Community;
         // return ByteArrays
-        var pdfByteArray = QuestPDF.Fluent.Document.Create(document =>
+        var pdfByteArray = Document.Create(document =>
         {
             document.Page(page =>
             {
-
                 page.Size(PageSizes.Letter);
                 page.Margin(2, Unit.Centimetre);
                 page.PageColor(Colors.White);
@@ -305,10 +303,10 @@ public class ServiceReport : IServiceReport
                     {
                         col.Item().AlignLeft().Text("RareNFTs").Bold().FontSize(16).Bold();
                         col.Item().AlignLeft().Text($"Date: {DateTime.Now} ").FontSize(12);
+                        col.Item().LineHorizontal(1f);
+
                     });
-
                 });
-
 
                 page.Content().PaddingVertical(10).Column(col1 =>
                 {
@@ -326,7 +324,6 @@ public class ServiceReport : IServiceReport
                             columns.RelativeColumn();
                             columns.RelativeColumn();
                             columns.RelativeColumn();
-
                         });
 
                         tabla.Header(header =>
@@ -350,34 +347,34 @@ public class ServiceReport : IServiceReport
                            .Padding(2).AlignCenter().Text("Total").FontColor("#fff");
                         });
 
-                        foreach (var item in collection)
+                    foreach (var item in collection)
+                    {
+                        // Get NFT data
+                        var oClient =  _repositoryClient.FindByIdAsync(item.IdClient);
+                        var oCard =  _repositoryCard.FindByIdAsync(item.IdCard);
+                        if (oCard != null && oClient != null)
                         {
-                            // Get NFT data
-                            var @oClient = await _repositoryClient.FindByIdAsync(item.IdClient);
-                            var @oCard = await _repositoryCard.FindByIdAsync(item.IdCard);
-                            if (oCard != null && oClient != null)
-                            {
-                                // Column 1
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(item.Id.ToString());
-                                // Column 2
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(oClient.Name!.ToString());
-                                // Column 3
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(item.NumCard!.ToString());
+                            // Column 1
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(item.Id.ToString());
+                            // Column 2
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(oClient.Result.Name!.ToString());
+                            // Column 3
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(item.NumCard.ToString());
 
-                                // Column 4
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(oCard.Description!.ToString());
+                            // Column 4
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(oCard.Result.Description!.ToString());
 
-                                // Column 5
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(item.Date!.ToString());
+                            // Column 5
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(item.Date.ToString());
 
-                                // Column 6
-                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
-                                .Padding(2).Text(item.Total!.ToString());
+                            // Column 6
+                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9")
+                            .Padding(2).Text(item.Total.ToString());
                             }
                         }
 
@@ -400,10 +397,9 @@ public class ServiceReport : IServiceReport
                 });
             });
         }).GeneratePdf();
-
-        File.WriteAllBytes(@"C:\temp\SalesReport.pdf", pdfByteArray);
         return pdfByteArray;
 
     }
+
 }
 

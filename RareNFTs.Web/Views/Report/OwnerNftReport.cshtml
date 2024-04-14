@@ -7,12 +7,12 @@
 <div class="card">
    
     <div class="card-body">
-        <h5 class="card-title">Report NFT by Owner</h5>
+        <h5 class="card-title">Report Owner by NFT</h5>
 
         <div class="mb-3 row">
-            <label class="col-form-label">Owner Name</label>
+            <label class="col-form-label">NFT Name</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" autocomplete="off" id="input" oninput="consult()" placeholder="Enter the owner's name">
+                <input type="text" class="form-control" autocomplete="off" id="input" oninput="consult()" placeholder="Enter the Nft's name">
             </div>
             <div class="col-sm-4">
                 <button type="button" class="btn btn-outline-primary" onclick="consult()">Consult</button>
@@ -40,12 +40,22 @@
                 return;
             }
 
-            const myRequest = "/Report/GetOwnerByNft?name=" + value
+            const myRequest = "/api/Report/GetOwnerByNft?name=" + encodeURIComponent(value);
+            console.log(myRequest)
+
+            console.log(myRequest)
             fetch(myRequest)
-                .then((response) => response.text())
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('La respuesta de la red no fue exitosa');
+                    }
+                    return response.text();
+                })
                 .then((text) => {
-                    //console.log(text)
                     div.innerHTML = text;
+                })
+                .catch((error) => {
+                    console.error('Hubo un problema con la operación de fetch:', error);
                 });
         }
 

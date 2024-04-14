@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
@@ -6,6 +7,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RareNFTs.Web.Controllers
 {
+    [Authorize(Roles = "admin")]
+
     public class ClientController : Controller
     {
         private readonly IServiceClient _serviceClient;

@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <button type="button" class="btn primary-btn rounded-full" asp-action="Create">Create New</button>
+    <a class="btn primary-btn rounded-full" asp-action="Create">Create New <i class="lni lni-circle-plus"></i></a>
 </p>
 <table id="sortable" class="table">
     <thead>
@@ -70,6 +70,9 @@
                             @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                         </div>
+
+
+                   
                     </div>
                 </td>
             </tr>

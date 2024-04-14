@@ -1,0 +1,6 @@
+@RareNFTs.API_HostAddress = http://localhost:5099
+
+GET {{RareNFTs.API_HostAddress}}/api/report/report
+Accept: application/json
+
+###
