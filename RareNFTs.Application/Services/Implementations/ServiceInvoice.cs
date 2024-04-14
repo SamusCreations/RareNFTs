@@ -80,12 +80,12 @@ public class ServiceInvoice : IServiceInvoice
         return objectMapped;
     }
 
-    public async Task<ICollection<InvoiceDetailDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate)
+    public async Task<ICollection<InvoiceHeaderDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         // Get data from Repository
         var list = await _repositoryInvoice.FindByDateRangeAsync(startDate, endDate);
 
-        var collection = _mapper.Map<ICollection<InvoiceDetailDTO>>(list);
+        var collection = _mapper.Map<ICollection<InvoiceHeaderDTO>>(list);
         // Return Data
         return collection;
     }

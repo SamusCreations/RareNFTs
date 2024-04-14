@@ -28,7 +28,7 @@
 
 @section scripts {
     <script>
-
+       
         function consult() {
 
             let div = document.getElementById("container");
@@ -40,25 +40,14 @@
                 return;
             }
 
-            const myRequest = "/api/Report/GetOwnerByNft?name=" + encodeURIComponent(value);
-            console.log(myRequest)
-
-            console.log(myRequest)
+            const myRequest = "/Report/GetOwnerByNft?name=" + value
             fetch(myRequest)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('La respuesta de la red no fue exitosa');
-                    }
-                    return response.text();
-                })
+                .then((response) => response.text())
                 .then((text) => {
+                    //console.log(text)
                     div.innerHTML = text;
-                })
-                .catch((error) => {
-                    console.error('Hubo un problema con la operación de fetch:', error);
                 });
         }
-
     </script>
 
     @{
