@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Web.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "admin")]
 public class UserController : Controller
 {
     private readonly IServiceUser _serviceUser;
@@ -25,33 +25,16 @@ public class UserController : Controller
     // GET: UsuarioController/Create
     public IActionResult Create()
     {
+        ViewBag.ListRole = _serviceUser.ListRoleAsync().Result;
         return View();
     }
-
-    // GET:  
-    public async Task<IActionResult> Login(string email, string password)
-    {
-        var @object = await _serviceUser.LoginAsync(email, password);
-        if (@object == null)
-        {
-            ViewBag.Message = "Error en Login o Password";
-            return View("Login");
-        }
-        else
-        {
-            return RedirectToAction("Index", "Home");
-        }
-
-
-    }
-
 
     // POST: UsuarioController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(UserDTO dto)
     {
-
+        ModelState.Remove("IdRoleNavigation");
         if (!ModelState.IsValid)
         {
             // Lee del ModelState todos los errores que
@@ -69,14 +52,14 @@ public class UserController : Controller
 
 
     // GET: UsuarioController/Details/5
-    public async Task<IActionResult> Details(string id)
+    public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceUser.FindByIdAsync(id);
         return View(@object);
     }
 
     // GET: UsuarioController/Edit/5
-    public async Task<IActionResult> Edit(string id)
+    public async Task<IActionResult> Edit(Guid id)
     {
         var @object = await _serviceUser.FindByIdAsync(id);
         return View(@object);
@@ -85,14 +68,14 @@ public class UserController : Controller
     // POST: UsuarioController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(string id, UserDTO dto)
+    public async Task<IActionResult> Edit(Guid id, UserDTO dto)
     {
         await _serviceUser.UpdateAsync(id, dto);
         return RedirectToAction("Index");
     }
 
     // GET: UsuarioController/Delete/5
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var @object = await _serviceUser.FindByIdAsync(id);
         return View(@object);
@@ -101,7 +84,7 @@ public class UserController : Controller
     // POST: UsuarioController/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Delete(string id, IFormCollection collection)
+    public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceUser.DeleteAsync(id);
         return RedirectToAction("Index");

@@ -68,6 +68,7 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<InvoiceProfile>();
     config.AddProfile<ClientNftProfile>();
     config.AddProfile<UserProfile>();
+    config.AddProfile<RoleProfile>();
 
 });
 
