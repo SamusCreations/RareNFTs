@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 /*===========================
   COMMON css 
 ===========================*/
 :root {
-    --font-family: "Inter", sans-serif;
+    --font-family: "Poppins", sans-serif;
     --primary: #975DEC;
     --primary-dark: #690EEF;
     --primary-light: #C3A1F3;
@@ -37,7 +37,7 @@
     --light-2: #f5f5f5;
     --light-3: #fafafa;
     --white: #ffffff;
-    --gradient-1: linear-gradient(180deg, #155bd5 0%, #1c3ab6 100%);
+    --gradient-1: linear-gradient(180deg, #975DEC 0%, #151FAA 100%);
     --gradient-2: linear-gradient(180deg, #155bd5 13.02%, #00d4d7 85.42%);
     --gradient-3: linear-gradient(180deg, #155bd5 0%, #8f15d5 100%);
     --gradient-4: linear-gradient(180deg, #155bd5 0%, #13d527 100%);
@@ -205,7 +205,7 @@ p {
 }
 
     .btn:hover {
-        color: #ff69b4;
+        color: var(--white);
     }
 
     .btn:focus {
@@ -265,7 +265,7 @@ p {
 
 /* ===== Buttons Css ===== */
 .primary-btn {
-    background: var(--primary);
+    background: var(--secondary);
     color: var(--white);
     box-shadow: var(--shadow-2);
 }
@@ -1266,13 +1266,14 @@ p {
 ===========================*/
 .signin-one {
     height: 100vh;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    align-content: center;
+    
     background-color: var(--light-2);
 }
 
     .signin-one .form-input {
         margin-top: 16px;
+        width: 400px;
     }
 
         .signin-one .form-input .main-btn {
@@ -1419,16 +1420,165 @@ p {
     margin-top: 8px;
 }
 
+/* GRADIENT BUTTON WITH EFFECT */
+.gradient-btn {
+    text-decoration: none;
+    position: relative;
+    border: none;
+    cursor: pointer;
+    color: var(--white);
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+    background-size: 300%;
+    z-index: 1;
+    padding: 10px;
+}
 
 
+.gradient-btn:hover {
+    animation: ani 8s linear infinite;
+    border: none;
+}
+
+@keyframes ani {
+    0% {
+        background-position: 0%;
+    }
+
+    100% {
+        background-position: 400%;
+    }
+}
+
+.gradient-btn:before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+    background-size: 400%;
+    border-radius: 35px;
+    transition: 1s;
+}
+
+.gradient-btn:hover::before {
+    filter: blur(20px);
+}
+
+.gradient-btn:active {
+    background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+}
 
 
+/* FORM LOGIN */
+#form {
+    display: grid;
+    place-items: center;
+    max-width: 500px;
+    padding: 50px;
+    background-color: #ffff;
+    box-shadow: 0px 15px 60px #975dec;
+    outline: 1px solid #975dec;
+    border-radius: 10px;
+    margin: 0 auto;
+}
 
+#welcome-lines {
+    text-align: center;
+    line-height: 1;
+}
 
+#welcome-line-1 {
+    color: #975dec;
+    font-weight: 600;
+    font-size: 40px;
+}
 
+#welcome-line-2 {
+    color: #975dec;
+    font-size: 18px;
+    margin-top: 17px;
+}
 
+.alert {
+    padding: 32px;
+    padding-left: 0;
+    border-radius: 4px;
+    box-shadow: var(--shadow-2);
+    position: relative;
+    overflow: hidden;
+}
 
+    .alert::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+    }
 
+    .alert.alert-dismissible {
+        padding: 12px 48px 12px 0;
+    }
 
+        .alert.alert-dismissible .alert-icon {
+            padding: 0px 12px 0 36px;
+            line-height: 1;
+        }
 
+        .alert.alert-dismissible .alert-message h5 {
+            margin-bottom: 0px;
+        }
 
+        .alert.alert-dismissible .btn-close {
+            background: none;
+            padding: 1rem;
+        }
+
+            .alert.alert-dismissible .btn-close:focus-within, .alert.alert-dismissible .btn-close:focus {
+                box-shadow: none;
+            }
+
+            .alert.alert-dismissible .btn-close.dark i {
+                color: var(--black);
+            }
+
+            .alert.alert-dismissible .btn-close i {
+                color: var(--white);
+                font-weight: 700;
+            }
+
+    .alert .alert-icon {
+        padding: 32px;
+    }
+
+        .alert .alert-icon i {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+    .alert .alert-message h5 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .alert .alert-message p {
+        color: var(--black);
+        opacity: 0.88;
+    }
+
+    .alert.alert-error-light {
+        background: var(--error-light);
+    }
+
+        .alert.alert-error-light::before {
+            background: var(--error);
+        }
+
+        .alert.alert-error-light .alert-icon {
+            color: var(--error);
+        }

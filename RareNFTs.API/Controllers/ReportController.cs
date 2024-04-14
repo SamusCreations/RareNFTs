@@ -24,19 +24,15 @@ public class ReportController : Controller
         _serviceNft = serviceNft;
     }
 
-    public IActionResult Index()
+    [HttpGet("nft")]
+    public async Task<IActionResult> GetNfts()
     {
-        return View();
-    }
-
-    public IActionResult OwnerNftReport()
-    {
-        return View();
+        var collection = await _serviceNft.ListAsync();
+        return Ok(collection);
     }
 
 
-
-    [HttpGet("report/name/{name}")]
+    [HttpGet("name/{name}")]
     public async Task<IActionResult> GetOwnerByNft(string name)
     {
         // Obtener la lista de ClientNft asociados al nombre del NFT
@@ -71,6 +67,6 @@ public class ReportController : Controller
             viewModelList.Add(viewModel);
         }
 
-        return PartialView("_ClientByNftReport", viewModelList);
+        return Ok(viewModelList);
     }
 }

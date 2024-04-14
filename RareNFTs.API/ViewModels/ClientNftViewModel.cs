@@ -29,13 +29,6 @@ public class ClientNftViewModel
     [Display(Name = "Email")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Client NFTs are required")]
-    [Display(Name = "Client NFTs")]
-    public ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
-
-    [Required(ErrorMessage = "Invoice Headers are required")]
-    [Display(Name = "Invoice Headers")]
-    public ICollection<InvoiceHeader> InvoiceHeader { get; set; } = new List<InvoiceHeader>();
     [Required]
     [Display(Name = "Description")]
     public string? Description { get; set; }
