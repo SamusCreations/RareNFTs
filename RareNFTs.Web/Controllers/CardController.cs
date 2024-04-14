@@ -2,8 +2,10 @@
 using RareNFTs.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RareNFTs.Web.Controllers;
+[Authorize(Roles = "admin,process")]
 
 public class CardController : Controller
 {
@@ -51,6 +53,7 @@ public class CardController : Controller
 
 
     // GET: CardController/Details/5
+
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceCard.FindByIdAsync(id);

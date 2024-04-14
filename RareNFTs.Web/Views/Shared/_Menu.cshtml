@@ -68,7 +68,7 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true || User.IsInRole("reports") == true)
+                            @if (User.IsInRole("admin") == true || User.IsInRole("report") == true)
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
@@ -165,19 +165,7 @@
                         </ul>
                     </div>
 
-                    @*   <a class="navbar-brand text-light" asp-area="" asp-controller="Home"
-                    asp-action="Index">
-                    @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
-
-                    </a>
-                    <div class="navbar-btn d-none d-sm-inline-block">
-                    <ul>
-                    <li>
-                    <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Off</a>
-                    </li>
-
-                    </ul>
-                    </div> *@
+                
                 </nav>
                 <!-- navbar -->
             </div>

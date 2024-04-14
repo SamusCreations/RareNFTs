@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Electronics.Web.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "admin")]
 public class UserController : Controller
 {
     private readonly IServiceUser _serviceUser;
