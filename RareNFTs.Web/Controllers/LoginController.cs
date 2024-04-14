@@ -43,17 +43,17 @@ public class LoginController : Controller
             string errors = string.Join("; ", ModelState.Values
                                .SelectMany(x => x.Errors)
                                .Select(x => x.ErrorMessage));
-            ViewBag.Message = $"Error de Acceso {errors}";
+            ViewBag.Message = $"Error accessing {errors}";
 
-            _logger.LogInformation($"Error en login de {viewModelLogin}, Errores --> {errors}");
+            _logger.LogInformation($"Error login {viewModelLogin}, Errors: --> {errors}");
             return View("Index");
         }
         // User exist ?
         var usuarioDTO = await _serviceUser.LoginAsync(viewModelLogin.User, viewModelLogin.Password);
         if (usuarioDTO == null)
         {
-            ViewBag.Message = "Error en acceso";
-            _logger.LogInformation($"Error en login de {viewModelLogin.User}, Error --> {ViewBag.Message}");
+            ViewBag.Message = "Error accessing";
+            _logger.LogInformation($"Error login {viewModelLogin.User}, Error: --> {ViewBag.Message}");
             return View("Index");
         }
 

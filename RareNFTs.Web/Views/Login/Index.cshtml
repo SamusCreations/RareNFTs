@@ -9,6 +9,7 @@
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/spinner.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RareNFTs.Web.styles.css" asp-append-version="true" />
     <!--====== Required meta tags ======-->
     <meta charset="utf-8" />
@@ -34,200 +35,96 @@
 
 <body style="background-color:black">
 
+
+
     <!--====== SIGNIN ONE PART START ======-->
     <section class="signin-area signin-one">
-        <div id="formContainer" class="container">
 
-            <div class="row justify-content-center">
-                <div  class="form-content col-lg-5">
-                    <form asp-controller="Login" asp-action="LogIn" method="post" asp-antiforgery="true">
-                        <div class="signin-form form-style-two rounded-buttons">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div  class="form-input">
-                                        <label>Email Account</label>
-                                        <div  class="input-items default">
-                                            <input asp-for="User" class="form-control" type="text" autocomplete="true" placeholder="Email" />
-                                            <span asp-validation-for="User" class="text-danger"></span>
-                                            <i class="lni lni-envelope"></i>
-                                        </div>
-                                    </div>
-                                    <!-- form input -->
-                                </div>
-                               
-                                <div class="col-md-12">
-                                    <div class="form-input">
-                                        <label>Password</label>
-                                        <div class="input-items default">
-                                            <input asp-for="Password" class="form-control" type="password" autocomplete="false" placeholder="Password" />
-                                            <span asp-validation-for="Password" class="text-danger"></span>                                            <i class="lni lni-key"></i>
-                                        </div>
-                                    </div>
-                                    <!-- form input -->
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-input rounded-buttons">
-                                        <button class="btn btn-primary" type="submit" onclick="spinnerEffect()">Sing In!</button>
+        <div class="d-flex align-items-center justify-content-center pb-5">
+            <img src="~/Images/logoblack.png" alt="Logo" width="400px" />
+        </div>
 
-                                    </div>
-                                    <!-- form input -->
+        <div id="formContainer">
+            <div id="form-ui">
+                <form asp-controller="Login" asp-action="LogIn" method="post" asp-antiforgery="true" id="form">
+                    <div id="form-body">
+                        <div id="welcome-lines">
+
+                            <div id="welcome-line-2">Welcome</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-input">
+                                <label>Email Account</label>
+                                <div class="input-items default">
+                                    <input asp-for="User" class="form-control" type="text" autocomplete="true" placeholder="Email" />
+                                    <span asp-validation-for="User" class="text-danger"></span>
+                                    <i class="lni lni-envelope"></i>
                                 </div>
-                               
                             </div>
-                        </div>
-                        <!-- signin form -->
-                        <!-- Div para spinner -->
-                        <div id="loader" class="loadingXXXX" style="width: 3rem; height: 3rem;" role="status">
+                            <!-- form input -->
                         </div>
 
+                        <div class="">
+                            <div class="form-input">
+                                <label>Password</label>
+                                <div class="input-items default">
+                                    <input asp-for="Password" class="form-control" type="password" autocomplete="false" placeholder="Password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                    <i class="lni lni-key"></i>
+                                </div>
+                            </div>
+                            <!-- form input -->
+                        </div>
+
+
+                        <div class="d-flex justify-content-center align-content-center pt-4">
+
+                            <button class="btn gradient-btn rounded-full" type="submit" onclick="spinnerEffect()">Sign in</button>
+
+                        </div>
 
                         @if (@ViewBag.Message != null)
                         {
-                            <div class="form-group">
-                                <div id="message" class="alert alert-danger" role="alert">
-                                    @ViewBag.Message
+                            <!-- start single alert -->
+                            <div class="alert alert-error-light d-flex align-items-center mt-4">
+                                <div class="alert-icon">
+                                    <i class="lni lni-play"></i>
+                                </div>
+                                <div class="alert-message">
+                                    <h5 class="message-title">Error</h5>
+                                    <p class="text">
+                                        @ViewBag.Message
+                                    </p>
                                 </div>
                             </div>
+                            <!-- end single alert -->
                         }
-                    </form>
-                </div>
-            </div>
-            <!-- row -->
+                    </div>
+                </form>
+            </div>            
         </div>
         <!-- container -->
     </section>
     <!--====== SIGNIN ONE PART ENDS ======-->
-    <!--====== FOOTER ONE PART START ======-->
-    <footer class="footer-area footer-one">
-        <div class="footer-widget">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-4 col-sm-12">
-                        <div class="f-about">
-                            <div class="footer-logo">
-                                <a href="javascript:void(0)">
-                                    <img src="https://cdn.ayroui.com/1.0/images/footer/logo.svg" alt="Logo" />
-                                </a>
-                            </div>
-                            <p class="text">
-                                Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry.
-                            </p>
-                        </div>
-                        <div class="footer-app-store">
-                            <h5 class="download-title">Download Our App Now!</h5>
-                            <ul>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <img src="https://cdn.ayroui.com/1.0/images/footer/app-store.svg"
-                                             alt="app" />
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <img src="https://cdn.ayroui.com/1.0/images/footer/play-store.svg"
-                                             alt="play" />
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-2 col-sm-4">
-                        <div class="footer-link">
-                            <h6 class="footer-title">Company</h6>
-                            <ul>
-                                <li><a href="javascript:void(0)">About</a></li>
-                                <li><a href="javascript:void(0)">Contact</a></li>
-                                <li><a href="javascript:void(0)">Marketing</a></li>
-                                <li><a href="javascript:void(0)">Awards</a></li>
-                            </ul>
-                        </div>
-                        <!-- footer link -->
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-sm-4">
-                        <div class="footer-link">
-                            <h6 class="footer-title">Services</h6>
-                            <ul>
-                                <li><a href="javascript:void(0)">Products</a></li>
-                                <li><a href="javascript:void(0)">Business</a></li>
-                                <li><a href="javascript:void(0)">Developer</a></li>
-                                <li><a href="javascript:void(0)">Insights</a></li>
-                            </ul>
-                        </div>
-                        <!-- footer link -->
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-sm-4">
-                        <!-- Start Footer Contact -->
-                        <div class="footer-contact">
-                            <h6 class="footer-title">Help & Suport</h6>
-                            <ul>
-                                <li>
-                                    <i class="lni lni-map-marker"></i> Madison Street, NewYork,
-                                    USA
-                                </li>
-                                <li><i class="lni lni-phone-set"></i> +88 556 88545</li>
-                                <li><i class="lni lni-envelope"></i> support@ayroui.com</li>
-                            </ul>
-                        </div>
-                        <!-- End Footer Contact -->
-                    </div>
-                </div>
-                <!-- row -->
-            </div>
-            <!-- container -->
-        </div>
-        <!-- footer widget -->
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="
-                  copyright
-                  text-center
-                  d-md-flex
-                  justify-content-between
-                  align-items-center
-                  ">
-                            <p class="text">Copyright © 2024 AyroUI. All Rights Reserved</p>
-                            <ul class="social">
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-facebook-filled"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-twitter-original"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-instagram-filled"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-linkedin-original"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- copyright -->
-                    </div>
-                </div>
-                <!-- row -->
-            </div>
-            <!-- container -->
-        </div>
-        <!-- footer copyright -->
-    </footer>
-    <!--====== FOOTER ONE PART ENDS ======-->
+
+    <section>
+    </section>
+
+
+    <!-- Div para spinner -->
+    <div id="loader" class="spinnerx">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    @await Html.PartialAsync("_Footer")
 
     <script type="text/javascript">
         function spinnerEffect() {
-            console.log("spinnerEffect")
-            document.getElementById("loader").innerHTML=""
-            document.getElementById("loader").className = "loading";
+            document.getElementById("loader").className = "spinner";
         }
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
