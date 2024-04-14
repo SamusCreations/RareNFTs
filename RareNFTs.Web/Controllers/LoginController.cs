@@ -60,7 +60,7 @@ public class LoginController : Controller
         // Claim stores  User information like Name, role and others.  
         List<Claim> claims = new List<Claim>() {
                 new Claim(ClaimTypes.Email, usuarioDTO.Email),
-                new Claim(ClaimTypes.Role, usuarioDTO.DesciptionRole!)
+                new Claim(ClaimTypes.Role, usuarioDTO.DescriptionRole!)
             };
 
         ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

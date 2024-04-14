@@ -20,6 +20,6 @@ public class UserProfile: Profile
             .ForMember(dest => dest.Email, orig => orig.MapFrom(x => x.Email))
             .ForMember(dest => dest.Password, orig => orig.MapFrom(x => x.Password))
             .ForMember(dest => dest.IdRole, orig => orig.MapFrom(x => x.IdRole))
-            .ForMember(dest => dest.DesciptionRole, orig => orig.MapFrom(x => x.IdRolNavigation.Description));
+            .ForMember(dest => dest.DescriptionRole, orig => orig.MapFrom(x => x.IdRolNavigation.Description));
     }
 }

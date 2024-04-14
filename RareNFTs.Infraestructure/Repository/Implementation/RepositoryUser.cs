@@ -23,10 +23,10 @@ public class RepositoryUser : IRepositoryUser
     {
         await _context.Set<User>().AddAsync(entity);
         await _context.SaveChangesAsync();
-        return entity.Email;
+        return entity.Email!;
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
 
         var @object = await FindByIdAsync(id);
@@ -38,12 +38,12 @@ public class RepositoryUser : IRepositoryUser
     {
         var collection = await _context
                                      .Set<User>()
-                                     .Where(p => p.Email.Contains(description))
+                                     .Where(p => p.Email!.Contains(description))
                                      .ToListAsync();
         return collection;
     }
 
-    public async Task<User> FindByIdAsync(string id)
+    public async Task<User> FindByIdAsync(Guid id)
     {
         var @object = await _context.Set<User>().FindAsync(id);
 
@@ -55,6 +55,12 @@ public class RepositoryUser : IRepositoryUser
         var collection = await _context.Set<User>()
                                        .Include(b => b.IdRolNavigation)
                                        .AsNoTracking().ToListAsync();
+        return collection;
+    }
+
+    public async Task<ICollection<Role>> ListRoleAsync()
+    {
+        var collection = await _context.Set<Role>().ToListAsync();
         return collection;
     }
 
