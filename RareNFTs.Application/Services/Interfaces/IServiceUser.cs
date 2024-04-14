@@ -1,4 +1,5 @@
 ﻿using RareNFTs.Application.DTOs;
+using RareNFTs.Infraestructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,11 @@ public interface IServiceUser
 {
     Task<ICollection<UserDTO>> FindByDescriptionAsync(string description);
     Task<ICollection<UserDTO>> ListAsync();
-    Task<UserDTO> FindByIdAsync(string id);
+    Task<ICollection<RoleDTO>> ListRoleAsync();
+    Task<UserDTO> FindByIdAsync(Guid id);
     Task<UserDTO> LoginAsync(string email, string password);
     Task<string> AddAsync(UserDTO dto);
-    Task DeleteAsync(string id);
-    Task UpdateAsync(string id, UserDTO dto);
+    Task DeleteAsync(Guid id);
+    Task UpdateAsync(Guid id, UserDTO dto);
 
 }

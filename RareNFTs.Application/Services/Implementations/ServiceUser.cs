@@ -40,7 +40,7 @@ public class ServiceUser : IServiceUser
         return await _repository.AddAsync(objectMapped);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
     }
@@ -53,7 +53,7 @@ public class ServiceUser : IServiceUser
         return collection;
     }
 
-    public async Task<UserDTO> FindByIdAsync(string id)
+    public async Task<UserDTO> FindByIdAsync(Guid id)
     {
         var @object = await _repository.FindByIdAsync(id);
         var objectMapped = _mapper.Map<UserDTO>(@object);
@@ -71,7 +71,17 @@ public class ServiceUser : IServiceUser
         return collection;
     }
 
-    public async Task<UserDTO> LoginAsync(string id, string password)
+    public async Task<ICollection<RoleDTO>> ListRoleAsync()
+    {
+        // Get data from Repository
+        var list = await _repository.ListRoleAsync();
+        // Map List<*> to ICollection<*>
+        var collection = _mapper.Map<ICollection<RoleDTO>>(list);
+        // Return Data
+        return collection;
+    }
+
+    public async Task<UserDTO> LoginAsync(string email, string password)
     {
         UserDTO UserDTO = null!;
 
@@ -80,7 +90,7 @@ public class ServiceUser : IServiceUser
         //  Get Encrypted password
         string passwordEncrypted = Cryptography.Encrypt(password, secret);
 
-        var @object = await _repository.LoginAsync(id, passwordEncrypted);
+        var @object = await _repository.LoginAsync(email, passwordEncrypted);
 
         if (@object != null)
         {
@@ -90,7 +100,7 @@ public class ServiceUser : IServiceUser
         return UserDTO;
     }
 
-    public async Task UpdateAsync(string id, UserDTO dto)
+    public async Task UpdateAsync(Guid id, UserDTO dto)
     {
         var @object = await _repository.FindByIdAsync(id);
         //       source, destination

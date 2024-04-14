@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<RareNFTs.Application.DTOs.NftDTO>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "NFT";
 }
 
-<h1 class="">Index</h1>
+<h1>NFT</h1>
 
 <p>
-    <a class="btn gradient-btn rounded-full" asp-action="Create"> <i class="lni lni-plus"></i> Create </a>
+    <a class="btn gradient-btn rounded-full m-2" asp-action="Create"> <i class="lni lni-plus"></i> Create </a>
 </p>
 
 <table id="sortable" class="table">
@@ -65,15 +65,12 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    <div class="group-buttons">
+                    <div class="d-flex justify-content-center align-content-center group-buttons">
                         <div class="btn-group">
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                             @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                         </div>
-
-
-                   
                     </div>
                 </td>
             </tr>
