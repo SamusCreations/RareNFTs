@@ -2,7 +2,7 @@
 <!--====== NAVBAR ONE PART START ======-->
 <section class="navbar-area navbar-one shadow">
     <div class="container">
-      
+
         <div class="row">
             <div class="col-lg-12">
                 <nav class="navbar navbar-expand-lg navbar-dark">
@@ -21,18 +21,18 @@
                         <span class="toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
-                    
+
                         <ul class="navbar-nav m-auto">
-                                   @if (User.IsInRole("admin") == true || User.IsInRole("manager") == true)
+                            @if (User.IsInRole("admin") == true || User.IsInRole("process") == true)
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#sub-nav1"
-                                    aria-controls="sub-nav1"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                    href="javascript:void(0)">
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav1"
+                                       aria-controls="sub-nav1"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                       href="javascript:void(0)">
                                         Maintenance
                                         <div class="sub-nav-toggler">
                                             <span><i class="lni lni-chevron-down"></i></span>
@@ -46,16 +46,16 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true || User.IsInRole("manager") == true)
+                            @if (User.IsInRole("admin") == true || User.IsInRole("process") == true)
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#sub-nav2"
-                                    aria-controls="sub-nav2"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                    href="javascript:void(0)">
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav2"
+                                       aria-controls="sub-nav2"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                       href="javascript:void(0)">
                                         Process
                                         <div class="sub-nav-toggler">
                                             <span><i class="lni lni-chevron-down"></i></span>
@@ -68,16 +68,16 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true || User.IsInRole("manager") == true)
+                            @if (User.IsInRole("admin") == true || User.IsInRole("reports") == true)
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#sub-nav3"
-                                    aria-controls="sub-nav3"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                    href="javascript:void(0)">
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav3"
+                                       aria-controls="sub-nav3"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                       href="javascript:void(0)">
                                         Reports
                                         <div class="sub-nav-toggler">
                                             <span><i class="lni lni-chevron-down"></i></span>
@@ -92,16 +92,16 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true || User.IsInRole("manager") == true)
+                            @if (User.IsInRole("admin") == true )
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#sub-nav4"
-                                    aria-controls="sub-nav4"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                    href="javascript:void(0)">
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav4"
+                                       aria-controls="sub-nav4"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                       href="javascript:void(0)">
                                         Administration
                                         <div class="sub-nav-toggler">
                                             <span><i class="lni lni-chevron-down"></i></span>
@@ -112,16 +112,16 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true || User.IsInRole("manager") == true)
-                            {
+                            
+                          
                                 <li class="nav-item">
                                     <a class="page-scroll"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#sub-nav5"
-                                    aria-controls="sub-nav5"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                    href="javascript:void(0)">
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav5"
+                                       aria-controls="sub-nav5"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                       href="javascript:void(0)">
                                         Calification
                                         <div class="sub-nav-toggler">
                                             <span><i class="lni lni-chevron-down"></i></span>
@@ -131,36 +131,52 @@
                                         <li><a href="javascript:void(0)">Auto-calification</a></li>
                                     </ul>
                                 </li>
-                            }
+                        
                             <li class="nav-item">
-                                <a class="navbar-brand text-light" asp-area="" asp-controller="Home"
-                                   asp-action="Index">
-                                    @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
-                                    <div class="sub-nav-toggler">
-                                        <span><i class="lni lni-chevron-down"></i></span>
-                                    </div>
-                                </a>
-                                <ul class="sub-menu collapse" id="sub-nav5">
+                            
+                                    <a class="page-scroll"
+                                       data-bs-toggle="collapse"
+                                       data-bs-target="#sub-nav6"
+                                       aria-controls="sub-nav6"
+                                       aria-expanded="false"
+                                       aria-label="Toggle navigation"
+                                        asp-area="" asp-controller="Home" asp-action="Index">
+                                        <img src="/Images/user.png" alt="Logo" style="max-width: 32px;"> <!-- Reemplaza URL_DE_LA_IMAGEN con la URL de la imagen -->
+                                        <div class="sub-nav-toggler">
+                                            <span><i class="lni lni-chevron-down"></i></span>
+                                        </div>
+                                    </a>
+                          
+
+                                <ul class="sub-menu collapse" id="sub-nav6">
+
                                     <li>
-                                        <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Off</a>
+                                        <a asp-area="" asp-controller="Home"
+                                           asp-action="Index">
+                                            @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Out</a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
 
-                  @*   <a class="navbar-brand text-light" asp-area="" asp-controller="Home"
-                       asp-action="Index">
-                        @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+                    @*   <a class="navbar-brand text-light" asp-area="" asp-controller="Home"
+                    asp-action="Index">
+                    @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
 
                     </a>
                     <div class="navbar-btn d-none d-sm-inline-block">
-                        <ul>
-                            <li>
-                                <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Off</a>
-                            </li>
-                          
-                        </ul>
+                    <ul>
+                    <li>
+                    <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Off</a>
+                    </li>
+
+                    </ul>
                     </div> *@
                 </nav>
                 <!-- navbar -->

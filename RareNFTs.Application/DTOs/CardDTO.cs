@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using RareNFTs.Infraestructure.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 
 namespace RareNFTs.Application.DTOs;
 

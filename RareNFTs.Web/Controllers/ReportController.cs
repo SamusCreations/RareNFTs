@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Web.ViewModels;
@@ -40,7 +41,7 @@ public class ReportController : Controller
 
     public IActionResult SalesReport()
     {
-        return View();
+        return View("SalesReport");
     }
 
     [HttpPost]
@@ -61,16 +62,23 @@ public class ReportController : Controller
         byte[] bytes = await _serviceReport.ClientReport();
         return File(bytes, "text/plain", "ClientReport.pdf");
 
+
     }
 
+
     [HttpPost]
+
     [RequireAntiforgeryToken]
-    public async Task<FileResult> SalesReportPDF(DateTime startDate, DateTime endDate)
+    public async Task<IActionResult> SalesReportPDF(DateTime startDate, DateTime endDate)
     {
+        if (startDate == null && endDate == null)
+        {
+            ViewBag.Message = "Descripción requerida";
+            return View("SalesReport");
+        }
 
         byte[] bytes = await _serviceReport.SalesReport(startDate, endDate);
         return File(bytes, "text/plain", "SalesReport.pdf");
-
     }
 
     [RequireAntiforgeryToken]
