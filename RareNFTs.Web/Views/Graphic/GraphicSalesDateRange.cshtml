@@ -24,11 +24,21 @@
                 </div>
             </form>
             <br />
-            @if (ViewBag.Message != null)
+            @if (@ViewBag.Message != null)
             {
-                <div class="alert alert-danger" role="alert">
-                    @ViewBag.Message
+                <!-- start single alert -->
+                <div class="alert alert-error-light d-flex align-items-center mt-4">
+                    <div class="alert-icon">
+                        <i class="lni lni-play"></i>
+                    </div>
+                    <div class="alert-message">
+                        <h5 class="message-title">Error</h5>
+                        <p class="text">
+                            @ViewBag.Message
+                        </p>
+                    </div>
                 </div>
+                <!-- end single alert -->
             }
         </div>
 

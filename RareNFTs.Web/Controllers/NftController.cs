@@ -74,7 +74,7 @@ public class NftController : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceNft.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details",@object);
     }
 
     // GET: NftController/Edit/5
@@ -133,7 +133,6 @@ public class NftController : Controller
 
     // POST: NftController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceNft.DeleteAsync(id);

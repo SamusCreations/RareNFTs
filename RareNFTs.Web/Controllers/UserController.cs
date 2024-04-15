@@ -86,7 +86,6 @@ public class UserController : Controller
 
     // POST: UsuarioController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceUser.DeleteAsync(id);
