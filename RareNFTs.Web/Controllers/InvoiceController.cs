@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
@@ -6,6 +7,7 @@ using RareNFTs.Web.ViewModels;
 using System.Text.Json;
 
 namespace RareNFTs.Web.Controllers;
+[Authorize(Roles = "admin,process")]
 
 public class InvoiceController : Controller
 {

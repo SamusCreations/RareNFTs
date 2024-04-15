@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using RareNFTs.Application.Services.Interfaces;
@@ -6,6 +7,8 @@ using RareNFTs.Infraestructure.Models;
 using RareNFTs.Web.ViewModels;
 
 namespace RareNFTs.Web.Controllers;
+
+[Authorize(Roles = "admin, report")]
 
 public class ReportController : Controller
 {

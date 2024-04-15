@@ -2,8 +2,10 @@
 using RareNFTs.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RareNFTs.Web.Controllers;
+[Authorize(Roles = "admin,process")]
 
 public class CountryController : Controller
 {

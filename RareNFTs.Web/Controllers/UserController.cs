@@ -2,6 +2,7 @@
 using RareNFTs.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RareNFTs.Application.Services.Implementations;
 
 namespace Electronics.Web.Controllers;
 
@@ -23,9 +24,9 @@ public class UserController : Controller
     }
 
     // GET: UsuarioController/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.ListRole = _serviceUser.ListRoleAsync().Result;
+        ViewBag.ListRole = await _serviceUser.ListRoleAsync();
         return View();
     }
 
@@ -61,6 +62,8 @@ public class UserController : Controller
     // GET: UsuarioController/Edit/5
     public async Task<IActionResult> Edit(Guid id)
     {
+        ViewBag.ListRole = await _serviceUser.ListRoleAsync();
+
         var @object = await _serviceUser.FindByIdAsync(id);
         return View(@object);
     }

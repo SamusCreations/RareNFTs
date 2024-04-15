@@ -163,7 +163,7 @@ public partial class RareNFTsContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.User)
+            entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.User)
                 .HasForeignKey(d => d.IdRole)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Role");
