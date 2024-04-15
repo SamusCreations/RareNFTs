@@ -94,7 +94,7 @@
                                     </ul>
                                 </li>
                             }
-                            @if (User.IsInRole("admin") == true )
+                            @if (User.IsInRole("admin") == true)
                             {
                                 <li class="nav-item">
                                     <a class="page-scroll"
@@ -114,60 +114,59 @@
                                     </ul>
                                 </li>
                             }
-                            
-                          
-                                <li class="nav-item">
-                                    <a class="page-scroll"
-                                       data-bs-toggle="collapse"
-                                       data-bs-target="#sub-nav5"
-                                       aria-controls="sub-nav5"
-                                       aria-expanded="false"
-                                       aria-label="Toggle navigation"
-                                       href="javascript:void(0)">
-                                        Calification
-                                        <div class="sub-nav-toggler">
-                                            <span><i class="lni lni-chevron-down"></i></span>
-                                        </div>
-                                    </a>
-                                    <ul class="sub-menu collapse" id="sub-nav5">
-                                        <li><a href="javascript:void(0)">Auto-calification</a></li>
-                                    </ul>
-                                </li>
-                        
+
+
                             <li class="nav-item">
-                            
-                                    <a class="page-scroll"
-                                       data-bs-toggle="collapse"
-                                       data-bs-target="#sub-nav6"
-                                       aria-controls="sub-nav6"
-                                       aria-expanded="false"
-                                       aria-label="Toggle navigation"
-                                        asp-area="" asp-controller="Home" asp-action="Index">
-                                        <img src="/Images/user.png" alt="Logo" style="max-width: 32px;"> <!-- Reemplaza URL_DE_LA_IMAGEN con la URL de la imagen -->
-                                        <div class="sub-nav-toggler">
-                                            <span><i class="lni lni-chevron-down"></i></span>
-                                        </div>
-                                    </a>
-                          
+                                <a class="page-scroll"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#sub-nav5"
+                                   aria-controls="sub-nav5"
+                                   aria-expanded="false"
+                                   aria-label="Toggle navigation"
+                                   href="javascript:void(0)">
+                                    Calification
+                                    <div class="sub-nav-toggler">
+                                        <span><i class="lni lni-chevron-down"></i></span>
+                                    </div>
+                                </a>
+                                <ul class="sub-menu collapse" id="sub-nav5">
+                                    <li><a href="@Url.Action("Autoevaluation", "Home")">Autoevaluation</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+
+                                <a class="page-scroll"
+                                   data-bs-toggle="collapse"
+                                   data-bs-target="#sub-nav6"
+                                   aria-controls="sub-nav6"
+                                   aria-expanded="false"
+                                   aria-label="Toggle navigation"
+                                   asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="lni lni-user fs-4"></i>
+                                    <div class="sub-nav-toggler">
+                                    </div>
+                                </a>
+
 
                                 <ul class="sub-menu collapse" id="sub-nav6">
 
                                     <li>
                                         <a asp-area="" asp-controller="Home"
-                                           asp-action="Index">
+                                           asp-action="Index" class="text-lowercase">
                                             @User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
 
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="btn primary-btn-outline" asp-controller="Login" asp-action="LogOff">Log Out</a>
+                                        <a class="btn error-btn-outline" asp-controller="Login" asp-action="LogOff">Log Out</a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
 
-                
+
                 </nav>
                 <!-- navbar -->
             </div>

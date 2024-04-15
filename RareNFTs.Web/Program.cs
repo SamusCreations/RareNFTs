@@ -99,7 +99,7 @@ var logger = new LoggerConfiguration()
 builder.Host.UseSerilog(logger);
 
 // Configura las culturas soportadas y la cultura predeterminada aquí
-var supportedCultures = new[] { "en-US", "es-ES", "fr-FR" };
+var supportedCultures = new[] { "en-US"};
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
