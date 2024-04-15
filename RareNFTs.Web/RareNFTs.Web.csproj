@@ -19,8 +19,4 @@
     <ProjectReference Include="..\RareNFTs.Infraestructure\RareNFTs.Infraestructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\User\" />
-  </ItemGroup>
-
 </Project>

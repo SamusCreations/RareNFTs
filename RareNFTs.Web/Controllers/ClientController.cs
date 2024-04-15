@@ -97,8 +97,10 @@ public class ClientController : Controller
         await _serviceClient.DeleteAsync(id);
         return RedirectToAction("Index");
     }
-    [Authorize(Roles = "report")]
 
+
+    [HttpGet]
+    [Authorize(Roles = "report, admin")]
     public IActionResult GetClientByName(string filtro)
     {
 

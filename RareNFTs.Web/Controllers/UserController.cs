@@ -56,7 +56,7 @@ public class UserController : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceUser.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details", @object);
     }
 
     // GET: UsuarioController/Edit/5

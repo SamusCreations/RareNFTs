@@ -45,7 +45,9 @@ public class RepositoryUser : IRepositoryUser
 
     public async Task<User> FindByIdAsync(Guid id)
     {
-        var @object = await _context.Set<User>().FindAsync(id);
+        var @object = await _context.Set<User>()
+                                       .Include(b => b.IdRoleNavigation)
+                                       .AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
 
         return @object!;
     }
