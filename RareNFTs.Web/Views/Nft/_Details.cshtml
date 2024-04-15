@@ -1,14 +1,9 @@
 ﻿@model RareNFTs.Application.DTOs.NftDTO
 
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h1>Details</h1>
 
 <div>
-    <h4>NftDTO</h4>
-    <hr />
+    
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -56,7 +51,4 @@
         </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
