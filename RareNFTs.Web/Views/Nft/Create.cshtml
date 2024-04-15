@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data"
+        <form asp-action="Create" asp-controller="Nft" enctype="multipart/form-data"
               data-ajax="true"
               data-ajax-method="POST"
               data-ajax-begin="onBegin"
@@ -50,13 +50,25 @@
                 <input type="file" class="form-control" id="ImageFile" name="ImageFile" required />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="d-flex  align-content-center pt-4">
+
+                <button class="btn gradient-btn rounded-full" type="submit" value="Create">Create</button>
+
             </div>
         </form>
     </div>
 </div>
-<div id="loader" class="xxxx"></div>
+
+<br />
+<div id="message"></div>
+<br />
+
+<div id="loader" class="spinnerx">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -64,42 +76,39 @@
 
 @section scripts {
 
+
     <script>
         function onBegin() {
-            console.log("onBegin")
-            document.getElementById("loader").className = "loading";
+            console.log("onBegin");
+            setTimeout(function () {
+                document.getElementById("loader").className = "spinner";
+
+                setTimeout(function () {
+                    window.location.href = "Index"; // Asegúrate de que esta ruta es correcta
+                }, 1000);
+            }, 1000);
         }
 
         function onFailure(response) {
-            console.log("onFailure")
-            console.log(response)
-           Swal.fire({
-                title: "Error!",
-                icon: "error",
-                text: response.responseText,
-                timer: 2000,
-                timerProgressBar: true
-            })
+            console.log("onFailure");
+            document.getElementById("loader").className = "";
         }
 
         function onSuccess(response) {
-            console.log("onSuccess")
+            console.log("onSuccess");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Success!',
+                text: 'Completed!',
+                showConfirmButton: false,
+                timer: 2000, // la alerta se cierra después de 1500 milisegundos (1.5 segundos)
+                timerProgressBar: true // muestra una barra de progreso que se llena conforme pasa el tiempo
+            });
         }
 
         function onComplete() {
-            console.log("onComplete")
-            document.getElementById("loader").className = "xxxxx";
-
-            // // Clear field
-            // document.getElementById("IdProducto").value = "";
-            // document.getElementById("DescripcionProducto").value = "";
-            // document.getElementById("CostoDolar").value = "";
-            // document.getElementById("Precio").value = "";
-            // document.getElementById("Cantidad").value = "";
-            // document.getElementById("ImageFile").value = "";
-
-            window.location.href = '/NFT';
-
+            console.log("onComplete");
+            document.getElementById("loader").className = "";
         }
     </script>
 
@@ -107,3 +116,5 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+

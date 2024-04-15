@@ -56,7 +56,7 @@ public class CountryController : Controller
     public async Task<IActionResult> Details(string id)
     {
         var @object = await _serviceCountry.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details", @object);
     }
 
     // GET: CountryController/Edit/5
@@ -84,7 +84,7 @@ public class CountryController : Controller
 
     // POST: CountryController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> Delete(string id, IFormCollection collection)
     {
         await _serviceCountry.DeleteAsync(id);

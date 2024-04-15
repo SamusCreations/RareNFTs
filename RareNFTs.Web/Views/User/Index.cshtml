@@ -48,7 +48,8 @@
                                href='@Url.Action("Details", "User", new { id  = item.Id })'>
                                 Details
                             </a>
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
+                            <button type="button" class="btn primary-btn rounded-full" onclick="deleteItem('@item.Id')">Delete</button>
+
                         </div>
                     </div>
                 </td>
@@ -60,23 +61,66 @@
 <div id="showData"></div>
 
 @section scripts {
+
+
     <script type="text/javascript">
-        function onComplete(data) {
+        // debugger;
 
+        function deleteItem(id) {
+            console.log("Inicio")
             Swal.fire({
-                title: 'User Details',
-                html: data.responseText,
-                width: '1000px',
-                showDenyButton: false,
-                showOkButton: true,
-                showCancelButton: false,
-                timer: 2000,
-                timerProgressBar: true
-            })
-
+                title: 'Are you sure you want to Delete this?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                denyButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const myRequest = `/User/Delete?id=${id}`;
+                    fetch(myRequest, {
+                        method: 'POST'
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                        .then((text) => {
+                            console.log(text);
+                            Swal.fire('Delete successfully', '', 'success')
+                                .then(() => {
+                                    // Recarga la página solo después de mostrar el Swal de éxito
+                                    location.reload();
+                                });
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            Swal.fire('Failed to Delete', 'The record may be associated with other entities.', 'error');
+                        });
+                } else if (result.isDenied) {
+                    Swal.fire('Not Deleted!', '', 'info');
+                }
+            });
         }
-    </script>
 
+        function onComplete(data) {
+            Swal.fire({
+                title: 'Details',
+                html: data.responseText,
+                width: '600px',
+                showConfirmButton: false,
+                timer: 1500, // la alerta se cierra después de 1500 milisegundos (1.5 segundos)
+                timerProgressBar: true, // muestra una barra de progreso que se llena conforme pasa el tiempo
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+        }
+
+
+    </script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

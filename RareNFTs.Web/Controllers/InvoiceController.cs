@@ -172,7 +172,7 @@ public class InvoiceController : Controller
     public ActionResult Cancel(Guid id)
     {
         _serviceInvoice.CancelInvoiceAsync(id);
-        return Content("Ok");
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> ListActives()

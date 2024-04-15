@@ -62,7 +62,7 @@ public class ClientController : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceClient.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details",@object);
     }
 
     // GET: ClientController/Edit/5
@@ -91,7 +91,6 @@ public class ClientController : Controller
 
     // POST: ClientController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceClient.DeleteAsync(id);

@@ -57,7 +57,7 @@ public class CardController : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceCard.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details",@object);
     }
 
     // GET: CardController/Edit/5
@@ -76,6 +76,7 @@ public class CardController : Controller
         return RedirectToAction("Index");
     }
 
+
     // GET: CardController/Delete/5
     public async Task<IActionResult> Delete(Guid id)
     {
@@ -85,7 +86,7 @@ public class CardController : Controller
 
     // POST: CardController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceCard.DeleteAsync(id);
