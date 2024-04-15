@@ -203,8 +203,8 @@ public class NftController : Controller
 
 
     }
-    [Authorize(Roles = "report")]
 
+    [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftByName(string filtro)
     {
 
@@ -212,8 +212,8 @@ public class NftController : Controller
         return Json(collection);
 
     }
-    [Authorize(Roles = "report")]
 
+    [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftOwnedByName(string name)
     {
 

@@ -42,7 +42,12 @@
                     <div class="d-flex justify-content-center align-content-center group-buttons">
                         <div class="btn-group">
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
+                            <a data-ajax="true" class="btn primary-btn rounded-full"
+                               data-ajax-complete="onComplete"
+                               data-ajax-mode="replace"
+                               href='@Url.Action("Details", "User", new { id  = item.Id })'>
+                                Details
+                            </a>
                             @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn primary-btn rounded-full" })
                         </div>
                     </div>
@@ -51,3 +56,29 @@
         }
     </tbody>
 </table>
+
+<div id="showData"></div>
+
+@section scripts {
+    <script type="text/javascript">
+        function onComplete(data) {
+
+            Swal.fire({
+                title: 'User Details',
+                html: data.responseText,
+                width: '1000px',
+                showDenyButton: false,
+                showOkButton: true,
+                showCancelButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            })
+
+        }
+    </script>
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
