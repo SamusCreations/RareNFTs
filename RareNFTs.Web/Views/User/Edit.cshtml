@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
+                <input asp-for="Id" class="form-control" readonly />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,18 +24,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control" type="password" autocomplete="on" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="IdRole" class="control-label"></label>
-                <input asp-for="IdRole" class="form-control" />
+                @Html.DropDownListFor(m => m.IdRole,
+                         new SelectList(ViewBag.ListRole, "Id", "Description"), new { @class = "form-select" })
+
                 <span asp-validation-for="IdRole" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DescriptionRole" class="control-label"></label>
-                <input asp-for="DescriptionRole" class="form-control" />
-                <span asp-validation-for="DescriptionRole" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -48,3 +46,9 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -35,6 +35,8 @@ public class ServiceUser : IServiceUser
         string passwordEncrypted = Cryptography.Encrypt(dto.Password!, secret);
         // Set Encrypted password to dto
         dto.Password = passwordEncrypted;
+
+
         var objectMapped = _mapper.Map<User>(dto);
         // Return
         return await _repository.AddAsync(objectMapped);
@@ -104,6 +106,14 @@ public class ServiceUser : IServiceUser
     {
         var @object = await _repository.FindByIdAsync(id);
         //       source, destination
+
+
+        string secret = _options.Value.Crypto.Secret;
+        //  Get Encrypted password
+        string passwordEncrypted = Cryptography.Encrypt(dto.Password!, secret);
+        // Set Encrypted password to dto
+        dto.Password = passwordEncrypted;
+
         _mapper.Map(dto, @object!);
         await _repository.UpdateAsync();
     }

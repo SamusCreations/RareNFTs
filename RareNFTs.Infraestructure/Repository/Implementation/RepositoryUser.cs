@@ -53,7 +53,7 @@ public class RepositoryUser : IRepositoryUser
     public async Task<ICollection<User>> ListAsync()
     {
         var collection = await _context.Set<User>()
-                                       .Include(b => b.IdRolNavigation)
+                                       .Include(b => b.IdRoleNavigation)
                                        .AsNoTracking().ToListAsync();
         return collection;
     }
@@ -67,7 +67,7 @@ public class RepositoryUser : IRepositoryUser
     public async Task<User> LoginAsync(string email, string password)
     {
         var @object = await _context.Set<User>()
-                                    .Include(b => b.IdRolNavigation)
+                                    .Include(b => b.IdRoleNavigation)
                                     .Where(p => p.Email == email && p.Password == password)
                                     .FirstOrDefaultAsync();
         return @object!;

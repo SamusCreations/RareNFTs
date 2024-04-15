@@ -13,5 +13,5 @@ public partial class User
 
     public Guid IdRole { get; set; }
 
-    public virtual Role IdRolNavigation { get; set; } = null!;
+    public virtual Role IdRoleNavigation { get; set; } = null!;
 }
