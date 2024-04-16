@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Implementations;
 using RareNFTs.Application.Services.Interfaces;
+using X.PagedList;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RareNFTs.Web.Controllers;
@@ -22,10 +23,10 @@ public class ClientController : Controller
 
     // Retrieves a list of clients and returns the Index view
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? page)
     {
         var collection = await _serviceClient.ListAsync();
-        return View(collection);
+        return View(collection.ToPagedList(page ?? 1, 5));
     }
 
     // Returns the Create view along with the list of countries

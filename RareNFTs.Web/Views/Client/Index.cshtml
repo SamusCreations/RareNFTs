@@ -1,4 +1,6 @@
-﻿@model IEnumerable<RareNFTs.Application.DTOs.ClientDTO>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<RareNFTs.Application.DTOs.ClientDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -74,7 +76,14 @@
 }
     </tbody>
 </table>
-
+@Html.PagedListPager((IPagedList)Model, page =>
+                    Url.Action("Index", new { page }), new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.Always,
+                    MaximumPageNumbersToDisplay = 5,
+                    LiElementClasses = new String[] { "page-item" },
+                    PageClasses = new String[] { "page-link" }
+                })
 <div id="showData"></div>
 
 
