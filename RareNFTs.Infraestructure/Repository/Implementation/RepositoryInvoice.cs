@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using RareNFTs.Infraestructure.Data;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RareNFTs.Infraestructure.Repository.Implementation;
 
@@ -19,6 +22,11 @@ public class RepositoryInvoice : IRepositoryInvoice
         _context = context;
 
     }
+
+    //This asynchronous function adds a new invoice header to the database along with
+    //associated invoice details. It begins a transaction, adds the invoice header, updates the client's NFT
+    //ownership, adjusts the NFT inventory, and commits the transaction.
+
     public async Task<Guid> AddAsync(InvoiceHeader entity)
     {
 
@@ -66,6 +74,7 @@ public class RepositoryInvoice : IRepositoryInvoice
         }
     }
 
+    //This asynchronous function retrieves an invoice header from the database by its ID. It includes related invoice details and client information.
 
     public async Task<InvoiceHeader> FindByIdAsync(Guid id)
     {
@@ -74,22 +83,29 @@ public class RepositoryInvoice : IRepositoryInvoice
                     .Include(detail => detail.InvoiceDetail)
                     .ThenInclude(detail => detail.IdNftNavigation)
                     .Include(client => client.IdClientNavigation)
-                    .Where(p => p.Id == id).FirstOrDefaultAsync();
-
+        .Where(p => p.Id == id).FirstOrDefaultAsync();
         return response!;
     }
+
+
+    //This asynchronous function retrieves a list of invoice headers within the specified date range from the database.
+    //It includes related invoice details and client information.
 
     public async Task<List<InvoiceHeader>> FindByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         var invoices = await _context.Set<InvoiceHeader>()
-            .Include(detail => detail.InvoiceDetail)
-            .ThenInclude(detail => detail.IdNftNavigation)
-            .Include(client => client.IdClientNavigation)
+        .Include(detail => detail.InvoiceDetail)
+        .ThenInclude(detail => detail.IdNftNavigation)
+        .Include(client => client.IdClientNavigation)
             .Where(p => p.Date >= startDate && p.Date <= endDate)
             .ToListAsync();
 
         return invoices;
     }
+
+
+    //This asynchronous function cancels an invoice by changing its status to false.
+    //It removes associated entries from the ClientNFT table, adjusts NFT quantities, and commits the transaction.
 
     public async Task CancelInvoiceAsync(Guid invoiceId)
     {
@@ -152,6 +168,7 @@ public class RepositoryInvoice : IRepositoryInvoice
     }
 
 
+   // This asynchronous function retrieves a collection of active invoice headers from the database, where the status is true.
 
     public async Task<ICollection<InvoiceHeader>> ListActivesAsync()
     {

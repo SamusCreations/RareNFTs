@@ -20,6 +20,7 @@ public class ClientController : Controller
         _serviceCountry = serviceCountry;
     }
 
+    // Retrieves a list of clients and returns the Index view
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -27,6 +28,7 @@ public class ClientController : Controller
         return View(collection);
     }
 
+    // Returns the Create view along with the list of countries
     // GET: ClientController/Create
     public async Task<IActionResult> Create()
     {
@@ -35,21 +37,24 @@ public class ClientController : Controller
     }
 
 
+    // Handles the creation of a new client
     // POST: ClientController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ClientDTO dto)
-    {
+    {            // Validates the incoming model
+
         ModelState.Remove("Id");
         if (!ModelState.IsValid)
         {
-            // Lee del ModelState todos los errores que
-            // vienen para el lado del server
+            // If there are model errors, returns a bad request response with error messages
+
             string errors = string.Join("; ", ModelState.Values
                                .SelectMany(x => x.Errors)
                                .Select(x => x.ErrorMessage));
             return BadRequest(errors);
         }
+        // Adds the new client and redirects to the Index action
 
         await _serviceClient.AddAsync(dto);
         return RedirectToAction("Index");
@@ -58,6 +63,7 @@ public class ClientController : Controller
 
 
     // GET: ClientController/Details/5
+    // Retrieves details of a client by ID and returns a partial view with the details
 
     public async Task<IActionResult> Details(Guid id)
     {
@@ -66,6 +72,8 @@ public class ClientController : Controller
     }
 
     // GET: ClientController/Edit/5
+
+    // Retrieves details of a client by ID for editing, along with the list of countries
     public async Task<IActionResult> Edit(Guid id)
     {
         ViewBag.ListCountry = await _serviceCountry.ListAsync();
@@ -74,6 +82,8 @@ public class ClientController : Controller
     }
 
     // POST: ClientController/Edit/5
+
+    // Updates the details of a client and redirects to the Index action
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, ClientDTO dto)
@@ -83,6 +93,8 @@ public class ClientController : Controller
     }
 
     // GET: ClientController/Delete/5
+
+    // Retrieves details of a client by ID for deletion
     public async Task<IActionResult> Delete(Guid id)
     {
         var @object = await _serviceClient.FindByIdAsync(id);
@@ -90,6 +102,8 @@ public class ClientController : Controller
     }
 
     // POST: ClientController/Delete/5
+
+    // Deletes a client by ID and redirects to the Index action
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
@@ -97,6 +111,8 @@ public class ClientController : Controller
         return RedirectToAction("Index");
     }
 
+    // Retrieves clients by their description asynchronously
+    // Returns a JSON response containing the matching clients
 
     [HttpGet]
     [Authorize(Roles = "report, admin")]

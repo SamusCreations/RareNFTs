@@ -17,6 +17,8 @@ public class CountryController : Controller
     }
 
     [HttpGet]
+
+    // Retrieves a list of countries and returns the Index view
     public async Task<IActionResult> Index()
     {
         var collection = await _serviceCountry.ListAsync();
@@ -24,6 +26,8 @@ public class CountryController : Controller
     }
 
     // GET: CountryController/Create
+
+    // Returns the Create view
     public IActionResult Create()
     {
         return View();
@@ -31,20 +35,24 @@ public class CountryController : Controller
 
 
     // POST: CountryController/Create
+
+    // Handles the creation of a new country
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CountryDTO dto)
     {
+        // Validates the incoming model
 
         if (!ModelState.IsValid)
         {
-            // Lee del ModelState todos los errores que
-            // vienen para el lado del server
+            // If there are model errors, returns a bad request response with error messages
+
             string errors = string.Join("; ", ModelState.Values
                                .SelectMany(x => x.Errors)
                                .Select(x => x.ErrorMessage));
             return BadRequest(errors);
         }
+        // Adds the new country and redirects to the Index action
 
         await _serviceCountry.AddAsync(dto);
         return RedirectToAction("Index");
@@ -53,6 +61,8 @@ public class CountryController : Controller
 
 
     // GET: CountryController/Details/5
+    // Retrieves details of a country by ID and returns a partial view with the details
+
     public async Task<IActionResult> Details(string id)
     {
         var @object = await _serviceCountry.FindByIdAsync(id);
@@ -60,6 +70,8 @@ public class CountryController : Controller
     }
 
     // GET: CountryController/Edit/5
+    // Retrieves details of a country by ID for editing
+
     public async Task<IActionResult> Edit(string id)
     {
         var @object = await _serviceCountry.FindByIdAsync(id);
@@ -67,6 +79,8 @@ public class CountryController : Controller
     }
 
     // POST: CountryController/Edit/5
+    // Updates the details of a country and redirects to the Index action
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, CountryDTO dto)
@@ -76,6 +90,8 @@ public class CountryController : Controller
     }
 
     // GET: CountryController/Delete/5
+    // Retrieves details of a country by ID for deletion
+
     public async Task<IActionResult> Delete(string id)
     {
         var @object = await _serviceCountry.FindByIdAsync(id);
@@ -83,6 +99,8 @@ public class CountryController : Controller
     }
 
     // POST: CountryController/Delete/5
+    // Deletes a country by ID and redirects to the Index action
+
     [HttpPost]
 
     public async Task<IActionResult> Delete(string id, IFormCollection collection)
