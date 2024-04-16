@@ -21,13 +21,18 @@
       data-ajax-complete="onComplete">
     <div class="card">
         <div class="card-header">
-            <!-- Factura
-             <button style="position: absolute; top: 0; right: 0" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
-            -->
-            <div class="col-md-5">
-                <button class="btn btn-secondary" style="margin-left: 1em" onclick="onClearForm()">New</button>
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+
+            <div class="d-flex  align-content-center pt-4">
+
+                <button class="btn gradient-btn rounded-full mr-2" onclick="onClearForm()" value="New">  <i class="lni lni-plus"></i>New</button>
+
+                <button type="submit" value="Save" class="btn gradient-btn rounded-full">Save </button>
+
+               
             </div>
+      
+
         </div>
         <div class="card-body">
             <div class="container">
@@ -54,12 +59,15 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="IdClient" class="control-label"></label>
-                            <input asp-for="IdClient" class="form-control form-control-sm" />
+                            <input asp-for="IdClient" id="IdClient" class="form-control form-control-sm" />
                             <span asp-validation-for="IdClient" class="text-danger"></span>
                             <label id="ClientName" class="control-label fw-bold">-</label>
                         </div>
 
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
+                        <div class="d-flex  align-content-center pt-4">
+
+                        <button type="button" class="btn gradient-btn rounded-full" data-bs-toggle="modal" data-bs-target="#myModal" onclick="">Add Product</button>
+                                                </div> 
 
                     </div>
 
@@ -78,7 +86,16 @@
 
 </form>
 
+<br />
+<div id="message"></div>
+<br />
 
+<div id="loader" class="spinnerx">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 <!-------------------------------------- Modal ----------------------------->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
@@ -100,7 +117,40 @@
 </div>
 <!------------------------------------ Fin Modal ----------------------------->
 @section Scripts {
+    <script>
+        function onBegin() {
+            console.log("onBegin");
+            setTimeout(function () {
+                document.getElementById("loader").className = "spinner";
 
+                setTimeout(function () {
+                    window.location.href = "Index"; // Asegúrate de que esta ruta es correcta
+                }, 1000);
+            }, 1000);
+        }
+
+        function onFailure(response) {
+            console.log("onFailure");
+            document.getElementById("loader").className = "";
+        }
+
+        function onSuccess(response) {
+            console.log("onSuccess");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Success!',
+                text: 'Completed!',
+                showConfirmButton: false,
+                timer: 2500, // la alerta se cierra después de 1500 milisegundos (1.5 segundos)
+                timerProgressBar: true // muestra una barra de progreso que se llena conforme pasa el tiempo
+            });
+        }
+
+        function onComplete() {
+            console.log("onComplete");
+            document.getElementById("loader").className = "";
+        }
+    </script>
     <script>
         ///////////////////////////////////////////////////////////////////
         // Autocomplete Modal NftId search by Product Name
@@ -160,7 +210,6 @@
         ////////////////////////////////////////////////////
         // Busca el cliente por nombre+apellido1+apellido2 //
         /////////////////////////////////////////////////////
-
         $("#IdClient").autocomplete({
             source: function (request, response) {
                 var IdClient = $("#IdClient").val();
@@ -286,6 +335,7 @@
                 method: 'GET'
             }
 
+
             fetch(myRequest, options)
                 .then(function (response) {
                     // Error?
@@ -316,7 +366,7 @@
             $("#IdNft").val("");
             $("#PriceModal").val("");
             $("#NftModal").html("");
-            $("#Quantity").val("");
+            $("#quantityModal").val("");
             $("#InventoryModal").val("");
 
             // Clear image... NoPhoto
@@ -368,11 +418,13 @@
     <!--Ajax control -->
     <script>
         function onBegin() {
-            console.log("onBegin")
+            console.log("onBegin");
+            document.getElementById("loader").className = "spinner";
         }
 
         function onFailure(response) {
-            console.log("onFailure")
+            console.log("onFailure");
+            document.getElementById("loader").className = "";
             Swal.fire({
                 title: "Error!",
                 text: response.responseText,
@@ -381,7 +433,8 @@
         }
 
         function onSuccess(response) {
-            console.log("onSuccess")
+            console.log("onSuccess");
+            document.getElementById("loader").className = "";
             // Reset form (clear all fields)
             document.getElementById("myForm").reset();
             // Clear
@@ -393,17 +446,20 @@
                 icon: "success",
                 title: "Invoice Saved ...",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 2000, // Aumenta el tiempo de visualización a 4000 milisegundos (4 segundos)
+                timerProgressBar: true // Muestra una barra de progreso que se llena conforme pasa el tiempo
+            }).then(() => {
+                // Después de que el usuario cierre el SweetAlert, recarga la página
+                location.reload();
             });
-
-            // Refresh the page
-            location.reload();
-
         }
+
 
         function onComplete() {
-            console.log("Fin del proceso")
+            console.log("Fin del proceso");
+            document.getElementById("loader").className = "";
         }
+ 
     </script>
 
 

@@ -11,6 +11,8 @@ using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Application.Config;
 using RareNFTs.Web.Middleware;
 using System.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,7 @@ builder.Services.AddTransient<IRepositoryClient, RepositoryClient>();
 builder.Services.AddTransient<IRepositoryCountry, RepositoryCountry>();
 builder.Services.AddTransient<IRepositoryNft, RepositoryNft>();
 builder.Services.AddTransient<IRepositoryInvoice, RepositoryInvoice>();
+builder.Services.AddTransient<IRepositoryUser, RepositoryUser>();
 
 
 //Services
@@ -32,8 +35,28 @@ builder.Services.AddTransient<IServiceCard, ServiceCard>();
 builder.Services.AddTransient<IServiceNft, ServiceNft>();
 builder.Services.AddTransient<IServiceInvoice, ServiceInvoice>();
 builder.Services.AddTransient<IServiceReport, ServiceReport>();
+builder.Services.AddTransient<IServiceUser, ServiceUser>();
 
+
+// Security
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(
+            new ResponseCacheAttribute
+            {
+                NoStore = true,
+                Location = ResponseCacheLocation.None,
+            }
+        );
+});
 builder.Services.Configure<AppConfig>(builder.Configuration);
+
 
 // config Automapper
 builder.Services.AddAutoMapper(config =>
@@ -44,6 +67,9 @@ builder.Services.AddAutoMapper(config =>
     config.AddProfile<NftProfile>();
     config.AddProfile<InvoiceProfile>();
     config.AddProfile<ClientNftProfile>();
+    config.AddProfile<UserProfile>();
+    config.AddProfile<RoleProfile>();
+
 });
 
 
@@ -73,7 +99,7 @@ var logger = new LoggerConfiguration()
 builder.Host.UseSerilog(logger);
 
 // Configura las culturas soportadas y la cultura predeterminada aquí
-var supportedCultures = new[] { "en-US", "es-ES", "fr-FR" };
+var supportedCultures = new[] { "en-US"};
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
@@ -97,6 +123,7 @@ else
     app.UseMiddleware<ErrorHandlingMiddleware>();
 }
 
+
 // Error access control 
 app.UseStatusCodePagesWithReExecute("/error/{0}");
 
@@ -115,6 +142,6 @@ app.UseAntiforgery();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{email?}");
 
 app.Run();

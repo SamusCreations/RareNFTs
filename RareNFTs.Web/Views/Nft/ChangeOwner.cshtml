@@ -10,7 +10,14 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ChangeOwner">
+            <form asp-action="ChangeOwner" 
+                  data-ajax="true"
+                  data-ajax-method="POST"
+                  data-ajax-begin="onBegin"
+                  data-ajax-failure="onFailure"
+                  data-ajax-success="onSuccess"
+                  data-ajax-complete="onComplete"
+                  asp-antiforgery="true">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdClient" class="control-label"></label>
@@ -52,15 +59,28 @@
                 <label class="control-label">Current Image</label>
                 <img id="currentImage" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-thumbnail" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        
+
+            <div class="d-flex  align-content-center pt-4">
+
+                <button class="btn gradient-btn rounded-full" type="submit" value="Save">Save</button>
+
             </div>
         </form>
     </div>
 </div>
+<br />
+<div id="message"></div>
+<br />
 
+<div id="loader" class="spinnerx">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ListOwned">Back to List</a>
 </div>
 
 @section Scripts {
@@ -106,5 +126,47 @@
                 return false;
             }
         });
+
+        </script>
+
+
+        <script>
+            function onBegin() {
+                console.log("onBegin");
+                setTimeout(function () {
+                    document.getElementById("loader").className = "spinner";
+
+                    setTimeout(function () {
+                    window.location.href = "ListOwned"; // Asegúrate de que esta ruta es correcta
+                    }, 1000);
+                }, 1000);
+            }
+
+        function onFailure(response) {
+            console.log("onFailure");
+            document.getElementById("loader").className = "";
+        }
+
+        function onSuccess(response) {
+            console.log("onSuccess");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Success!',
+                text: 'Completed!',
+                showConfirmButton: false,
+                timer: 2000, // la alerta se cierra después de 1500 milisegundos (1.5 segundos)
+                timerProgressBar: true // muestra una barra de progreso que se llena conforme pasa el tiempo
+            });
+        }
+
+        function onComplete() {
+            console.log("onComplete");
+            document.getElementById("loader").className = "";
+        }
     </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

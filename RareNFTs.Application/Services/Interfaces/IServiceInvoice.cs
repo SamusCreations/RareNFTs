@@ -12,7 +12,7 @@ public interface IServiceInvoice
 {
     Task<Guid> AddAsync(InvoiceHeaderDTO dto);
     Task<InvoiceHeaderDTO> FindByIdAsync(Guid id);
-    Task<ICollection<InvoiceDetailDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate);
+    Task<ICollection<InvoiceHeaderDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate);
     Task CancelInvoiceAsync(Guid invoiceId);
     Task<ICollection<InvoiceHeaderDTO>> ListActivesAsync();
     Guid GetNewId();

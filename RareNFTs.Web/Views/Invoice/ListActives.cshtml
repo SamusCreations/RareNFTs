@@ -76,7 +76,6 @@
 
     <script type="text/javascript">
         // debugger;
-
         function deleteItem(id) {
             console.log("Inicio")
             Swal.fire({
@@ -93,19 +92,37 @@
                     fetch(myRequest, {
                         method: 'POST'
                     })
-                        .then((response) => response.text())
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
                         .then((text) => {
-                            console.log(text)
-                            Swal.fire('Invoice canceled successfully', '', 'success')
+                            console.log(text);
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Success!',
+                                text: 'Invoice canceled successfully!',
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true
+                            }).then(() => {
+                                // Reload the page only after showing the success Swal
+                                location.reload();
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            Swal.fire('Failed to cancel', 'The record cant be canceled', 'error');
                         });
 
                 } else if (result.isDenied) {
                     Swal.fire('Not Canceled!', '', 'info')
                 }
-                // reload de page but it is not a correct way.
-                location.reload();
-            })
+            });
         }
+
 
     </script>
 

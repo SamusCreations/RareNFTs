@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
@@ -6,6 +7,7 @@ using RareNFTs.Web.ViewModels;
 using System.Globalization;
 
 namespace RareNFTs.Web.Controllers;
+[Authorize(Roles = "admin,process")]
 
 public class NftController : Controller
 {
@@ -72,7 +74,7 @@ public class NftController : Controller
     public async Task<IActionResult> Details(Guid id)
     {
         var @object = await _serviceNft.FindByIdAsync(id);
-        return View(@object);
+        return PartialView("_Details",@object);
     }
 
     // GET: NftController/Edit/5
@@ -131,7 +133,6 @@ public class NftController : Controller
 
     // POST: NftController/Delete/5
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(Guid id, IFormCollection collection)
     {
         await _serviceNft.DeleteAsync(id);
@@ -198,8 +199,11 @@ public class NftController : Controller
     {
         var @object = await _serviceNft.ChangeNFTOwnerAsync(dto.IdNft, dto.IdClient);
         return RedirectToAction("ListOwned");
+
+
     }
 
+    [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftByName(string filtro)
     {
 
@@ -208,6 +212,7 @@ public class NftController : Controller
 
     }
 
+    [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftOwnedByName(string name)
     {
 

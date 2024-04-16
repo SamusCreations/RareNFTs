@@ -32,6 +32,7 @@ public record ClientDTO
     public string IdCountry { get; set; }
 
     [Required(ErrorMessage = "{0} is required")]
+    [EmailAddress(ErrorMessage = "Invalid Email Address")]
     [Display(Name = "Email")]
     public string Email { get; set; }
 
