@@ -67,9 +67,13 @@ public class ServiceInvoice : IServiceInvoice
         var @object = _mapper.Map<InvoiceHeader>(dto);
         var client = await _repositoryClient.FindByIdAsync(dto.IdClient);
         // Create report
-        await InvoiceReport(dto, client);
+        var pdfbytes = await InvoiceReport(dto, client);
+
+        string filePath = $@"C:\temp\Invoice_{dto.Id}.pdf";
+
+        File.WriteAllBytes(filePath, pdfbytes);
         // Send email
-        await SendEmail(client!.Email!);
+        await SendEmail(client!.Email!, filePath);
         return await _repositoryInvoice.AddAsync(@object);
     }
 
@@ -100,7 +104,7 @@ public class ServiceInvoice : IServiceInvoice
     /// Sends an email 
     /// </summary>
     /// <param name="email"></param>
-    private async Task<bool> SendEmail(string email)
+    private async Task<bool> SendEmail(string email, string filepath)
     {
 
         if (_options.Value.SmtpConfiguration == null)
@@ -121,7 +125,7 @@ public class ServiceInvoice : IServiceInvoice
             Body = "Attached Invoice of RareNFTs",
             IsBodyHtml = true
         };
-        Attachment attachment = new Attachment(@"C:\temp\Invoice.pdf");
+        Attachment attachment = new Attachment(filepath);
         mailMessage.Attachments.Add(attachment);
         using var smtpClient = new SmtpClient(_options.Value.SmtpConfiguration.Server,
                                               _options.Value.SmtpConfiguration.PortNumber)
@@ -266,7 +270,6 @@ public class ServiceInvoice : IServiceInvoice
             });
         }).GeneratePdf();
 
-        File.WriteAllBytes(@"C:\temp\Invoice.pdf", pdfByteArray);
         return pdfByteArray;
 
     }
