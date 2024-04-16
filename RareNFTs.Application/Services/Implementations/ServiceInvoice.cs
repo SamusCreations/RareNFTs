@@ -127,17 +127,16 @@ public class ServiceInvoice : IServiceInvoice
     /// Sends an email 
     /// </summary>
     /// <param name="email"></param>
-    private async Task<bool> SendEmail(string email, string filepath)
     /// Purpose: Sends an email with an attached invoice to the specified email address.
-//    Parameters: Takes an email string as the only parameter.
-//    Process:
-//Checks if SMTP configuration is present and logs an error if missing.
-//Creates a new MailMessage object configured with sender and recipient details, subject, and body.
-//Attaches a PDF file located at a hard-coded path.
-//Sends the email using an SmtpClient configured with the SMTP server settings.
-//Returns true if the email is sent successfully, false otherwise.
-//Notes: Handles error logging if SMTP settings are incomplete or missing.Uses synchronous file attachment which may not be ideal for asynchronous methods.
-    private async Task<bool> SendEmail(string email)
+    //    Parameters: Takes an email string as the only parameter.
+    //    Process:
+    //Checks if SMTP configuration is present and logs an error if missing.
+    //Creates a new MailMessage object configured with sender and recipient details, subject, and body.
+    //Attaches a PDF file located at a hard-coded path.
+    //Sends the email using an SmtpClient configured with the SMTP server settings.
+    //Returns true if the email is sent successfully, false otherwise.
+    //Notes: Handles error logging if SMTP settings are incomplete or missing.Uses synchronous file attachment which may not be ideal for asynchronous methods.
+    private async Task<bool> SendEmail(string email, string filepath)
     {
 
         if (_options.Value.SmtpConfiguration == null)
