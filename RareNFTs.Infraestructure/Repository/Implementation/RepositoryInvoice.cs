@@ -132,7 +132,7 @@ public class RepositoryInvoice : IRepositoryInvoice
                 var clientNFTs = (from clientNft in _context.ClientNft
                                   join client in _context.Client on clientNft.IdClient equals client.Id
                                   join nft in _context.Nft on clientNft.IdNft equals nft.Id
-                                  where nft.Id == detail.IdNft
+                                  where nft.Id == detail.IdNft && client.Id == invoice.IdClient
                                   select new ClientNft
                                   {
                                       IdClient = clientNft.IdClient,
@@ -146,7 +146,7 @@ public class RepositoryInvoice : IRepositoryInvoice
 
                 // Increment the Quantity of NFT by 1
                 var oNft = _context.Set<Nft>().FindAsync(detail.IdNft).Result;
-                if (oNft != null)
+                if (oNft != null && clientNFTs.Count > 0)
                 {
                     oNft.Quantity += 1;
                     _context.Set<Nft>().Update(oNft);
