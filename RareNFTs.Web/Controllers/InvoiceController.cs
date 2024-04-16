@@ -29,6 +29,8 @@ public class InvoiceController : Controller
 
     }
 
+  //  This action initializes data for the invoice creation page, including generating a new invoice ID and retrieving a collection of cards for selection.
+
     public async Task<IActionResult> Index()
     {
 
@@ -44,6 +46,7 @@ public class InvoiceController : Controller
         return View();
     }
 
+    //This action adds a product to the shopping cart. It validates the quantity against available stock and updates the cart accordingly.
 
     public async Task<IActionResult> AddProduct(Guid id, int quantity)
     {
@@ -90,6 +93,8 @@ public class InvoiceController : Controller
         return PartialView("_InvoiceDetail", list);
     }
 
+    //This action retrieves the current invoice details from the shopping cart and prepares them for display.
+
     public IActionResult GetInvoiceDetail()
     {
         List<InvoiceDetailDTO> list = new List<InvoiceDetailDTO>();
@@ -105,6 +110,8 @@ public class InvoiceController : Controller
 
         return PartialView("_InvoiceDetail", list);
     }
+
+    //This action removes a product from the shopping cart based on its index. It updates the cart and refreshes the displayed invoice details.
 
     public IActionResult DeleteProduct(int id)
     {
@@ -130,6 +137,7 @@ public class InvoiceController : Controller
 
     }
 
+    //This action creates a new invoice based on the provided invoice header and the contents of the shopping cart. It then redirects to the homepage.
 
     public async Task<IActionResult> Create(InvoiceHeaderDTO InvoiceHeaderDTO)
     {
@@ -168,12 +176,18 @@ public class InvoiceController : Controller
         }
     }
 
+
+    //This action cancels an existing invoice asynchronously and redirects to the homepage.
+
+
     [HttpPost]
     public ActionResult Cancel(Guid id)
     {
         _serviceInvoice.CancelInvoiceAsync(id);
         return RedirectToAction("Index");
     }
+
+    //This action retrieves a list of active invoices, prepares them for display, including client and card details, and returns the view for active invoices.
 
     public async Task<IActionResult> ListActives()
     {

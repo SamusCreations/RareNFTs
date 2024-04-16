@@ -16,12 +16,17 @@ public class RepositoryClient : IRepositoryClient
         _context = context;
     }
 
+    //This asynchronous function adds a new Client entity to the context and saves the changes to the database. It returns the ID of the newly added client.
+
     public async Task<Guid> AddAsync(Client entity)
     {
         await _context.Set<Client>().AddAsync(entity);
         await _context.SaveChangesAsync();
         return entity.Id;
     }
+
+    //This asynchronous function deletes a Client entity from the context based on the provided ID.
+    //It first retrieves the entity by ID, removes it from the context, and then saves the changes to the database.
 
     public async Task DeleteAsync(Guid id)
     {
@@ -35,6 +40,9 @@ public class RepositoryClient : IRepositoryClient
         _context.SaveChanges();
     }
 
+    //This asynchronous function deletes a Client entity from the context based on
+    //the provided ID. It first retrieves the entity by ID, removes it from the context, and then saves the changes to the database.
+
     public async Task<ICollection<Client>> FindByDescriptionAsync(string description)
     {
         var collection = await _context
@@ -44,12 +52,16 @@ public class RepositoryClient : IRepositoryClient
         return collection;
     }
 
+    //This asynchronous function finds a Client entity in the context by its ID. It retrieves the client object from the context based on the provided ID.
+
     public async Task<Client> FindByIdAsync(Guid id)
     {
         var @object = await _context.Set<Client>().FindAsync(id);
 
         return @object!;
     }
+
+    //This asynchronous function finds Client entities associated with a given NFT name. It retrieves a collection of clients who own the NFTs with names containing the specified string.
 
     public async Task<IEnumerable<ClientNft>> FindByNftNameAsync(string name)
     {
@@ -68,11 +80,15 @@ public class RepositoryClient : IRepositoryClient
         return result;
     }
 
+    //This asynchronous function retrieves a list of all Client entities from the context. It returns the collection of clients without tracking changes.
+
     public async Task<ICollection<Client>> ListAsync()
     {
         var collection = await _context.Set<Client>().AsNoTracking().ToListAsync();
         return collection;
     }
+
+    //This asynchronous function retrieves a list of clients who are owners of one or more NFTs. It queries the database to find clients associated with at least one ClientNft entity and returns the collection of owners.
 
     public async Task<ICollection<Client>> ListOwnersAsync()
     {
@@ -90,6 +106,8 @@ public class RepositoryClient : IRepositoryClient
             throw new Exception("An error occurred while retrieving the list of NFT owners.", ex);
         }        
     }
+
+    //This asynchronous function saves the changes made to the context to the underlying database. It commits any pending changes to the database.
 
     public async Task UpdateAsync()
     {

@@ -18,6 +18,13 @@ using System.Security.Principal;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Reflection.Metadata;
+using static Azure.Core.HttpHeader;
+using System.IO;
+using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
+using static QuestPDF.Helpers.Colors;
+using System.Xml;
 
 namespace RareNFTs.Application.Services.Implementations;
 
@@ -44,6 +51,9 @@ public class ServiceInvoice : IServiceInvoice
         _logger = logger;
     }
 
+//    //Purpose: Adds a new invoice after validating stock and calculating the total.
+//    Process: Validates each item's stock, computes total, maps DTO to domain model, generates a report, sends an email with the invoice, and saves the invoice.
+//Returns: The ID of the newly created invoice as a Guid.
     public async Task<Guid> AddAsync(InvoiceHeaderDTO dto)
     {
         decimal total = 0;
@@ -77,6 +87,10 @@ public class ServiceInvoice : IServiceInvoice
         return await _repositoryInvoice.AddAsync(@object);
     }
 
+
+    ////Purpose: Retrieves a specific invoice by ID.
+    //Process: Fetches and maps the invoice from the repository using the given ID.
+    //Returns: An InvoiceHeaderDTO containing the invoice details.
     public async Task<InvoiceHeaderDTO> FindByIdAsync(Guid id)
     {
         var @object = await _repositoryInvoice.FindByIdAsync(id);
@@ -84,6 +98,10 @@ public class ServiceInvoice : IServiceInvoice
         return objectMapped;
     }
 
+
+    ////Purpose: Gets all invoices within a specific date range.
+    //Process: Retrieves and maps all invoices falling within the specified start and end dates.
+    //Returns: A collection of InvoiceHeaderDTO.
     public async Task<ICollection<InvoiceHeaderDTO>> FindByDateRangeAsync(DateTime startDate, DateTime endDate)
     {
         // Get data from Repository
@@ -94,6 +112,11 @@ public class ServiceInvoice : IServiceInvoice
         return collection;
     }
 
+
+
+//    Purpose: Generates a new unique identifier(GUID).
+//Process: Creates and returns a new Guid.
+//Returns: A Guid.
     public Guid GetNewId()
     {
         Guid newId = Guid.NewGuid();
@@ -104,6 +127,15 @@ public class ServiceInvoice : IServiceInvoice
     /// Sends an email 
     /// </summary>
     /// <param name="email"></param>
+    /// Purpose: Sends an email with an attached invoice to the specified email address.
+    //    Parameters: Takes an email string as the only parameter.
+    //    Process:
+    //Checks if SMTP configuration is present and logs an error if missing.
+    //Creates a new MailMessage object configured with sender and recipient details, subject, and body.
+    //Attaches a PDF file located at a hard-coded path.
+    //Sends the email using an SmtpClient configured with the SMTP server settings.
+    //Returns true if the email is sent successfully, false otherwise.
+    //Notes: Handles error logging if SMTP settings are incomplete or missing.Uses synchronous file attachment which may not be ideal for asynchronous methods.
     private async Task<bool> SendEmail(string email, string filepath)
     {
 
@@ -139,6 +171,15 @@ public class ServiceInvoice : IServiceInvoice
 
     }
 
+
+//    //Purpose: Generates a PDF invoice report for a given invoice and client.
+//    Parameters: Takes an InvoiceHeaderDTO and a Client object as parameters.
+//    Process:
+//Initializes the QuestPDF settings for generating the PDF.
+//Designs the invoice PDF using a fluent API provided by QuestPDF.
+//Generates and saves the PDF to a local file system path.
+//Returns a byte array of the generated PDF.
+//Notes: The PDF design is hardcoded and includes various details about the invoice and client. It uses a synchronous method WriteAllBytes to write the PDF to disk, which could potentially be improved for asynchronous operations.
     private async Task<byte[]> InvoiceReport(InvoiceHeaderDTO invoice, Client client)
     {
         // Get Data
@@ -274,11 +315,23 @@ public class ServiceInvoice : IServiceInvoice
 
     }
 
+    ////Purpose: Cancels an invoice by its ID.
+    //Parameters: Takes a Guid representing the invoice ID.
+    //Process: Calls the repository method to cancel the invoice.
+    //Notes: Straightforward method to update the status of an invoice, assuming the repository handles the logic of what "cancel" means.
     public async Task CancelInvoiceAsync(Guid invoiceId)
     {
         await _repositoryInvoice.CancelInvoiceAsync(invoiceId);
     }
 
+
+//    //Purpose: Retrieves a list of active invoices.
+//    Parameters: None.
+//    Process:
+//Fetches active invoices from the repository.
+//Maps the data from entity model to DTO.
+//Returns a collection of InvoiceHeaderDTO.
+//Notes: Utility method to fetch currently active invoices, useful for summary or dashboard features.
     public async Task<ICollection<InvoiceHeaderDTO>> ListActivesAsync()
     {
         var list = await _repositoryInvoice.ListActivesAsync();

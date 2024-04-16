@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.Extensions.Options;
 using RareNFTs.Application.Config;
 using RareNFTs.Application.DTOs;
@@ -7,10 +8,15 @@ using RareNFTs.Application.Utils;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 using System;
+using System.Buffers.Text;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace RareNFTs.Application.Services.Implementations;
 
@@ -27,6 +33,9 @@ public class ServiceUser : IServiceUser
         _options = options;
     }
 
+//    Purpose: Adds a new user to the repository.
+//Process: Encrypts the user's password, maps the DTO to the domain model, and adds it to the repository.
+//Returns: The ID (string) of the newly added user.
     public async Task<string> AddAsync(UserDTO dto)
     {
         // Read secret
@@ -42,12 +51,19 @@ public class ServiceUser : IServiceUser
         return await _repository.AddAsync(objectMapped);
     }
 
+
+//    Purpose: Deletes a user by ID.
+//Process: Invokes the repository's delete method for the specified ID.
+//Returns: None(task-based asynchronous operation).
     public async Task DeleteAsync(Guid id)
     {
         await _repository.DeleteAsync(id);
     }
 
 
+//    Purpose: Retrieves a list of users matching a specific description.
+//Process: Fetches and maps the list of users from the repository that match the description.
+//Returns: A collection of UserDTO.
     public async Task<ICollection<UserDTO>> FindByDescriptionAsync(string description)
     {
         var list = await _repository.FindByDescriptionAsync(description);
@@ -55,6 +71,10 @@ public class ServiceUser : IServiceUser
         return collection;
     }
 
+
+//    Purpose: Fetches a user by their ID.
+//Process: Retrieves and maps a user from the repository using the specified ID.
+//Returns: A UserDTO representing the user.
     public async Task<UserDTO> FindByIdAsync(Guid id)
     {
         var @object = await _repository.FindByIdAsync(id);
@@ -63,6 +83,9 @@ public class ServiceUser : IServiceUser
     }
 
 
+//    Purpose: Lists all users.
+//Process: Retrieves and maps all users from the repository.
+//Returns: A collection of UserDTO.
     public async Task<ICollection<UserDTO>> ListAsync()
     {
         // Get data from Repository
@@ -73,6 +96,10 @@ public class ServiceUser : IServiceUser
         return collection;
     }
 
+
+//    Purpose: Lists all user roles.
+//Process: Retrieves and maps all user roles from the repository.
+//Returns: A collection of RoleDTO.
     public async Task<ICollection<RoleDTO>> ListRoleAsync()
     {
         // Get data from Repository
@@ -83,6 +110,10 @@ public class ServiceUser : IServiceUser
         return collection;
     }
 
+
+    //Purpose: Authenticates a user login attempt.
+    //Process: Encrypts the provided password, checks for a matching user in the repository, and maps the result to a UserDTO.
+    //Returns: The UserDTO if authentication is successful, otherwise null.
     public async Task<UserDTO> LoginAsync(string email, string password)
     {
         UserDTO UserDTO = null!;
@@ -102,6 +133,10 @@ public class ServiceUser : IServiceUser
         return UserDTO;
     }
 
+
+//    Purpose: Updates an existing user.
+//Process: Retrieves the user by ID, encrypts the new password, maps the DTO onto the existing user object, and updates it in the repository.
+//Returns: None (task-based asynchronous operation).
     public async Task UpdateAsync(Guid id, UserDTO dto)
     {
         var @object = await _repository.FindByIdAsync(id);

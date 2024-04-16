@@ -22,30 +22,42 @@ public class ReportController : Controller
         _serviceNft = serviceNft;
     }
 
+    //This function returns the view for the index page.
+
     public IActionResult Index()
     {
         return View();
     }
+
+    //This function returns the view for the product report page.
 
     public IActionResult ProductReport()
     {
         return View();
     }
 
+    //This function returns the view for the client report page.
+
     public IActionResult ClientReport()
     {
         return View();
     }
+
+    //This function returns the view for the owner NFT report page.
 
     public IActionResult OwnerNftReport()
     {
         return View();
     }
 
+    //This function returns the view for the sales report page.
+
     public IActionResult SalesReport()
     {
         return View("SalesReport");
     }
+
+    //This function generates and returns a PDF file for the product report.
 
     [HttpPost]
     [RequireAntiforgeryToken]
@@ -56,6 +68,9 @@ public class ReportController : Controller
         return File(bytes, "text/plain", "ProductReport.pdf");
 
     }
+
+
+    //This function generates and returns a PDF file for the client report.
 
     [HttpPost]
     [RequireAntiforgeryToken]
@@ -68,6 +83,7 @@ public class ReportController : Controller
 
     }
 
+    //This function generates and returns a PDF file for the sales report within the specified date range.
 
     [HttpPost]
 
@@ -83,6 +99,9 @@ public class ReportController : Controller
         byte[] bytes = await _serviceReport.SalesReport(startDate, endDate);
         return File(bytes, "text/plain", "SalesReport.pdf");
     }
+
+
+    //This function retrieves client-NFT associations based on the NFT name and returns a partial view with the client-NFT details.
 
     [RequireAntiforgeryToken]
 
