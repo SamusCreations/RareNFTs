@@ -5,13 +5,15 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class InvoiceDetail
 {
-    public string IdInvoice { get; set; } = null!;
+    public Guid IdInvoice { get; set; }
 
-    public string IdNft { get; set; } = null!;
+    public Guid IdNft { get; set; }
 
     public decimal? Price { get; set; }
 
-    public decimal? Tax { get; set; }
+    public int? Quantity { get; set; }
+
+    public int Sequence { get; set; }
 
     public virtual InvoiceHeader IdInvoiceNavigation { get; set; } = null!;
 

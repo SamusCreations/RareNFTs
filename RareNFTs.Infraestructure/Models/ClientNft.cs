@@ -5,9 +5,9 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class ClientNft
 {
-    public string IdClient { get; set; } = null!;
+    public Guid IdClient { get; set; }
 
-    public string IdNft { get; set; } = null!;
+    public Guid IdNft { get; set; }
 
     public DateTime? Date { get; set; }
 

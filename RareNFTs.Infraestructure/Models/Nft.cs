@@ -5,19 +5,19 @@ namespace RareNFTs.Infraestructure.Models;
 
 public partial class Nft
 {
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; }
 
     public string? Description { get; set; }
 
     public decimal? Price { get; set; }
 
-    public byte[]? Image { get; set; }
+    public byte[] Image { get; set; } = default!;
 
     public DateTime? Date { get; set; }
 
-    public bool? Active { get; set; }
-
     public string? Author { get; set; }
+
+    public int? Quantity { get; set; }
 
     public virtual ICollection<ClientNft> ClientNft { get; set; } = new List<ClientNft>();
 
