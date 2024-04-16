@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Infraestructure.Models;
 using static QuestPDF.Helpers.Colors;
+using Humanizer;
+using Microsoft.Extensions.Hosting;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.Metadata;
 
 namespace RareNFTs.Web.Controllers;
 
@@ -26,17 +30,21 @@ public class GraphicController : Controller
         _serviceInvoice =   serviceInvoice;
     }
 
+    // This action returns a view for the homepage.
+
     public IActionResult Index()
     {
         return View();
     }
 
-
+    // This action returns a view to display sales charts within a date range.
 
     public IActionResult GraphicSalesDateRange()
     {
         return View();
     }
+
+    //This action handles the POST request to generate sales charts within a date range.
 
     [HttpPost]
     public async Task<IActionResult> GraphicSalesDateRange(DateTime StartDate, DateTime EndDate)

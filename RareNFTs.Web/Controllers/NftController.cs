@@ -1,10 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure.Core;
+using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Web.ViewModels;
+using System.Collections.Generic;
 using System.Globalization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.Metadata;
+using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using X.PagedList;
 
 namespace RareNFTs.Web.Controllers;
 [Authorize(Roles = "admin,process")]
@@ -20,12 +30,16 @@ public class NftController : Controller
         _serviceClient = serviceClient;
     }
 
+    //This function handles GET requests for displaying the index page. It retrieves a collection of NFTs and passes it to the view for rendering.
+
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? page)
     {
         var collection = await _serviceNft.ListAsync();
-        return View(collection);
+        return View(collection.ToPagedList(page ?? 1,5));
     }
+
+    //This function handles GET requests to display the create NFT page. It simply returns the corresponding view.
 
     // GET: NftController/Create
     public async Task<IActionResult> Create()
@@ -33,6 +47,7 @@ public class NftController : Controller
         return View();
     }
 
+    //This function handles POST requests to create a new NFT. It receives the NFT data and an image file, processes the image, adds the NFT to the database, and redirects to the index page.
 
     // POST: NftController/Create
     [HttpPost]
@@ -69,6 +84,7 @@ public class NftController : Controller
 
     }
 
+    //This function handles GET requests to display the details of a specific NFT. It retrieves the NFT object by ID and returns a partial view with its details.
 
     // GET: NftController/Details/5
     public async Task<IActionResult> Details(Guid id)
@@ -77,12 +93,17 @@ public class NftController : Controller
         return PartialView("_Details",@object);
     }
 
+    //This function handles GET requests to display the edit page for a specific NFT. It retrieves the NFT object by ID and returns the edit view.
+
     // GET: NftController/Edit/5
     public async Task<IActionResult> Edit(Guid id)
     {
         var @object = await _serviceNft.FindByIdAsync(id);
         return View(@object);
     }
+
+
+    //This function handles POST requests to edit an existing NFT. It receives the NFT ID, updated data, and an optional new image file. It updates the NFT in the database and redirects to the index page.
 
     // POST: NftController/Edit/5
     [HttpPost]
@@ -123,6 +144,7 @@ public class NftController : Controller
     }
 
 
+    //This function handles GET requests to display the delete confirmation page for a specific NFT. It retrieves the NFT object by ID and returns the delete confirmation view.
 
     // GET: NftController/Delete/5
     public async Task<IActionResult> Delete(Guid id)
@@ -130,6 +152,9 @@ public class NftController : Controller
         var @object = await _serviceNft.FindByIdAsync(id);
         return View(@object);
     }
+
+
+    //This function handles POST requests to delete an existing NFT. It receives the NFT ID and deletes it from the database, then redirects to the index page.
 
     // POST: NftController/Delete/5
     [HttpPost]
@@ -139,7 +164,10 @@ public class NftController : Controller
         return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> ListOwned()
+
+    //This function handles GET requests to display the list of NFTs owned by clients. It retrieves the list of owned NFTs, retrieves client and NFT details for each, and returns the view with the list of client-owned NFTs.
+
+    public async Task<IActionResult> ListOwned(int? page)
     {
         var ListOwned = await _serviceNft.ListOwnedAsync();
         var ListViewModel = new List<ViewModelClientNft>();
@@ -164,8 +192,11 @@ public class NftController : Controller
 
            ListViewModel.Add(clientNft);
         }
-        return View("ListOwned", ListViewModel);
+        return View(ListViewModel.ToPagedList(page ?? 1,5));
     }
+
+
+    //This function handles GET requests to display the page for changing the owner of a specific NFT. It retrieves the NFT and client details and returns the view for changing the owner.
 
     public async Task<IActionResult> ChangeOwner(Guid id)
     {
@@ -192,6 +223,7 @@ public class NftController : Controller
         };
         return View(clientNft);
     }
+   // This function handles POST requests to change the owner of an NFT.It receives the updated client-NFT association data, changes the owner in the database, and redirects to the list of owned NFTs.
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -199,18 +231,19 @@ public class NftController : Controller
     {
         var @object = await _serviceNft.ChangeNFTOwnerAsync(dto.IdNft, dto.IdClient);
         return RedirectToAction("ListOwned");
-
-
     }
+
+    //This function handles GET requests to retrieve NFTs by their description. It searches for NFTs with matching descriptions and returns them as JSON.
 
     [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftByName(string filtro)
     {
-
         var collection = await _serviceNft.FindByDescriptionAsync(filtro);
         return Json(collection);
-
     }
+
+
+   // This function handles GET requests to retrieve NFTs owned by clients based on the NFT name.It retrieves client-NFT associations, retrieves client and NFT details for the first association, and returns a partial view with the client-NFT details.
 
     [Authorize(Roles = "report, admin")]
     public async Task<IActionResult> GetNftOwnedByName(string name)

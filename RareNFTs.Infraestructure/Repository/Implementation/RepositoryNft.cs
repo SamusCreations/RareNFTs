@@ -3,11 +3,14 @@ using RareNFTs.Infraestructure.Data;
 using RareNFTs.Infraestructure.Models;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RareNFTs.Infraestructure.Repository.Implementation;
 
@@ -20,6 +23,9 @@ public class RepositoryNft : IRepositoryNft
         _context = context;
     }
 
+
+    //This asynchronous function adds a new NFT entity to the database. It saves changes to the context and returns the ID of the added entity.
+
     public async Task<Guid> AddAsync(Nft entity)
     {
         await _context.Set<Nft>().AddAsync(entity);
@@ -28,6 +34,7 @@ public class RepositoryNft : IRepositoryNft
     }
 
 
+    //This asynchronous function deletes an NFT entity from the database based on its ID. It removes the entity from the context and saves the changes.
 
     public async Task DeleteAsync(Guid id)
     {
@@ -36,6 +43,7 @@ public class RepositoryNft : IRepositoryNft
         _context.SaveChanges();
     }
 
+   // This asynchronous function retrieves a collection of NFT entities from the database based on a partial match of their descriptions.
 
     public async Task<ICollection<Nft>> FindByDescriptionAsync(string description)
     {
@@ -46,11 +54,15 @@ public class RepositoryNft : IRepositoryNft
         return collection;
     }
 
+    //These asynchronous functions retrieve an NFT entity from the database based on its ID. The first overload accepts an integer ID, while the second overload accepts a GUID ID.
+
     public async Task<Nft> FindByIdAsync(int id)
     {
         var @object = await _context.Set<Nft>().FindAsync(id);
         return @object!;
     }
+
+    //This asynchronous function retrieves a collection of NFT entities from the database. It includes related ClientNft entries and operates in a read-only mode.
 
     public async Task<Nft> FindByIdAsync(Guid id)
     {
@@ -59,6 +71,7 @@ public class RepositoryNft : IRepositoryNft
     }
 
 
+    //This asynchronous function saves any changes made to NFT entities in the context to the database.
 
     public async Task<ICollection<Nft>> ListAsync()
     {
@@ -68,10 +81,15 @@ public class RepositoryNft : IRepositoryNft
         return collection;
     }
 
+    //This asynchronous function saves any changes made to NFT entities in the context to the database.
+
     public async Task UpdateAsync()
     {
         await _context.SaveChangesAsync();
     }
+
+    //This asynchronous function changes the owner of an NFT. It begins a transaction,
+    //removes the previous owner's ClientNft entries, adds a new entry for the new owner, and commits the transaction.
 
     public async Task<bool> ChangeNFTOwnerAsync(Guid nftId, Guid clientId)
     {
@@ -121,6 +139,9 @@ public class RepositoryNft : IRepositoryNft
         }
     }
 
+
+    //This asynchronous function retrieves a collection of all ClientNft entries from the database. It includes related NFT and Client entities.
+
     public async Task<ICollection<ClientNft>> ListOwnedAsync()
     {
         try
@@ -137,6 +158,9 @@ public class RepositoryNft : IRepositoryNft
             throw new Exception("An error occurred while retrieving all ClientNfts from the database.", ex);
         }
     }
+
+
+    //This asynchronous function retrieves a ClientNft entry from the database based on either its Client ID or NFT ID. It includes related NFT and Client entities and handles exceptions.
 
     public async Task<ClientNft> FindClientNftByIdAsync(Guid id)
     {

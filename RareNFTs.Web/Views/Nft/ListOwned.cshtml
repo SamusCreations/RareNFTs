@@ -1,4 +1,6 @@
-﻿@model IEnumerable<RareNFTs.Web.ViewModels.ViewModelClientNft>
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<RareNFTs.Web.ViewModels.ViewModelClientNft>
 
 @{
     ViewData["Title"] = "ListOwned";
@@ -79,3 +81,14 @@
         }
     </tbody>
 </table>
+
+@Html.PagedListPager((IPagedList)Model, page =>
+                    Url.Action("ListOwned", new { page }), new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.Always,
+                    MaximumPageNumbersToDisplay = 5,
+                    LiElementClasses = new String[] { "page-item" },
+                    PageClasses = new String[] { "page-link" }
+                })
+
+<div id="showData"></div>

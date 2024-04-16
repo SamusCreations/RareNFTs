@@ -24,12 +24,18 @@ public class LoginController : Controller
         _logger = logger;
     }
 
+
+    //This function handles GET requests for the login page. It simply returns the corresponding view.
+
     [HttpGet]
     public IActionResult Index()
     {
         return View();
     }
 
+    //This function handles POST requests to log in. It checks the validity of the model and performs user authentication.
+    //If there are errors, it logs an error message and redirects to the login view. If the login is successful,
+    //it creates and stores user claims in a claims identity and redirects the user to the home page.
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -76,6 +82,9 @@ public class LoginController : Controller
 
         return RedirectToAction("Index", "Home");
     }
+
+
+    //This function handles the logoff of authenticated users. Only logged-in users can access this function. It logs the user's logoff and removes the authentication, then redirects to the login page.
 
     /*Only user connected can logoff*/
     [Authorize]

@@ -5,6 +5,10 @@ using RareNFTs.Application.Services.Interfaces;
 using RareNFTs.Infraestructure.Repository.Interfaces;
 using RareNFTs.Application.DTOs;
 using RareNFTs.Infraestructure.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.SqlServer.Server;
+using Microsoft.VisualBasic;
+using System;
 
 
 
@@ -28,7 +32,9 @@ public class ServiceReport : IServiceReport
         _repositoryInvoice = repositoryInvoice;
         _repositoryCard = repositoryCard;
     }
-
+//    Purpose: Generates a PDF report of product information.
+//Process: Retrieves product data from the repository, formats it into a PDF document using QuestPDF, and saves it to disk.
+//Returns: Byte array containing the PDF file.
     public async Task<byte[]> ProductReport()
     {
         // Get Data
@@ -157,6 +163,9 @@ public class ServiceReport : IServiceReport
 
     }
 
+//    Purpose: Generates a PDF report of client information.
+//Process: Retrieves client data from the repository, formats it into a PDF document using QuestPDF, and saves it to disk.
+//Returns: Byte array containing the PDF file.
     public async Task<byte[]> ClientReport()
     {
         // Get Data
@@ -277,9 +286,10 @@ public class ServiceReport : IServiceReport
 
         File.WriteAllBytes(@"C:\temp\ClientReport.pdf", pdfByteArray);
         return pdfByteArray;
-
     }
-
+//    Purpose: Generates a PDF report of sales information within a specified date range.
+//Process: Retrieves sales data from the repository, formats it into a PDF document using QuestPDF, and returns the byte array of the PDF.
+//Returns: Byte array containing the PDF file.
     public async Task<byte[]> SalesReport(DateTime startDate, DateTime endDate)
     {
         // Get Data
