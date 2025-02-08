@@ -146,7 +146,7 @@ public class RepositoryInvoice : IRepositoryInvoice
 
                 // Increment the Quantity of NFT by 1
                 var oNft = _context.Set<Nft>().FindAsync(detail.IdNft).Result;
-                if (oNft != null)
+                if (oNft != null && clientNFTs.Count > 0)
                 {
                     oNft.Quantity += 1;
                     _context.Set<Nft>().Update(oNft);
